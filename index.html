@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConcursosPRO — Plataforma de Estudos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --bg2: #13161e;
+  --bg3: #1a1e2a;
+  --bg4: #222636;
+  --surface: #1e2230;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --accent: #6c63ff;
+  --accent2: #a78bfa;
+  --accent3: #38bdf8;
+  --green: #22d3a5;
+  --red: #f87171;
+  --amber: #fbbf24;
+  --text: #f0f2ff;
+  --text2: #9ba3c2;
+  --text3: #5a6180;
+  --radius: 12px;
+  --radius2: 8px;
+  --font: 'Sora', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 260px;
+  --topbar-h: 60px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:10px}
+
+/* ───── TOPBAR ───── */
+#topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:rgba(13,15,20,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;z-index:100}
+#topbar .logo{font-size:1.2rem;font-weight:700;color:var(--accent2);letter-spacing:-0.5px;white-space:nowrap}
+#topbar .logo span{color:var(--accent3)}
+#topbar .spacer{flex:1}
+.topbar-btns{display:flex;gap:0.5rem;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:var(--radius2);font-family:var(--font);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all .15s;border:none}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#7c74ff}
+.btn-success{background:var(--green);color:#0d1a14}
+.btn-success:hover{background:#1ab892}
+.btn-danger{background:var(--red);color:#1a0505}
+.btn-danger:hover{background:#ef4444}
+.btn-sm{padding:0.3rem 0.7rem;font-size:0.78rem}
+.btn-icon{width:34px;height:34px;padding:0;justify-content:center}
+
+/* ───── SIDEBAR ───── */
+#sidebar{position:fixed;top:var(--topbar-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--topbar-h));background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:50;transition:transform .2s}
+.nav-section{padding:1rem 0.75rem 0.4rem;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 1rem;margin:0.1rem 0.5rem;border-radius:var(--radius2);cursor:pointer;transition:all .12s;font-size:0.85rem;color:var(--text2)}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:rgba(108,99,255,0.15);color:var(--accent2);font-weight:500}
+.nav-item .icon{font-size:1.1rem;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.65rem;padding:1px 6px;border-radius:20px;font-weight:600}
+
+/* ───── MAIN ───── */
+#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h));padding:2rem}
+.page{display:none}
+.page.active{display:block}
+
+/* ───── PAGE HEADERS ───── */
+.page-header{margin-bottom:2rem}
+.page-header h1{font-size:1.6rem;font-weight:700;letter-spacing:-0.5px}
+.page-header p{color:var(--text2);font-size:0.9rem;margin-top:0.4rem}
+.breadcrumb{font-size:0.78rem;color:var(--text3);margin-bottom:0.75rem}
+.breadcrumb span{color:var(--text2)}
+
+/* ───── CARDS ───── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+.card-sm{padding:1rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+
+/* ───── STAT CARDS ───── */
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;display:flex;flex-direction:column;gap:0.5rem}
+.stat-card .stat-label{font-size:0.75rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.stat-card .stat-value{font-size:2rem;font-weight:700;font-family:var(--mono)}
+.stat-card .stat-sub{font-size:0.78rem;color:var(--text2)}
+.stat-accent{border-top:3px solid var(--accent)}
+.stat-green{border-top:3px solid var(--green)}
+.stat-amber{border-top:3px solid var(--amber)}
+.stat-red{border-top:3px solid var(--red)}
+
+/* ───── PROGRESS BAR ───── */
+.progress{background:var(--bg4);border-radius:10px;height:6px;overflow:hidden}
+.progress-bar{height:100%;background:var(--accent);border-radius:10px;transition:width .3s}
+.progress-bar.green{background:var(--green)}
+.progress-bar.amber{background:var(--amber)}
+
+/* ───── COURSE CARDS ───── */
+.course-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .15s;display:flex;flex-direction:column}
+.course-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.course-thumb{height:130px;background:linear-gradient(135deg,var(--bg3),var(--bg4));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.course-thumb .thumb-icon{font-size:3rem;opacity:0.6}
+.course-thumb .thumb-badge{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:20px}
+.course-body{padding:1rem;flex:1;display:flex;flex-direction:column;gap:0.6rem}
+.course-body h3{font-size:0.9rem;font-weight:600;line-height:1.4}
+.course-body .course-meta{font-size:0.75rem;color:var(--text3);display:flex;gap:0.8rem;flex-wrap:wrap}
+.course-body .course-meta span{display:flex;align-items:center;gap:0.3rem}
+.course-progress{margin-top:auto;display:flex;flex-direction:column;gap:0.3rem}
+.course-progress .pct{font-size:0.72rem;color:var(--text2);text-align:right}
+
+/* ───── LESSON LIST ───── */
+.lesson-list{display:flex;flex-direction:column;gap:0.3rem}
+.lesson-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border-radius:var(--radius2);border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:all .12s}
+.lesson-item:hover{background:var(--bg3);border-color:var(--border2)}
+.lesson-item.completed{border-color:rgba(34,211,165,0.2);background:rgba(34,211,165,0.04)}
+.lesson-item.active{border-color:var(--accent);background:rgba(108,99,255,0.08)}
+.lesson-icon{width:32px;height:32px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
+.lesson-icon.done{background:rgba(34,211,165,0.15);color:var(--green)}
+.lesson-icon.locked{opacity:0.4}
+.lesson-info{flex:1;min-width:0}
+.lesson-info .lesson-title{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson-info .lesson-dur{font-size:0.72rem;color:var(--text3)}
+.lesson-check{margin-left:auto;color:var(--green);font-size:0.9rem}
+
+/* ───── VIDEO PLAYER ───── */
+.player-wrap{background:var(--bg3);border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative}
+.player-wrap video{width:100%;height:100%;object-fit:contain}
+.player-placeholder{display:flex;flex-direction:column;align-items:center;gap:1rem;color:var(--text3)}
+.player-placeholder .play-btn{width:72px;height:72px;border-radius:50%;background:rgba(108,99,255,0.2);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;transition:all .15s}
+.player-placeholder .play-btn:hover{background:rgba(108,99,255,0.35)}
+
+/* ───── QUIZ ───── */
+.quiz-option{padding:0.9rem 1.2rem;border:1px solid var(--border);border-radius:var(--radius2);cursor:pointer;transition:all .15s;font-size:0.88rem;display:flex;align-items:center;gap:0.75rem}
+.quiz-option:hover:not(.disabled){border-color:var(--accent);background:rgba(108,99,255,0.07)}
+.quiz-option.selected{border-color:var(--accent);background:rgba(108,99,255,0.12);color:var(--accent2)}
+.quiz-option.correct{border-color:var(--green);background:rgba(34,211,165,0.1);color:var(--green)}
+.quiz-option.wrong{border-color:var(--red);background:rgba(248,113,113,0.1);color:var(--red)}
+.quiz-option .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;flex-shrink:0}
+.quiz-explanation{background:rgba(34,211,165,0.07);border:1px solid rgba(34,211,165,0.2);border-radius:var(--radius2);padding:1rem 1.2rem;margin-top:1rem;font-size:0.85rem;line-height:1.6}
+.quiz-feedback-wrong{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2)}
+
+/* ───── FORMS ───── */
+.form-group{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+.form-group label{font-size:0.78rem;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:0.8px}
+input,textarea,select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);color:var(--text);font-family:var(--font);font-size:0.88rem;padding:0.6rem 0.9rem;width:100%;outline:none;transition:border .12s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+select option{background:var(--bg3)}
+
+/* ───── TABLES ───── */
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+th{text-align:left;padding:0.7rem 1rem;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);border-bottom:1px solid var(--border)}
+td{padding:0.75rem 1rem;border-bottom:1px solid var(--border);color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+
+/* ───── TABS ───── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.tab{padding:0.65rem 1.25rem;cursor:pointer;font-size:0.85rem;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;font-weight:500}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ───── BADGE ───── */
+.badge{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:600;padding:2px 8px;border-radius:20px}
+.badge-purple{background:rgba(108,99,255,0.2);color:var(--accent2)}
+.badge-green{background:rgba(34,211,165,0.15);color:var(--green)}
+.badge-amber{background:rgba(251,191,36,0.15);color:var(--amber)}
+.badge-red{background:rgba(248,113,113,0.15);color:var(--red)}
+.badge-blue{background:rgba(56,189,248,0.15);color:var(--accent3)}
+
+/* ───── MODAL ───── */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+#modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);width:100%;max-width:580px;max-height:85vh;overflow-y:auto}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.modal-header h2{font-size:1rem;font-weight:600}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:0.5rem}
+
+/* ───── TOAST ───── */
+#toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;display:flex;flex-direction:column;gap:0.5rem}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius2);padding:0.75rem 1.2rem;font-size:0.85rem;display:flex;align-items:center;gap:0.6rem;animation:slideIn .2s;min-width:260px;max-width:380px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.toast.success{border-color:rgba(34,211,165,0.3)}
+.toast.error{border-color:rgba(248,113,113,0.3)}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ───── NOTES ───── */
+.note-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius2);padding:1rem 1.2rem;margin-bottom:0.75rem}
+.note-card .note-time{font-size:0.72rem;color:var(--text3);margin-bottom:0.4rem;font-family:var(--mono)}
+.note-card .note-text{font-size:0.85rem;line-height:1.5}
+.note-card .note-actions{display:flex;gap:0.4rem;margin-top:0.6rem}
+
+/* ───── CALENDAR ───── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:0.78rem;cursor:pointer;transition:all .1s}
+.cal-day:hover{background:var(--bg4)}
+.cal-day.today{background:var(--accent);color:#fff;font-weight:700}
+.cal-day.has-event{border-bottom:3px solid var(--green)}
+.cal-day.other-month{color:var(--text3);opacity:0.4}
+
+/* ───── RANKING ───── */
+.rank-row{display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:var(--radius2);transition:all .1s}
+.rank-row:hover{background:var(--bg3)}
+.rank-num{width:28px;text-align:center;font-weight:700;font-family:var(--mono);font-size:0.9rem;color:var(--text3)}
+.rank-num.gold{color:#f59e0b}
+.rank-num.silver{color:#94a3b8}
+.rank-num.bronze{color:#d97706}
+.rank-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:600;flex-shrink:0}
+.rank-name{flex:1;font-size:0.88rem;font-weight:500}
+.rank-score{font-family:var(--mono);font-size:0.85rem;color:var(--accent2);font-weight:600}
+
+/* ───── SEARCH ───── */
+.search-bar{position:relative}
+.search-bar input{padding-left:2.4rem}
+.search-bar .search-icon{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem;pointer-events:none}
+
+/* ───── FLASHCARD ───── */
+.flashcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative}
+.flashcard:hover{border-color:var(--border2)}
+.flashcard .fc-tag{position:absolute;top:1rem;left:1rem;font-size:0.7rem}
+.flashcard .fc-hint{font-size:0.75rem;color:var(--text3);margin-top:1rem}
+.flashcard.flipped{background:rgba(108,99,255,0.08);border-color:var(--accent)}
+
+/* ───── UPLOAD AREA ───── */
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all .15s;color:var(--text3)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(108,99,255,0.04);color:var(--text2)}
+.upload-zone .upload-icon{font-size:2.5rem;margin-bottom:0.75rem}
+
+/* ───── EMPTY STATE ───── */
+.empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text3)}
+.empty-state .empty-icon{font-size:3.5rem;margin-bottom:1rem;opacity:0.5}
+.empty-state p{font-size:0.9rem}
+
+/* ───── RESPONSIVO ───── */
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <button class="btn btn-ghost btn-icon" id="sidebar-toggle" title="Menu">☰</button>
+  <div class="logo">Concursos<span>PRO</span></div>
+  <div class="spacer"></div>
+  <div class="topbar-btns">
+    <button class="btn btn-ghost btn-sm" onclick="exportBackup()">⬇ Exportar</button>
+    <label class="btn btn-ghost btn-sm" style="cursor:pointer">⬆ Importar<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-course','')">+ Novo Curso</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="nav-section">Principal</div>
+  <div class="nav-item active" onclick="gotoPage('dashboard')"><span class="icon">🏠</span> Dashboard</div>
+  <div class="nav-item" onclick="gotoPage('cursos')"><span class="icon">📚</span> Meus Cursos <span class="nav-badge" id="badge-cursos">0</span></div>
+  <div class="nav-item" onclick="gotoPage('aulas')"><span class="icon">🎬</span> Aulas</div>
+  <div class="nav-item" onclick="gotoPage('quizzes')"><span class="icon">🧠</span> Quizzes</div>
+  <div class="nav-item" onclick="gotoPage('flashcards')"><span class="icon">🃏</span> Flashcards</div>
+
+  <div class="nav-section">Estudos</div>
+  <div class="nav-item" onclick="gotoPage('cronograma')"><span class="icon">📅</span> Cronograma</div>
+  <div class="nav-item" onclick="gotoPage('anotacoes')"><span class="icon">📝</span> Anotações</div>
+  <div class="nav-item" onclick="gotoPage('ranking')"><span class="icon">🏆</span> Ranking</div>
+  <div class="nav-item" onclick="gotoPage('relatorios')"><span class="icon">📊</span> Relatórios</div>
+
+  <div class="nav-section">Conta</div>
+  <div class="nav-item" onclick="gotoPage('configuracoes')"><span class="icon">⚙️</span> Configurações</div>
+  <div class="nav-item" onclick="gotoPage('backup')"><span class="icon">💾</span> Backup</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- ───── DASHBOARD ───── -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div class="breadcrumb">Início</div>
+    <h1>Dashboard</h1>
+    <p>Bem-vindo de volta! Aqui está seu resumo de hoje.</p>
+  </div>
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="stat-card stat-accent"><div class="stat-label">Cursos ativos</div><div class="stat-value" id="dash-cursos">0</div><div class="stat-sub">em andamento</div></div>
+    <div class="stat-card stat-green"><div class="stat-label">Aulas concluídas</div><div class="stat-value" id="dash-aulas">0</div><div class="stat-sub">total geral</div></div>
+    <div class="stat-card stat-amber"><div class="stat-label">Quizzes feitos</div><div class="stat-value" id="dash-quizzes">0</div><div class="stat-sub">média: <span id="dash-media">—</span></div></div>
+    <div class="stat-card stat-red"><div class="stat-label">Horas estudadas</div><div class="stat-value" id="dash-horas">0</div><div class="stat-sub">esta semana</div></div>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h3 style="font-size:0.95rem;font-weight:600">Últimos cursos acessados</h3>
+        <button class="btn btn-ghost btn-sm" onclick="gotoPage('cursos')">Ver todos →</button>
+      </div>
+      <div id="dash-recent-courses"><div class="empty-state"><div class="empty-icon">📚</div><p>Nenhum curso ainda.<br>Crie um para começar!</p></div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h3 style="font-size:0.95rem;font-weight:600">Progresso geral</h3>
+      </div>
+      <div id="dash-progress-list"><div class="empty-state"><div class="empty-icon">📈</div><p>Adicione aulas nos cursos para ver o progresso.</p></div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <h3 style="font-size:0.95rem;font-weight:600">🔥 Continue estudando</h3>
+    </div>
+    <div id="dash-continue" class="grid-auto"></div>
+  </div>
+</div>
+
+<!-- ───── CURSOS ───── -->
+<div class="page" id="page-cursos">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Cursos</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Meus Cursos</h1><p>Gerencie todos os seus cursos e materiais.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-course','')">+ Novo Curso</button>
+    </div>
+  </div>
+  <div style="margin-bottom:1.5rem;display:flex;gap:0.75rem;flex-wrap:wrap">
+    <div class="search-bar" style="flex:1;min-width:200px"><span class="search-icon">🔍</span><input type="text" placeholder="Buscar cursos..." id="search-cursos" oninput="renderCursos()"></div>
+    <select id="filter-cursos" onchange="renderCursos()" style="width:180px">
+      <option value="">Todas categorias</option>
+      <option value="Direito">Direito</option>
+      <option value="Contabilidade">Contabilidade</option>
+      <option value="Informática">Informática</option>
+      <option value="Português">Português</option>
+      <option value="Matemática">Matemática</option>
+      <option value="Raciocínio Lógico">Raciocínio Lógico</option>
+      <option value="Outros">Outros</option>
+    </select>
+  </div>
+  <div class="grid-auto" id="lista-cursos"></div>
+</div>
+
+<!-- ───── DETALHE DO CURSO ───── -->
+<div class="page" id="page-curso-detalhe">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span onclick="gotoPage('cursos')" style="cursor:pointer">Cursos</span> › <span id="detalhe-breadcrumb">Curso</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div>
+        <h1 id="detalhe-titulo">Título do Curso</h1>
+        <p id="detalhe-desc" style="margin-top:0.4rem"></p>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="editCurso()">✏️ Editar</button>
+        <button class="btn btn-primary btn-sm" onclick="showModal('modal-aula','')">+ Aula</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCurso()">🗑</button>
+      </div>
+    </div>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div>
+      <div class="card" style="margin-bottom:1rem">
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+          <div><div style="font-size:0.7rem;color:var(--text3);margin-bottom:0.3rem">CATEGORIA</div><div id="d-categoria" class="badge badge-purple" style="font-size:0.82rem"></div></div>
+          <div><div style="font-size:0.7rem;color:var(--text3);margin-bottom:0.3rem">AULAS</div><div id="d-total-aulas" style="font-weight:700;font-family:var(--mono)">0</div></div>
+          <div><div style="font-size:0.7rem;color:var(--text3);margin-bottom:0.3rem">CONCLUÍDAS</div><div id="d-aulas-concluidas" style="font-weight:700;font-family:var(--mono);color:var(--green)">0</div></div>
+          <div style="flex:1;min-width:120px"><div style="font-size:0.7rem;color:var(--text3);margin-bottom:0.5rem">PROGRESSO</div><div class="progress"><div class="progress-bar green" id="d-barra" style="width:0%"></div></div><div style="font-size:0.75rem;color:var(--text2);margin-top:0.3rem"><span id="d-pct">0</span>% concluído</div></div>
+        </div>
+      </div>
+      <div class="lesson-list" id="lista-aulas-detalhe"></div>
+    </div>
+    <div id="player-area">
+      <div class="card">
+        <div class="player-wrap" id="player-wrap">
+          <div class="player-placeholder">
+            <div class="play-btn">▶</div>
+            <p style="font-size:0.85rem">Selecione uma aula ao lado</p>
+          </div>
+        </div>
+        <div style="padding:1rem 0 0">
+          <h3 id="aula-titulo-player" style="font-size:1rem;font-weight:600;margin-bottom:0.5rem">—</h3>
+          <p id="aula-desc-player" style="font-size:0.83rem;color:var(--text2);line-height:1.5"></p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap" id="player-actions"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── AULAS ───── -->
+<div class="page" id="page-aulas">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Aulas</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Todas as Aulas</h1><p>Visualize e gerencie todas as aulas cadastradas.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-aula-geral','')">+ Nova Aula</button>
+    </div>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Título</th><th>Curso</th><th>Duração</th><th>Tipo</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="tabela-aulas"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ───── QUIZZES ───── -->
+<div class="page" id="page-quizzes">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Quizzes</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Quizzes</h1><p>Teste seus conhecimentos com questões de múltipla escolha.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-quiz','')">+ Nova Questão</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('tab-quiz','banco')">Banco de Questões</div>
+    <div class="tab" onclick="switchTab('tab-quiz','simulado')">Iniciar Simulado</div>
+    <div class="tab" onclick="switchTab('tab-quiz','historico')">Histórico</div>
+  </div>
+  <div class="tab-panel active" id="tab-quiz-banco">
+    <div class="grid-auto" id="lista-quizzes"></div>
+  </div>
+  <div class="tab-panel" id="tab-quiz-simulado">
+    <div id="simulado-config" class="card" style="max-width:480px">
+      <h3 style="margin-bottom:1rem;font-size:1rem;font-weight:600">Configurar Simulado</h3>
+      <div class="form-group"><label>Número de questões</label><input type="number" id="sim-qtd" value="10" min="1" max="100"></div>
+      <div class="form-group"><label>Categoria</label>
+        <select id="sim-cat"><option value="">Todas</option><option value="Direito">Direito</option><option value="Contabilidade">Contabilidade</option><option value="Informática">Informática</option><option value="Português">Português</option><option value="Matemática">Matemática</option><option value="Raciocínio Lógico">Raciocínio Lógico</option></select>
+      </div>
+      <div class="form-group"><label>Nível de dificuldade</label><select id="sim-dif"><option value="">Todos</option><option value="Fácil">Fácil</option><option value="Médio">Médio</option><option value="Difícil">Difícil</option></select></div>
+      <button class="btn btn-primary" onclick="iniciarSimulado()">🚀 Iniciar Simulado</button>
+    </div>
+    <div id="simulado-area" style="display:none"></div>
+  </div>
+  <div class="tab-panel" id="tab-quiz-historico">
+    <div id="historico-quizzes"></div>
+  </div>
+</div>
+
+<!-- ───── FLASHCARDS ───── -->
+<div class="page" id="page-flashcards">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Flashcards</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Flashcards</h1><p>Memorize conceitos com revisão espaçada.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-flashcard','')">+ Novo Card</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('tab-fc','gerenciar')">Gerenciar</div>
+    <div class="tab" onclick="switchTab('tab-fc','estudar');initFlashStudy()">Estudar</div>
+  </div>
+  <div class="tab-panel active" id="tab-fc-gerenciar">
+    <div class="grid-auto" id="lista-flashcards"></div>
+  </div>
+  <div class="tab-panel" id="tab-fc-estudar">
+    <div id="fc-study-area"></div>
+  </div>
+</div>
+
+<!-- ───── CRONOGRAMA ───── -->
+<div class="page" id="page-cronograma">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Cronograma</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Cronograma de Estudos</h1><p>Organize seus horários e metas de estudo.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-evento','')">+ Evento</button>
+    </div>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <button class="btn btn-ghost btn-sm" onclick="calPrev()">← Ant</button>
+        <h3 id="cal-titulo" style="font-size:0.95rem;font-weight:600"></h3>
+        <button class="btn btn-ghost btn-sm" onclick="calNext()">Prox →</button>
+      </div>
+      <div class="cal-grid" style="margin-bottom:0.5rem" id="cal-header"></div>
+      <div class="cal-grid" id="cal-body"></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem">Próximos eventos</h3>
+      <div id="lista-eventos"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── ANOTAÇÕES ───── -->
+<div class="page" id="page-anotacoes">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Anotações</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div><h1>Anotações</h1><p>Suas notas organizadas por matéria.</p></div>
+      <button class="btn btn-primary" onclick="showModal('modal-nota','')">+ Nova Nota</button>
+    </div>
+  </div>
+  <div class="search-bar" style="max-width:400px;margin-bottom:1.5rem"><span class="search-icon">🔍</span><input type="text" placeholder="Buscar anotações..." id="search-notas" oninput="renderNotas()"></div>
+  <div id="lista-notas"></div>
+</div>
+
+<!-- ───── RANKING ───── -->
+<div class="page" id="page-ranking">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Ranking</span></div>
+    <h1>Ranking de Estudantes</h1>
+    <p>Compare seu desempenho com outros usuários da plataforma.</p>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem">🏆 Top 10 — Quizzes</h3>
+      <div id="ranking-list"></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem">📊 Sua posição</h3>
+      <div id="minha-posicao"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── RELATÓRIOS ───── -->
+<div class="page" id="page-relatorios">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Relatórios</span></div>
+    <h1>Relatórios de Desempenho</h1>
+    <p>Analise sua evolução nos estudos.</p>
+  </div>
+  <div class="grid-4" style="margin-bottom:1.5rem">
+    <div class="stat-card stat-accent"><div class="stat-label">Total de Questões</div><div class="stat-value" id="rel-total-q">0</div></div>
+    <div class="stat-card stat-green"><div class="stat-label">Acertos</div><div class="stat-value" id="rel-acertos">0</div></div>
+    <div class="stat-card stat-red"><div class="stat-label">Erros</div><div class="stat-value" id="rel-erros">0</div></div>
+    <div class="stat-card stat-amber"><div class="stat-label">Taxa de Acerto</div><div class="stat-value" id="rel-taxa">—</div></div>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem">Desempenho por Categoria</h3>
+      <div id="rel-categorias"></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem">Progresso dos Cursos</h3>
+      <div id="rel-cursos"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── CONFIGURAÇÕES ───── -->
+<div class="page" id="page-configuracoes">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Configurações</span></div>
+    <h1>Configurações</h1>
+  </div>
+  <div class="card" style="max-width:560px">
+    <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1.25rem">Perfil do Estudante</h3>
+    <div class="form-group"><label>Nome</label><input type="text" id="cfg-nome" placeholder="Seu nome completo"></div>
+    <div class="form-group"><label>Concurso alvo</label><input type="text" id="cfg-concurso" placeholder="Ex: Receita Federal 2025"></div>
+    <div class="form-group"><label>Meta diária de horas</label><input type="number" id="cfg-meta" placeholder="Ex: 4" min="1" max="24"></div>
+    <button class="btn btn-primary" onclick="salvarConfig()">Salvar Configurações</button>
+  </div>
+</div>
+
+<!-- ───── BACKUP ───── -->
+<div class="page" id="page-backup">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span>Backup</span></div>
+    <h1>Backup & Restauração</h1>
+    <p>Exporte e importe todos os seus dados.</p>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:0.75rem">⬇ Exportar Dados</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.6">Exporta todos os cursos, aulas, quizzes, flashcards, anotações e eventos em um arquivo JSON que pode ser importado nesta mesma plataforma.</p>
+      <button class="btn btn-success" onclick="exportBackup()">Exportar Backup Completo</button>
+    </div>
+    <div class="card">
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:0.75rem">⬆ Importar Dados</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.6">Importe um arquivo de backup exportado anteriormente. <strong style="color:var(--red)">Atenção: isso substituirá todos os dados atuais.</strong></p>
+      <label class="btn btn-ghost" style="cursor:pointer">Selecionar arquivo .json<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:0.75rem">⚠️ Área de Perigo</h3>
+    <p style="font-size:0.85rem;color:var(--text2);margin-bottom:1rem">Apaga permanentemente todos os dados da plataforma.</p>
+    <button class="btn btn-danger" onclick="if(confirm('Tem certeza? Esta ação é irreversível!'))limparTudo()">Limpar Todos os Dados</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ───── MODAIS ───── -->
+<div id="modal-overlay">
+
+<!-- Modal Curso -->
+<div class="modal" id="modal-course" style="display:none">
+  <div class="modal-header"><h2 id="mc-titulo">Novo Curso</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="mc-id">
+    <div class="form-group"><label>Título do Curso *</label><input id="mc-nome" placeholder="Ex: Direito Constitucional Completo"></div>
+    <div class="form-group"><label>Descrição</label><textarea id="mc-desc" placeholder="Descreva os objetivos e conteúdo do curso..."></textarea></div>
+    <div class="form-group"><label>Categoria</label><select id="mc-cat"><option value="Outros">Outros</option><option value="Direito">Direito</option><option value="Contabilidade">Contabilidade</option><option value="Informática">Informática</option><option value="Português">Português</option><option value="Matemática">Matemática</option><option value="Raciocínio Lógico">Raciocínio Lógico</option></select></div>
+    <div class="form-group"><label>Emoji / Ícone</label><input id="mc-emoji" placeholder="📚" maxlength="4"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarCurso()">Salvar Curso</button></div>
+</div>
+
+<!-- Modal Aula -->
+<div class="modal" id="modal-aula" style="display:none">
+  <div class="modal-header"><h2 id="ma-titulo">Nova Aula</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="ma-id">
+    <input type="hidden" id="ma-curso-id">
+    <div class="form-group"><label>Título da Aula *</label><input id="ma-nome" placeholder="Ex: Aula 01 — Princípios Constitucionais"></div>
+    <div class="form-group"><label>Descrição</label><textarea id="ma-desc" placeholder="Resumo do conteúdo da aula..."></textarea></div>
+    <div class="form-group"><label>Tipo</label><select id="ma-tipo"><option value="video">📹 Vídeo (URL)</option><option value="texto">📄 Texto / PDF</option><option value="audio">🎵 Áudio</option></select></div>
+    <div class="form-group"><label>URL do vídeo / Link (opcional)</label><input id="ma-url" placeholder="https://youtube.com/watch?v=..."></div>
+    <div class="form-group"><label>Conteúdo / Texto da aula</label><textarea id="ma-conteudo" rows="4" placeholder="Cole aqui o conteúdo textual da aula..."></textarea></div>
+    <div class="form-group"><label>Duração estimada (min)</label><input type="number" id="ma-dur" placeholder="60" min="1"></div>
+    <div class="form-group"><label>Ordem</label><input type="number" id="ma-ordem" placeholder="1" min="1"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarAula()">Salvar Aula</button></div>
+</div>
+
+<!-- Modal Aula Geral -->
+<div class="modal" id="modal-aula-geral" style="display:none">
+  <div class="modal-header"><h2>Nova Aula</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <div class="form-group"><label>Curso *</label><select id="mag-curso"></select></div>
+    <div class="form-group"><label>Título *</label><input id="mag-nome" placeholder="Título da aula"></div>
+    <div class="form-group"><label>Tipo</label><select id="mag-tipo"><option value="video">📹 Vídeo</option><option value="texto">📄 Texto</option><option value="audio">🎵 Áudio</option></select></div>
+    <div class="form-group"><label>URL</label><input id="mag-url" placeholder="https://..."></div>
+    <div class="form-group"><label>Duração (min)</label><input type="number" id="mag-dur" min="1"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarAulaGeral()">Salvar</button></div>
+</div>
+
+<!-- Modal Quiz -->
+<div class="modal" id="modal-quiz" style="display:none">
+  <div class="modal-header"><h2 id="mq-titulo">Nova Questão</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="mq-id">
+    <div class="form-group"><label>Enunciado *</label><textarea id="mq-enunciado" placeholder="Digite a questão..."></textarea></div>
+    <div class="form-group"><label>Opção A *</label><input id="mq-a" placeholder="Alternativa A"></div>
+    <div class="form-group"><label>Opção B *</label><input id="mq-b" placeholder="Alternativa B"></div>
+    <div class="form-group"><label>Opção C</label><input id="mq-c" placeholder="Alternativa C"></div>
+    <div class="form-group"><label>Opção D</label><input id="mq-d" placeholder="Alternativa D"></div>
+    <div class="form-group"><label>Opção E</label><input id="mq-e" placeholder="Alternativa E"></div>
+    <div class="form-group"><label>Resposta correta *</label><select id="mq-resp"><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></div>
+    <div class="form-group"><label>Explicação</label><textarea id="mq-exp" placeholder="Explique o motivo da resposta correta..."></textarea></div>
+    <div class="form-group"><label>Categoria</label><select id="mq-cat"><option value="Geral">Geral</option><option value="Direito">Direito</option><option value="Contabilidade">Contabilidade</option><option value="Informática">Informática</option><option value="Português">Português</option><option value="Matemática">Matemática</option><option value="Raciocínio Lógico">Raciocínio Lógico</option></select></div>
+    <div class="form-group"><label>Dificuldade</label><select id="mq-dif"><option value="Fácil">Fácil</option><option value="Médio">Médio</option><option value="Difícil">Difícil</option></select></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarQuiz()">Salvar Questão</button></div>
+</div>
+
+<!-- Modal Flashcard -->
+<div class="modal" id="modal-flashcard" style="display:none">
+  <div class="modal-header"><h2 id="mf-titulo">Novo Flashcard</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="mf-id">
+    <div class="form-group"><label>Frente (pergunta) *</label><textarea id="mf-frente" placeholder="O que você quer memorizar?"></textarea></div>
+    <div class="form-group"><label>Verso (resposta) *</label><textarea id="mf-verso" placeholder="A resposta / explicação..."></textarea></div>
+    <div class="form-group"><label>Categoria</label><input id="mf-cat" placeholder="Ex: Direito Constitucional"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarFlashcard()">Salvar</button></div>
+</div>
+
+<!-- Modal Nota -->
+<div class="modal" id="modal-nota" style="display:none">
+  <div class="modal-header"><h2 id="mn-titulo">Nova Anotação</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="mn-id">
+    <div class="form-group"><label>Título *</label><input id="mn-titulo-inp" placeholder="Título da nota"></div>
+    <div class="form-group"><label>Matéria</label><input id="mn-materia" placeholder="Ex: Direito Constitucional"></div>
+    <div class="form-group"><label>Conteúdo *</label><textarea id="mn-conteudo" rows="6" placeholder="Escreva sua anotação aqui..."></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarNota()">Salvar</button></div>
+</div>
+
+<!-- Modal Evento -->
+<div class="modal" id="modal-evento" style="display:none">
+  <div class="modal-header"><h2 id="mev-titulo">Novo Evento</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="mev-id">
+    <div class="form-group"><label>Título *</label><input id="mev-titulo-inp" placeholder="Ex: Revisão de Direito Administrativo"></div>
+    <div class="form-group"><label>Data *</label><input type="date" id="mev-data"></div>
+    <div class="form-group"><label>Hora</label><input type="time" id="mev-hora"></div>
+    <div class="form-group"><label>Duração (horas)</label><input type="number" id="mev-dur" placeholder="2" min="0.5" step="0.5"></div>
+    <div class="form-group"><label>Matéria</label><input id="mev-materia" placeholder="Ex: Contabilidade"></div>
+    <div class="form-group"><label>Cor</label><select id="mev-cor"><option value="var(--accent)">Roxo (padrão)</option><option value="var(--green)">Verde</option><option value="var(--amber)">Amarelo</option><option value="var(--red)">Vermelho</option><option value="var(--accent3)">Azul</option></select></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarEvento()">Salvar</button></div>
+</div>
+
+</div><!-- /modal-overlay -->
+
+<!-- TOAST -->
+<div id="toast-wrap"></div>
+
+<script>
+// ══════════════════════════════════════════
+//   INDEXEDDB
+// ══════════════════════════════════════════
+let db;
+const DB_NAME = 'ConcursosPRO';
+const DB_VER  = 1;
+const STORES  = ['cursos','aulas','quizzes','historico','flashcards','notas','eventos','config'];
+
+function initDB(){
+  return new Promise((res,rej)=>{
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e=>{
+      const d = e.target.result;
+      STORES.forEach(s=>{ if(!d.objectStoreNames.contains(s)) d.createObjectStore(s,{keyPath:'id'}) });
+    };
+    req.onsuccess = e=>{ db=e.target.result; res(db) };
+    req.onerror   = e=>rej(e);
+  });
+}
+
+function dbGetAll(store){
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(store,'readonly');
+    const req=tx.objectStore(store).getAll();
+    req.onsuccess=()=>res(req.result);
+    req.onerror=rej;
+  });
+}
+function dbPut(store,obj){ return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); tx.objectStore(store).put(obj).onsuccess=res; tx.onerror=rej; }) }
+function dbDelete(store,id){ return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); tx.objectStore(store).delete(id).onsuccess=res; tx.onerror=rej; }) }
+function dbClear(store){ return new Promise((res,rej)=>{ const tx=db.transaction(store,'readwrite'); tx.objectStore(store).clear().onsuccess=res; tx.onerror=rej; }) }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7) }
+
+// ══════════════════════════════════════════
+//   NAVEGAÇÃO
+// ══════════════════════════════════════════
+function gotoPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.textContent.toLowerCase().includes(id.toLowerCase().replace('-',' '))) n.classList.add('active');
+  });
+  if(id==='dashboard') renderDashboard();
+  if(id==='cursos') renderCursos();
+  if(id==='aulas') renderTodasAulas();
+  if(id==='quizzes') renderQuizzes();
+  if(id==='flashcards') renderFlashcards();
+  if(id==='cronograma') renderCronograma();
+  if(id==='anotacoes') renderNotas();
+  if(id==='ranking') renderRanking();
+  if(id==='relatorios') renderRelatorios();
+  if(id==='configuracoes') loadConfig();
+  // Close sidebar on mobile
+  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+}
+
+document.getElementById('sidebar-toggle').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('modal-overlay').onclick=e=>{ if(e.target===e.currentTarget) closeModal() };
+
+function switchTab(group, panel){
+  const allTabs=document.querySelectorAll('[id^="tab-'+group+'-"]');
+  const allPanelBtns=document.querySelectorAll('.tabs .tab');
+  allTabs.forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('tab-'+group+'-'+panel);
+  if(target) target.classList.add('active');
+  // activate the right tab button inside the same page
+  const page = document.querySelector('.page.active');
+  if(page){
+    const tabs=page.querySelectorAll('.tab');
+    tabs.forEach(t=>{
+      if(t.getAttribute('onclick') && t.getAttribute('onclick').includes("'"+panel+"'")){
+        tabs.forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+      }
+    });
+  }
+}
+
+// ══════════════════════════════════════════
+//   MODAIS
+// ══════════════════════════════════════════
+let modalOpen='';
+function showModal(id, editId=''){
+  document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
+  const m=document.getElementById(id);
+  if(m){ m.style.display='block'; modalOpen=id; }
+  document.getElementById('modal-overlay').classList.add('show');
+  if(id==='modal-aula-geral') populateCursoSelect('mag-curso');
+  if(id==='modal-course' && !editId){ clearForm(['mc-id','mc-nome','mc-desc','mc-emoji']); document.getElementById('mc-titulo').textContent='Novo Curso'; }
+  if(id==='modal-aula' && !editId){ clearForm(['ma-id','ma-nome','ma-desc','ma-url','ma-conteudo','ma-dur','ma-ordem']); document.getElementById('ma-titulo').textContent='Nova Aula'; }
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('show'); document.querySelectorAll('.modal').forEach(m=>m.style.display='none'); modalOpen=''; }
+function clearForm(ids){ ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }) }
+
+async function populateCursoSelect(selId){
+  const sel=document.getElementById(selId);
+  if(!sel) return;
+  const cursos=await dbGetAll('cursos');
+  sel.innerHTML=cursos.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')||'<option value="">Nenhum curso cadastrado</option>';
+}
+
+// ══════════════════════════════════════════
+//   CURSOS — CRUD
+// ══════════════════════════════════════════
+async function salvarCurso(){
+  const id=document.getElementById('mc-id').value||uid();
+  const nome=document.getElementById('mc-nome').value.trim();
+  if(!nome){ toast('Informe o título do curso','error'); return; }
+  const obj={ id, nome, desc:document.getElementById('mc-desc').value, categoria:document.getElementById('mc-cat').value, emoji:document.getElementById('mc-emoji').value||'📚', criadoEm: Date.now() };
+  await dbPut('cursos',obj);
+  closeModal();
+  toast('Curso salvo com sucesso!');
+  renderCursos();
+  renderDashboard();
+  updateBadges();
+}
+
+let cursoAtualId=null;
+
+async function renderCursos(){
+  const lista=document.getElementById('lista-cursos');
+  if(!lista) return;
+  const q=document.getElementById('search-cursos')?.value.toLowerCase()||'';
+  const filtCat=document.getElementById('filter-cursos')?.value||'';
+  let cursos=await dbGetAll('cursos');
+  if(q) cursos=cursos.filter(c=>c.nome.toLowerCase().includes(q));
+  if(filtCat) cursos=cursos.filter(c=>c.categoria===filtCat);
+  if(!cursos.length){ lista.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><p>Nenhum curso cadastrado ainda.<br>Clique em <strong>+ Novo Curso</strong> para começar!</p></div>'; return; }
+  const aulas=await dbGetAll('aulas');
+  lista.innerHTML=cursos.map(c=>{
+    const aulasC=aulas.filter(a=>a.cursoId===c.id);
+    const concluidas=aulasC.filter(a=>a.concluida).length;
+    const pct=aulasC.length?Math.round(concluidas/aulasC.length*100):0;
+    return `<div class="course-card" onclick="abrirCurso('${c.id}')">
+      <div class="course-thumb" style="background:linear-gradient(135deg,#1e1a40,#0d1a2a)">
+        <span class="thumb-icon">${c.emoji||'📚'}</span>
+        <span class="thumb-badge">${c.categoria||'Geral'}</span>
+      </div>
+      <div class="course-body">
+        <h3>${c.nome}</h3>
+        <div class="course-meta">
+          <span>📖 ${aulasC.length} aulas</span>
+          <span>✅ ${concluidas} concluídas</span>
+        </div>
+        ${c.desc?`<p style="font-size:0.78rem;color:var(--text3);line-height:1.4">${c.desc.slice(0,80)}${c.desc.length>80?'...':''}</p>`:''}
+        <div class="course-progress">
+          <div class="pct">${pct}%</div>
+          <div class="progress"><div class="progress-bar ${pct===100?'green':''}" style="width:${pct}%"></div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  updateBadges();
+}
+
+async function abrirCurso(id){
+  cursoAtualId=id;
+  const cursos=await dbGetAll('cursos');
+  const c=cursos.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('detalhe-breadcrumb').textContent=c.nome;
+  document.getElementById('detalhe-titulo').textContent=c.nome;
+  document.getElementById('detalhe-desc').textContent=c.desc||'';
+  document.getElementById('d-categoria').textContent=c.categoria||'Geral';
+  document.getElementById('ma-curso-id').value=id;
+  await renderAulasDetalhe();
+  gotoPage('curso-detalhe');
+}
+
+async function renderAulasDetalhe(){
+  const aulas=(await dbGetAll('aulas')).filter(a=>a.cursoId===cursoAtualId).sort((a,b)=>(a.ordem||0)-(b.ordem||0));
+  const total=aulas.length;
+  const concluidas=aulas.filter(a=>a.concluida).length;
+  const pct=total?Math.round(concluidas/total*100):0;
+  document.getElementById('d-total-aulas').textContent=total;
+  document.getElementById('d-aulas-concluidas').textContent=concluidas;
+  document.getElementById('d-barra').style.width=pct+'%';
+  document.getElementById('d-pct').textContent=pct;
+  const lista=document.getElementById('lista-aulas-detalhe');
+  if(!total){ lista.innerHTML='<div class="empty-state"><div class="empty-icon">🎬</div><p>Nenhuma aula ainda.<br>Clique em <strong>+ Aula</strong> para adicionar!</p></div>'; return; }
+  lista.innerHTML=aulas.map(a=>`
+    <div class="lesson-item ${a.concluida?'completed':''}" onclick="selecionarAula('${a.id}')">
+      <div class="lesson-icon ${a.concluida?'done':''}">${a.concluida?'✓':getAulaIcon(a.tipo)}</div>
+      <div class="lesson-info">
+        <div class="lesson-title">${a.nome}</div>
+        <div class="lesson-dur">${a.tipo||'video'} · ${a.duracao||0} min</div>
+      </div>
+      ${a.concluida?'<span class="lesson-check">✓</span>':''}
+    </div>`).join('');
+}
+
+function getAulaIcon(tipo){ return tipo==='texto'?'📄':tipo==='audio'?'🎵':'▶'; }
+
+async function selecionarAula(id){
+  const aulas=await dbGetAll('aulas');
+  const a=aulas.find(x=>x.id===id);
+  if(!a) return;
+  document.getElementById('aula-titulo-player').textContent=a.nome;
+  document.getElementById('aula-desc-player').textContent=a.desc||'';
+  const wrap=document.getElementById('player-wrap');
+  if(a.url){
+    // Tenta embed YouTube
+    const ytId=getYoutubeId(a.url);
+    if(ytId){
+      wrap.innerHTML=`<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen style="border:0"></iframe>`;
+    } else {
+      wrap.innerHTML=`<video controls style="width:100%;height:100%"><source src="${a.url}"></video>`;
+    }
+  } else if(a.conteudo){
+    wrap.innerHTML=`<div style="width:100%;height:100%;overflow-y:auto;padding:1.5rem;text-align:left;font-size:0.88rem;line-height:1.7;color:var(--text)">${a.conteudo.replace(/\n/g,'<br>')}</div>`;
+  } else {
+    wrap.innerHTML=`<div class="player-placeholder"><div class="play-btn" style="cursor:default;opacity:.4">▶</div><p>Sem conteúdo</p></div>`;
+  }
+  const actions=document.getElementById('player-actions');
+  actions.innerHTML=`
+    <button class="btn btn-ghost btn-sm" onclick="marcarConcluida('${id}')">${a.concluida?'↩ Desmarcar':'✅ Marcar concluída'}</button>
+    <button class="btn btn-ghost btn-sm" onclick="editarAula('${id}')">✏️ Editar</button>
+    <button class="btn btn-danger btn-sm" onclick="excluirAula('${id}')">🗑 Excluir</button>
+  `;
+}
+
+function getYoutubeId(url){
+  const m=url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^&\n?#]+)/);
+  return m?m[1]:null;
+}
+
+async function marcarConcluida(id){
+  const aulas=await dbGetAll('aulas');
+  const a=aulas.find(x=>x.id===id);
+  if(!a) return;
+  a.concluida=!a.concluida;
+  await dbPut('aulas',a);
+  toast(a.concluida?'Aula marcada como concluída!':'Aula desmarcada');
+  await renderAulasDetalhe();
+  await selecionarAula(id);
+}
+
+async function salvarAula(){
+  const cursoId=document.getElementById('ma-curso-id').value||cursoAtualId;
+  const nome=document.getElementById('ma-nome').value.trim();
+  if(!nome||!cursoId){ toast('Preencha os campos obrigatórios','error'); return; }
+  const id=document.getElementById('ma-id').value||uid();
+  const obj={ id, cursoId, nome, desc:document.getElementById('ma-desc').value, tipo:document.getElementById('ma-tipo').value, url:document.getElementById('ma-url').value, conteudo:document.getElementById('ma-conteudo').value, duracao:parseInt(document.getElementById('ma-dur').value)||0, ordem:parseInt(document.getElementById('ma-ordem').value)||99, concluida:false, criadoEm:Date.now() };
+  await dbPut('aulas',obj);
+  closeModal();
+  toast('Aula salva!');
+  await renderAulasDetalhe();
+}
+
+async function editarAula(id){
+  const aulas=await dbGetAll('aulas');
+  const a=aulas.find(x=>x.id===id);
+  if(!a) return;
+  document.getElementById('ma-id').value=a.id;
+  document.getElementById('ma-nome').value=a.nome;
+  document.getElementById('ma-desc').value=a.desc||'';
+  document.getElementById('ma-tipo').value=a.tipo||'video';
+  document.getElementById('ma-url').value=a.url||'';
+  document.getElementById('ma-conteudo').value=a.conteudo||'';
+  document.getElementById('ma-dur').value=a.duracao||'';
+  document.getElementById('ma-ordem').value=a.ordem||'';
+  document.getElementById('ma-titulo').textContent='Editar Aula';
+  showModal('modal-aula','edit');
+}
+
+async function excluirAula(id){
+  if(!confirm('Excluir esta aula?')) return;
+  await dbDelete('aulas',id);
+  toast('Aula excluída');
+  await renderAulasDetalhe();
+  document.getElementById('player-wrap').innerHTML='<div class="player-placeholder"><div class="play-btn" style="cursor:default;opacity:.4">▶</div><p>Selecione uma aula</p></div>';
+}
+
+async function editCurso(){
+  if(!cursoAtualId) return;
+  const cursos=await dbGetAll('cursos');
+  const c=cursos.find(x=>x.id===cursoAtualId);
+  if(!c) return;
+  document.getElementById('mc-id').value=c.id;
+  document.getElementById('mc-nome').value=c.nome;
+  document.getElementById('mc-desc').value=c.desc||'';
+  document.getElementById('mc-cat').value=c.categoria||'Outros';
+  document.getElementById('mc-emoji').value=c.emoji||'📚';
+  document.getElementById('mc-titulo').textContent='Editar Curso';
+  showModal('modal-course','edit');
+}
+
+async function deleteCurso(){
+  if(!cursoAtualId||!confirm('Excluir este curso e todas as suas aulas?')) return;
+  await dbDelete('cursos',cursoAtualId);
+  const aulas=await dbGetAll('aulas');
+  for(const a of aulas.filter(a=>a.cursoId===cursoAtualId)) await dbDelete('aulas',a.id);
+  toast('Curso excluído');
+  cursoAtualId=null;
+  gotoPage('cursos');
+}
+
+async function salvarAulaGeral(){
+  const cursoId=document.getElementById('mag-curso').value;
+  const nome=document.getElementById('mag-nome').value.trim();
+  if(!cursoId||!nome){ toast('Selecione o curso e informe o título','error'); return; }
+  const obj={ id:uid(), cursoId, nome, tipo:document.getElementById('mag-tipo').value, url:document.getElementById('mag-url').value, duracao:parseInt(document.getElementById('mag-dur').value)||0, concluida:false, criadoEm:Date.now() };
+  await dbPut('aulas',obj);
+  closeModal();
+  toast('Aula criada!');
+  renderTodasAulas();
+}
+
+async function renderTodasAulas(){
+  const tbody=document.getElementById('tabela-aulas');
+  if(!tbody) return;
+  const aulas=await dbGetAll('aulas');
+  const cursos=await dbGetAll('cursos');
+  if(!aulas.length){ tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:2rem">Nenhuma aula cadastrada.</td></tr>'; return; }
+  tbody.innerHTML=aulas.sort((a,b)=>b.criadoEm-a.criadoEm).map(a=>{
+    const c=cursos.find(x=>x.id===a.cursoId);
+    return `<tr>
+      <td><strong style="color:var(--text)">${a.nome}</strong></td>
+      <td>${c?c.nome:'—'}</td>
+      <td>${a.duracao||0} min</td>
+      <td><span class="badge badge-blue">${a.tipo||'video'}</span></td>
+      <td>${a.concluida?'<span class="badge badge-green">✓ Concluída</span>':'<span class="badge badge-amber">⏳ Pendente</span>'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="dbDelete('aulas','${a.id}').then(renderTodasAulas)">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//   QUIZZES
+// ══════════════════════════════════════════
+async function salvarQuiz(){
+  const id=document.getElementById('mq-id').value||uid();
+  const enunciado=document.getElementById('mq-enunciado').value.trim();
+  const a=document.getElementById('mq-a').value.trim();
+  const b=document.getElementById('mq-b').value.trim();
+  if(!enunciado||!a||!b){ toast('Preencha o enunciado e as opções A e B','error'); return; }
+  const obj={ id, enunciado, opcoes:{ a, b, c:document.getElementById('mq-c').value, d:document.getElementById('mq-d').value, e:document.getElementById('mq-e').value }, resposta:document.getElementById('mq-resp').value, explicacao:document.getElementById('mq-exp').value, categoria:document.getElementById('mq-cat').value, dificuldade:document.getElementById('mq-dif').value, criadoEm:Date.now() };
+  await dbPut('quizzes',obj);
+  closeModal();
+  toast('Questão salva!');
+  renderQuizzes();
+}
+
+async function renderQuizzes(){
+  const lista=document.getElementById('lista-quizzes');
+  if(!lista) return;
+  const qs=await dbGetAll('quizzes');
+  if(!qs.length){ lista.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🧠</div><p>Nenhuma questão cadastrada.<br>Clique em <strong>+ Nova Questão</strong>.</p></div>'; return; }
+  lista.innerHTML=qs.map(q=>`
+    <div class="card card-sm" style="display:flex;flex-direction:column;gap:0.5rem">
+      <div style="display:flex;gap:0.5rem;align-items:flex-start;justify-content:space-between">
+        <span class="badge ${q.dificuldade==='Fácil'?'badge-green':q.dificuldade==='Difícil'?'badge-red':'badge-amber'}">${q.dificuldade}</span>
+        <span class="badge badge-blue">${q.categoria}</span>
+        <button class="btn btn-danger btn-sm" style="margin-left:auto" onclick="event.stopPropagation();excluirQuiz('${q.id}')">🗑</button>
+      </div>
+      <p style="font-size:0.85rem;line-height:1.5;font-weight:500">${q.enunciado}</p>
+      <div style="font-size:0.78rem;color:var(--text3)">
+        ${Object.entries(q.opcoes).filter(([,v])=>v).map(([k,v])=>`<div style="margin:2px 0"><strong style="color:${k===q.resposta?'var(--green)':'var(--text2)'}">  ${k.toUpperCase()})</strong> ${v}</div>`).join('')}
+      </div>
+    </div>`).join('');
+  renderHistoricoQuiz();
+}
+
+async function excluirQuiz(id){
+  await dbDelete('quizzes',id);
+  toast('Questão excluída');
+  renderQuizzes();
+}
+
+let simAtual={ qs:[], idx:0, acertos:0, inicio:null };
+
+async function iniciarSimulado(){
+  let qs=await dbGetAll('quizzes');
+  const qtd=parseInt(document.getElementById('sim-qtd').value)||10;
+  const cat=document.getElementById('sim-cat').value;
+  const dif=document.getElementById('sim-dif').value;
+  if(cat) qs=qs.filter(q=>q.categoria===cat);
+  if(dif) qs=qs.filter(q=>q.dificuldade===dif);
+  qs=qs.sort(()=>Math.random()-0.5).slice(0,qtd);
+  if(!qs.length){ toast('Nenhuma questão encontrada com esses filtros','error'); return; }
+  simAtual={ qs, idx:0, acertos:0, inicio:Date.now() };
+  document.getElementById('simulado-config').style.display='none';
+  document.getElementById('simulado-area').style.display='block';
+  renderPergunta();
+}
+
+function renderPergunta(){
+  const {qs,idx}=simAtual;
+  if(idx>=qs.length){ finalizarSimulado(); return; }
+  const q=qs[idx];
+  const letras=['a','b','c','d','e'];
+  const opcoes=letras.filter(l=>q.opcoes[l]).map(l=>`
+    <div class="quiz-option" id="opt-${l}" onclick="responder('${l}')">
+      <div class="opt-letter">${l.toUpperCase()}</div>
+      <span>${q.opcoes[l]}</span>
+    </div>`).join('');
+  document.getElementById('simulado-area').innerHTML=`
+    <div style="margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+      <span style="font-size:0.8rem;color:var(--text3)">Questão ${idx+1} de ${qs.length}</span>
+      <div style="display:flex;gap:0.5rem">
+        <span class="badge badge-green">✅ ${simAtual.acertos}</span>
+        <span class="badge badge-red">❌ ${idx-simAtual.acertos}</span>
+      </div>
+    </div>
+    <div class="progress" style="margin-bottom:1.5rem"><div class="progress-bar" style="width:${(idx/qs.length)*100}%"></div></div>
+    <div class="card">
+      <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
+        <span class="badge badge-blue">${q.categoria}</span>
+        <span class="badge ${q.dificuldade==='Fácil'?'badge-green':q.dificuldade==='Difícil'?'badge-red':'badge-amber'}">${q.dificuldade}</span>
+      </div>
+      <p style="font-size:0.95rem;font-weight:500;line-height:1.6;margin-bottom:1.25rem">${q.enunciado}</p>
+      <div style="display:flex;flex-direction:column;gap:0.5rem" id="opcoes-sim">${opcoes}</div>
+      <div id="exp-area"></div>
+    </div>`;
+}
+
+async function responder(letra){
+  const q=simAtual.qs[simAtual.idx];
+  const acertou=letra===q.resposta;
+  if(acertou) simAtual.acertos++;
+  document.querySelectorAll('.quiz-option').forEach(o=>o.classList.add('disabled'));
+  document.querySelectorAll('.quiz-option').forEach(o=>o.style.pointerEvents='none');
+  document.getElementById('opt-'+letra).classList.add(acertou?'correct':'wrong');
+  document.getElementById('opt-'+q.resposta).classList.add('correct');
+  const expArea=document.getElementById('exp-area');
+  expArea.innerHTML=`<div class="quiz-explanation ${acertou?'':'quiz-feedback-wrong'}" style="margin-top:1rem">
+    ${acertou?'✅ Correto!':'❌ Incorreto!'} ${q.explicacao?'<br>'+q.explicacao:''}
+    <div style="margin-top:0.75rem"><button class="btn btn-primary" onclick="proximaPergunta()">Próxima questão →</button></div>
+  </div>`;
+}
+
+function proximaPergunta(){ simAtual.idx++; renderPergunta(); }
+
+async function finalizarSimulado(){
+  const {qs,acertos,inicio}=simAtual;
+  const total=qs.length;
+  const pct=Math.round(acertos/total*100);
+  const tempo=Math.round((Date.now()-inicio)/1000/60);
+  const hist={ id:uid(), data:Date.now(), total, acertos, pct, tempo, qs:qs.map(q=>q.id) };
+  await dbPut('historico',hist);
+  document.getElementById('simulado-area').innerHTML=`
+    <div class="card" style="text-align:center;max-width:480px;margin:0 auto">
+      <div style="font-size:3rem;margin-bottom:0.5rem">${pct>=70?'🎉':pct>=50?'😊':'📖'}</div>
+      <h2 style="font-size:1.3rem;margin-bottom:0.5rem">Simulado concluído!</h2>
+      <div class="grid-2" style="gap:0.75rem;margin:1.25rem 0">
+        <div class="stat-card stat-green"><div class="stat-label">Acertos</div><div class="stat-value">${acertos}/${total}</div></div>
+        <div class="stat-card ${pct>=70?'stat-green':pct>=50?'stat-amber':'stat-red'}"><div class="stat-label">Aproveitamento</div><div class="stat-value">${pct}%</div></div>
+      </div>
+      <p style="color:var(--text2);font-size:0.85rem;margin-bottom:1.25rem">Tempo: ${tempo} minuto(s)</p>
+      <button class="btn btn-primary" onclick="novoSimulado()">Fazer novo simulado</button>
+    </div>`;
+}
+
+function novoSimulado(){
+  document.getElementById('simulado-config').style.display='block';
+  document.getElementById('simulado-area').style.display='none';
+}
+
+async function renderHistoricoQuiz(){
+  const hist=(await dbGetAll('historico')).sort((a,b)=>b.data-a.data);
+  const el=document.getElementById('historico-quizzes');
+  if(!el) return;
+  if(!hist.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum simulado feito ainda.</p></div>'; return; }
+  el.innerHTML=`<div class="card"><table><thead><tr><th>Data</th><th>Questões</th><th>Acertos</th><th>Aproveitamento</th><th>Tempo</th></tr></thead><tbody>
+    ${hist.map(h=>`<tr>
+      <td>${new Date(h.data).toLocaleString('pt-BR')}</td>
+      <td>${h.total}</td>
+      <td><span style="color:var(--green)">${h.acertos}</span></td>
+      <td><span class="badge ${h.pct>=70?'badge-green':h.pct>=50?'badge-amber':'badge-red'}">${h.pct}%</span></td>
+      <td>${h.tempo} min</td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+// ══════════════════════════════════════════
+//   FLASHCARDS
+// ══════════════════════════════════════════
+async function salvarFlashcard(){
+  const id=document.getElementById('mf-id').value||uid();
+  const frente=document.getElementById('mf-frente').value.trim();
+  const verso=document.getElementById('mf-verso').value.trim();
+  if(!frente||!verso){ toast('Preencha frente e verso','error'); return; }
+  await dbPut('flashcards',{ id, frente, verso, categoria:document.getElementById('mf-cat').value, criadoEm:Date.now(), revisoes:0 });
+  closeModal();
+  toast('Flashcard salvo!');
+  renderFlashcards();
+}
+
+async function renderFlashcards(){
+  const lista=document.getElementById('lista-flashcards');
+  if(!lista) return;
+  const cards=await dbGetAll('flashcards');
+  if(!cards.length){ lista.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🃏</div><p>Nenhum flashcard.<br>Crie um para estudar!</p></div>'; return; }
+  lista.innerHTML=cards.map(c=>`
+    <div style="position:relative">
+      <div class="flashcard" id="fc-${c.id}" onclick="toggleFc('${c.id}')">
+        <span class="fc-tag badge badge-purple">${c.categoria||'Geral'}</span>
+        <p id="fc-txt-${c.id}" style="font-size:0.92rem;line-height:1.6;font-weight:500">${c.frente}</p>
+        <p class="fc-hint">Clique para ver o verso</p>
+        <p id="fc-verso-${c.id}" style="display:none;font-size:0.85rem;color:var(--text2);line-height:1.5;margin-top:0.5rem">${c.verso}</p>
+      </div>
+      <div style="display:flex;gap:0.4rem;margin-top:0.4rem;justify-content:flex-end">
+        <button class="btn btn-ghost btn-sm" onclick="editFlashcard('${c.id}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirFlashcard('${c.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+let fcFlipped={};
+function toggleFc(id){
+  fcFlipped[id]=!fcFlipped[id];
+  const card=document.getElementById('fc-'+id);
+  const txt=document.getElementById('fc-txt-'+id);
+  const verso=document.getElementById('fc-verso-'+id);
+  if(fcFlipped[id]){ card.classList.add('flipped'); verso.style.display='block'; txt.style.opacity='0.5'; }
+  else { card.classList.remove('flipped'); verso.style.display='none'; txt.style.opacity='1'; }
+}
+
+async function editFlashcard(id){
+  const cards=await dbGetAll('flashcards');
+  const c=cards.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('mf-id').value=c.id;
+  document.getElementById('mf-frente').value=c.frente;
+  document.getElementById('mf-verso').value=c.verso;
+  document.getElementById('mf-cat').value=c.categoria||'';
+  document.getElementById('mf-titulo').textContent='Editar Flashcard';
+  showModal('modal-flashcard','edit');
+}
+
+async function excluirFlashcard(id){
+  await dbDelete('flashcards',id);
+  toast('Flashcard excluído');
+  renderFlashcards();
+}
+
+let fcStudy={ cards:[], idx:0 };
+
+async function initFlashStudy(){
+  const cards=await dbGetAll('flashcards');
+  fcStudy.cards=cards.sort(()=>Math.random()-0.5);
+  fcStudy.idx=0;
+  renderFcStudy();
+}
+
+function renderFcStudy(){
+  const el=document.getElementById('fc-study-area');
+  if(!el) return;
+  const {cards,idx}=fcStudy;
+  if(!cards.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">🃏</div><p>Nenhum flashcard para estudar.<br>Crie alguns primeiro!</p></div>'; return; }
+  const c=cards[idx];
+  el.innerHTML=`
+    <div style="max-width:480px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:1rem;font-size:0.82rem;color:var(--text3)">${idx+1} / ${cards.length}</div>
+      <div class="progress" style="margin-bottom:1.5rem"><div class="progress-bar" style="width:${((idx)/cards.length)*100}%"></div></div>
+      <div class="flashcard" id="fc-study-card" onclick="flipStudyCard()">
+        <span class="fc-tag badge badge-purple">${c.categoria||'Geral'}</span>
+        <p id="fc-study-txt" style="font-size:1rem;line-height:1.6;font-weight:500">${c.frente}</p>
+        <p class="fc-hint" id="fc-study-hint">Clique para virar o card</p>
+        <p id="fc-study-verso" style="display:none;font-size:0.9rem;color:var(--accent2);line-height:1.6;margin-top:0.75rem">${c.verso}</p>
+      </div>
+      <div id="fc-study-btns" style="display:none;margin-top:1rem;display:none;justify-content:center;gap:0.75rem">
+        <button class="btn btn-danger" onclick="avaliarFc('errado')">❌ Não soube</button>
+        <button class="btn btn-success" onclick="avaliarFc('soube')">✅ Soube!</button>
+      </div>
+    </div>`;
+}
+
+let fcStudyFlipped=false;
+function flipStudyCard(){
+  fcStudyFlipped=!fcStudyFlipped;
+  const card=document.getElementById('fc-study-card');
+  const verso=document.getElementById('fc-study-verso');
+  const hint=document.getElementById('fc-study-hint');
+  const btns=document.getElementById('fc-study-btns');
+  if(fcStudyFlipped){ card.classList.add('flipped'); verso.style.display='block'; hint.style.display='none'; btns.style.display='flex'; }
+  else { card.classList.remove('flipped'); verso.style.display='none'; hint.style.display='block'; btns.style.display='none'; }
+}
+
+function avaliarFc(resultado){
+  fcStudyFlipped=false;
+  fcStudy.idx++;
+  if(fcStudy.idx>=fcStudy.cards.length){
+    document.getElementById('fc-study-area').innerHTML=`<div class="card" style="text-align:center;max-width:380px;margin:2rem auto"><div style="font-size:3rem;margin-bottom:0.75rem">🎉</div><h3 style="margin-bottom:0.5rem">Revisão concluída!</h3><p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.25rem">Você revisou ${fcStudy.cards.length} flashcard(s).</p><button class="btn btn-primary" onclick="initFlashStudy()">Reiniciar</button></div>`;
+  } else { renderFcStudy(); }
+}
+
+// ══════════════════════════════════════════
+//   CRONOGRAMA
+// ══════════════════════════════════════════
+let calDate=new Date();
+
+function renderCronograma(){ renderCalendario(); renderEventos(); }
+
+function renderCalendario(){
+  const headerEl=document.getElementById('cal-header');
+  const bodyEl=document.getElementById('cal-body');
+  const tituloEl=document.getElementById('cal-titulo');
+  if(!headerEl) return;
+  const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  headerEl.innerHTML=dias.map(d=>`<div style="text-align:center;font-size:0.7rem;font-weight:600;color:var(--text3);padding:4px">${d}</div>`).join('');
+  tituloEl.textContent=calDate.toLocaleString('pt-BR',{month:'long',year:'numeric'});
+  const ano=calDate.getFullYear(), mes=calDate.getMonth();
+  const primDia=new Date(ano,mes,1).getDay();
+  const totalDias=new Date(ano,mes+1,0).getDate();
+  const totalAnterior=new Date(ano,mes,0).getDate();
+  const hoje=new Date();
+  let html='';
+  for(let i=0;i<primDia;i++) html+=`<div class="cal-day other-month">${totalAnterior-primDia+i+1}</div>`;
+  for(let d=1;d<=totalDias;d++){
+    const isHoje=d===hoje.getDate()&&mes===hoje.getMonth()&&ano===hoje.getFullYear();
+    html+=`<div class="cal-day ${isHoje?'today':''}" data-date="${ano}-${String(mes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}" onclick="addEventoData(this.dataset.date)">${d}</div>`;
+  }
+  bodyEl.innerHTML=html;
+  marcarEventosCalendario();
+}
+
+async function marcarEventosCalendario(){
+  const eventos=await dbGetAll('eventos');
+  eventos.forEach(ev=>{
+    const el=document.querySelector(`[data-date="${ev.data}"]`);
+    if(el) el.classList.add('has-event');
+  });
+}
+
+function calPrev(){ calDate=new Date(calDate.getFullYear(), calDate.getMonth()-1, 1); renderCronograma(); }
+function calNext(){ calDate=new Date(calDate.getFullYear(), calDate.getMonth()+1, 1); renderCronograma(); }
+
+function addEventoData(data){
+  document.getElementById('mev-data').value=data;
+  showModal('modal-evento','');
+}
+
+async function salvarEvento(){
+  const titulo=document.getElementById('mev-titulo-inp').value.trim();
+  const data=document.getElementById('mev-data').value;
+  if(!titulo||!data){ toast('Informe o título e a data','error'); return; }
+  const id=document.getElementById('mev-id').value||uid();
+  await dbPut('eventos',{ id, titulo, data, hora:document.getElementById('mev-hora').value, duracao:document.getElementById('mev-dur').value, materia:document.getElementById('mev-materia').value, cor:document.getElementById('mev-cor').value, criadoEm:Date.now() });
+  closeModal();
+  toast('Evento salvo!');
+  renderCronograma();
+}
+
+async function renderEventos(){
+  const el=document.getElementById('lista-eventos');
+  if(!el) return;
+  const eventos=(await dbGetAll('eventos')).sort((a,b)=>a.data.localeCompare(b.data));
+  if(!eventos.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">📅</div><p>Nenhum evento.<br>Clique em um dia do calendário!</p></div>'; return; }
+  el.innerHTML=eventos.map(ev=>`
+    <div style="display:flex;gap:0.75rem;align-items:flex-start;padding:0.6rem;border-radius:var(--radius2);background:var(--bg3);margin-bottom:0.5rem">
+      <div style="width:4px;min-height:40px;border-radius:2px;background:${ev.cor||'var(--accent)'};flex-shrink:0"></div>
+      <div style="flex:1">
+        <div style="font-size:0.88rem;font-weight:500">${ev.titulo}</div>
+        <div style="font-size:0.75rem;color:var(--text3)">${formatarData(ev.data)}${ev.hora?' · '+ev.hora:''}${ev.materia?' · '+ev.materia:''}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="excluirEvento('${ev.id}')">🗑</button>
+    </div>`).join('');
+}
+
+async function excluirEvento(id){ await dbDelete('eventos',id); toast('Evento excluído'); renderCronograma(); }
+function formatarData(d){ const [y,m,dia]=d.split('-'); return `${dia}/${m}/${y}`; }
+
+// ══════════════════════════════════════════
+//   ANOTAÇÕES
+// ══════════════════════════════════════════
+async function salvarNota(){
+  const titulo=document.getElementById('mn-titulo-inp').value.trim();
+  const conteudo=document.getElementById('mn-conteudo').value.trim();
+  if(!titulo||!conteudo){ toast('Preencha título e conteúdo','error'); return; }
+  const id=document.getElementById('mn-id').value||uid();
+  await dbPut('notas',{ id, titulo, materia:document.getElementById('mn-materia').value, conteudo, criadoEm:Date.now() });
+  closeModal();
+  toast('Nota salva!');
+  renderNotas();
+}
+
+async function renderNotas(){
+  const el=document.getElementById('lista-notas');
+  if(!el) return;
+  const q=document.getElementById('search-notas')?.value.toLowerCase()||'';
+  let notas=await dbGetAll('notas');
+  if(q) notas=notas.filter(n=>n.titulo.toLowerCase().includes(q)||n.conteudo.toLowerCase().includes(q));
+  notas.sort((a,b)=>b.criadoEm-a.criadoEm);
+  if(!notas.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">📝</div><p>Nenhuma anotação.<br>Clique em <strong>+ Nova Nota</strong>.</p></div>'; return; }
+  el.innerHTML=notas.map(n=>`
+    <div class="note-card">
+      <div class="note-time">${new Date(n.criadoEm).toLocaleString('pt-BR')} ${n.materia?'· '+n.materia:''}</div>
+      <strong style="font-size:0.92rem">${n.titulo}</strong>
+      <div class="note-text" style="margin-top:0.4rem">${n.conteudo.replace(/\n/g,'<br>')}</div>
+      <div class="note-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editarNota('${n.id}')">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="excluirNota('${n.id}')">🗑 Excluir</button>
+      </div>
+    </div>`).join('');
+}
+
+async function editarNota(id){
+  const notas=await dbGetAll('notas');
+  const n=notas.find(x=>x.id===id);
+  if(!n) return;
+  document.getElementById('mn-id').value=n.id;
+  document.getElementById('mn-titulo-inp').value=n.titulo;
+  document.getElementById('mn-materia').value=n.materia||'';
+  document.getElementById('mn-conteudo').value=n.conteudo;
+  document.getElementById('mn-titulo').textContent='Editar Nota';
+  showModal('modal-nota','edit');
+}
+
+async function excluirNota(id){ if(!confirm('Excluir esta nota?')) return; await dbDelete('notas',id); toast('Nota excluída'); renderNotas(); }
+
+// ══════════════════════════════════════════
+//   RANKING
+// ══════════════════════════════════════════
+async function renderRanking(){
+  const hist=await dbGetAll('historico');
+  const el=document.getElementById('ranking-list');
+  const me=document.getElementById('minha-posicao');
+  if(!el) return;
+  if(!hist.length){ el.innerHTML='<div class="empty-state"><div class="empty-icon">🏆</div><p>Faça simulados para aparecer no ranking!</p></div>'; me.innerHTML=''; return; }
+  const totalAcertos=hist.reduce((s,h)=>s+h.acertos,0);
+  const totalQ=hist.reduce((s,h)=>s+h.total,0);
+  const media=totalQ?Math.round(totalAcertos/totalQ*100):0;
+  const colors=['gold','silver','bronze'];
+  const cfg=await dbGetAll('config');
+  const nome=(cfg[0]?.nome)||'Você';
+  const players=[{ nome, pontos:totalAcertos, acertos:totalAcertos, total:totalQ }];
+  el.innerHTML=players.map((p,i)=>`
+    <div class="rank-row">
+      <div class="rank-num ${colors[i]||''}">${i+1}</div>
+      <div class="rank-avatar" style="background:rgba(108,99,255,0.15);color:var(--accent2)">${p.nome.charAt(0).toUpperCase()}</div>
+      <div class="rank-name">${p.nome}</div>
+      <div class="rank-score">${p.pontos} pts</div>
+    </div>`).join('');
+  me.innerHTML=`
+    <div class="stat-card stat-accent" style="margin-bottom:0.75rem"><div class="stat-label">Total de questões</div><div class="stat-value">${totalQ}</div></div>
+    <div class="stat-card stat-green" style="margin-bottom:0.75rem"><div class="stat-label">Total de acertos</div><div class="stat-value">${totalAcertos}</div></div>
+    <div class="stat-card stat-amber"><div class="stat-label">Taxa de acerto</div><div class="stat-value">${media}%</div></div>`;
+}
+
+// ══════════════════════════════════════════
+//   RELATÓRIOS
+// ══════════════════════════════════════════
+async function renderRelatorios(){
+  const hist=await dbGetAll('historico');
+  const quizzes=await dbGetAll('quizzes');
+  const cursos=await dbGetAll('cursos');
+  const aulas=await dbGetAll('aulas');
+  const total=hist.reduce((s,h)=>s+h.total,0);
+  const acertos=hist.reduce((s,h)=>s+h.acertos,0);
+  const erros=total-acertos;
+  const taxa=total?Math.round(acertos/total*100):0;
+  document.getElementById('rel-total-q').textContent=total;
+  document.getElementById('rel-acertos').textContent=acertos;
+  document.getElementById('rel-erros').textContent=erros;
+  document.getElementById('rel-taxa').textContent=total?taxa+'%':'—';
+  // Por categoria
+  const catEl=document.getElementById('rel-categorias');
+  const cats={};
+  quizzes.forEach(q=>{ if(!cats[q.categoria]) cats[q.categoria]={total:0}; cats[q.categoria].total++; });
+  catEl.innerHTML=Object.entries(cats).map(([cat,v])=>`
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+      <div style="width:80px;font-size:0.78rem;color:var(--text2)">${cat}</div>
+      <div style="flex:1"><div class="progress"><div class="progress-bar" style="width:${Math.min((v.total/quizzes.length)*100*3,100)}%"></div></div></div>
+      <div style="font-size:0.78rem;color:var(--text3);width:40px;text-align:right">${v.total} q</div>
+    </div>`).join('')||'<p style="color:var(--text3);font-size:0.85rem">Nenhum dado disponível.</p>';
+  // Progresso cursos
+  const cursosEl=document.getElementById('rel-cursos');
+  if(!cursos.length){ cursosEl.innerHTML='<p style="color:var(--text3);font-size:0.85rem">Nenhum curso cadastrado.</p>'; return; }
+  cursosEl.innerHTML=cursos.map(c=>{
+    const aulasC=aulas.filter(a=>a.cursoId===c.id);
+    const pct=aulasC.length?Math.round(aulasC.filter(a=>a.concluida).length/aulasC.length*100):0;
+    return `<div style="margin-bottom:0.75rem">
+      <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:0.3rem"><span>${c.emoji||'📚'} ${c.nome}</span><span style="color:var(--text2)">${pct}%</span></div>
+      <div class="progress"><div class="progress-bar ${pct===100?'green':''}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//   DASHBOARD
+// ══════════════════════════════════════════
+async function renderDashboard(){
+  const cursos=await dbGetAll('cursos');
+  const aulas=await dbGetAll('aulas');
+  const hist=await dbGetAll('historico');
+  document.getElementById('dash-cursos').textContent=cursos.length;
+  document.getElementById('dash-aulas').textContent=aulas.filter(a=>a.concluida).length;
+  document.getElementById('dash-quizzes').textContent=hist.length;
+  const total=hist.reduce((s,h)=>s+h.total,0);
+  const acertos=hist.reduce((s,h)=>s+h.acertos,0);
+  document.getElementById('dash-media').textContent=total?Math.round(acertos/total*100)+'%':'—';
+  // Horas (baseado em aulas concluídas)
+  const horas=Math.round(aulas.filter(a=>a.concluida).reduce((s,a)=>s+(a.duracao||0),0)/60);
+  document.getElementById('dash-horas').textContent=horas;
+  // Recentes
+  const recentEl=document.getElementById('dash-recent-courses');
+  const recentes=cursos.slice(-3).reverse();
+  if(!recentes.length){ recentEl.innerHTML='<div class="empty-state"><div class="empty-icon">📚</div><p>Nenhum curso ainda.</p></div>'; }
+  else{
+    recentEl.innerHTML=recentes.map(c=>{
+      const aulasC=aulas.filter(a=>a.cursoId===c.id);
+      const pct=aulasC.length?Math.round(aulasC.filter(a=>a.concluida).length/aulasC.length*100):0;
+      return `<div style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem;border-radius:var(--radius2);cursor:pointer;transition:.1s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''" onclick="abrirCurso('${c.id}')">
+        <span style="font-size:1.5rem">${c.emoji||'📚'}</span>
+        <div style="flex:1"><div style="font-size:0.85rem;font-weight:500">${c.nome}</div><div class="progress" style="margin-top:4px"><div class="progress-bar" style="width:${pct}%"></div></div></div>
+        <span style="font-size:0.75rem;color:var(--text3)">${pct}%</span>
+      </div>`;
+    }).join('');
+  }
+  // Progresso geral
+  const progEl=document.getElementById('dash-progress-list');
+  if(!cursos.length){ progEl.innerHTML='<div class="empty-state"><div class="empty-icon">📈</div><p>Adicione cursos para ver.</p></div>'; }
+  else{
+    progEl.innerHTML=cursos.map(c=>{
+      const aulasC=aulas.filter(a=>a.cursoId===c.id);
+      const pct=aulasC.length?Math.round(aulasC.filter(a=>a.concluida).length/aulasC.length*100):0;
+      return `<div style="margin-bottom:1rem"><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:0.3rem"><span>${c.emoji||'📚'} ${c.nome}</span><span style="color:var(--text2)">${pct}%</span></div><div class="progress"><div class="progress-bar ${pct===100?'green':''}" style="width:${pct}%"></div></div></div>`;
+    }).join('');
+  }
+  // Continue estudando
+  const contEl=document.getElementById('dash-continue');
+  const incompletos=cursos.filter(c=>{ const ac=aulas.filter(a=>a.cursoId===c.id); return ac.length>0&&ac.filter(a=>a.concluida).length<ac.length; });
+  if(!incompletos.length){ contEl.innerHTML='<p style="color:var(--text3);font-size:0.85rem">Nenhum curso em andamento com aulas.</p>'; }
+  else{
+    contEl.innerHTML=incompletos.slice(0,4).map(c=>{
+      const aulasC=aulas.filter(a=>a.cursoId===c.id);
+      const pct=Math.round(aulasC.filter(a=>a.concluida).length/aulasC.length*100);
+      return `<div class="course-card" onclick="abrirCurso('${c.id}')">
+        <div class="course-thumb"><span class="thumb-icon">${c.emoji||'📚'}</span><span class="thumb-badge">${pct}%</span></div>
+        <div class="course-body"><h3>${c.nome}</h3><div class="course-meta"><span>${aulasC.length} aulas</span></div><div class="course-progress"><div class="pct">${pct}%</div><div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div></div></div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ══════════════════════════════════════════
+//   CONFIG
+// ══════════════════════════════════════════
+async function loadConfig(){
+  const cfg=await dbGetAll('config');
+  const c=cfg[0]||{};
+  document.getElementById('cfg-nome').value=c.nome||'';
+  document.getElementById('cfg-concurso').value=c.concurso||'';
+  document.getElementById('cfg-meta').value=c.meta||'';
+}
+async function salvarConfig(){
+  const cfg=await dbGetAll('config');
+  const c=cfg[0]||{ id:'config-1' };
+  c.nome=document.getElementById('cfg-nome').value;
+  c.concurso=document.getElementById('cfg-concurso').value;
+  c.meta=document.getElementById('cfg-meta').value;
+  await dbPut('config',c);
+  toast('Configurações salvas!');
+}
+
+// ══════════════════════════════════════════
+//   BADGES
+// ══════════════════════════════════════════
+async function updateBadges(){
+  const cursos=await dbGetAll('cursos');
+  const badge=document.getElementById('badge-cursos');
+  if(badge) badge.textContent=cursos.length;
+}
+
+// ══════════════════════════════════════════
+//   BACKUP
+// ══════════════════════════════════════════
+async function exportBackup(){
+  const data={};
+  for(const s of STORES) data[s]=await dbGetAll(s);
+  data._exportedAt=new Date().toISOString();
+  data._version=DB_VER;
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`backup-concursospro-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup exportado com sucesso!');
+}
+
+async function importBackup(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!confirm('Isso irá substituir todos os dados atuais. Continuar?')){ e.target.value=''; return; }
+      for(const s of STORES){
+        await dbClear(s);
+        if(data[s]) for(const item of data[s]) await dbPut(s,item);
+      }
+      toast('Backup importado com sucesso!');
+      renderDashboard();
+      updateBadges();
+      e.target.value='';
+    }catch(err){ toast('Erro ao importar: arquivo inválido','error'); }
+  };
+  reader.readAsText(file);
+}
+
+async function limparTudo(){
+  for(const s of STORES) await dbClear(s);
+  toast('Todos os dados foram apagados');
+  renderDashboard();
+  updateBadges();
+}
+
+// ══════════════════════════════════════════
+//   TOAST
+// ══════════════════════════════════════════
+function toast(msg, type='success'){
+  const wrap=document.getElementById('toast-wrap');
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${type==='success'?'✅':'❌'}</span> <span>${msg}</span>`;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); },3000);
+}
+
+// ══════════════════════════════════════════
+//   INIT
+// ══════════════════════════════════════════
+initDB().then(()=>{
+  renderDashboard();
+  updateBadges();
+});
+</script>
+</body>
+</html>
