@@ -118,8 +118,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
-.grid-auto-sm{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
+.grid-auto-sm{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}
 
 /* ═══ STATS ═══ */
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;gap:.45rem;transition:var(--transition)}
@@ -347,22 +347,57 @@ body.sidebar-collapsed #sidebar{overflow:hidden;}
   #topbar .btn-sm .btn-label{display:none}
 }
 @media(max-width:600px){
-  #main{padding:.85rem .75rem;}
-  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
-  .page-header h1{font-size:1.2rem}
-  .stat-value{font-size:1.4rem}
+  #main{padding:.65rem .55rem;}
+  /* 2 colunas em todos os grids mobile */
+  .grid-4{grid-template-columns:1fr 1fr;gap:.5rem}
+  .grid-3{grid-template-columns:1fr 1fr;gap:.5rem}
+  .grid-2{grid-template-columns:1fr}
+  .grid-auto{grid-template-columns:1fr 1fr!important;gap:.5rem!important}
+  .grid-auto-sm{grid-template-columns:1fr 1fr!important;gap:.5rem!important}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+  .page-header h1{font-size:1.1rem}
+  .page-header p{font-size:.78rem}
+  .stat-value{font-size:1.3rem}
+  .stat-card{padding:.75rem .65rem;gap:.3rem}
+  .stat-label{font-size:.6rem}
+  .stat-sub{font-size:.67rem}
   .modal{max-width:100%;margin:0!important;}
-  #modal-overlay{padding:.75rem .5rem;align-items:flex-end;}
+  #modal-overlay{padding:.5rem .4rem;align-items:flex-end;}
   .modal{border-radius:var(--radius) var(--radius) 0 0;}
-  .page-header{margin-bottom:1.25rem}
-  .page-header h1{font-size:1.15rem}
-  .card{padding:1rem}
-  #topbar{padding:0 .85rem;gap:.5rem;}
-  #topbar .logo{font-size:1rem;}
+  .page-header{margin-bottom:.9rem}
+  .card{padding:.75rem .65rem}
+  .card-sm{padding:.6rem}
+  #topbar{padding:0 .75rem;gap:.4rem;}
+  #topbar .logo{font-size:.95rem;}
+  /* Cards menores e compactos no mobile */
+  .concurso-card .concurso-header{padding:.75rem .7rem;gap:.55rem}
+  .concurso-card .concurso-body{padding:.6rem .7rem;gap:.35rem}
+  .concurso-card .concurso-footer{padding:.5rem .7rem}
+  .concurso-emoji{width:36px;height:36px;font-size:1.1rem;border-radius:9px}
+  .concurso-header>div:nth-child(2)>div:first-child{font-size:.82rem}
+  .concurso-header>div:nth-child(2)>div:last-child{font-size:.67rem}
+  .link-card-header{padding:.65rem .75rem;gap:.6rem}
+  .link-icon{width:32px;height:32px;font-size:1rem;border-radius:8px}
+  .link-card-body{padding:.6rem .75rem}
+  .link-card-footer{padding:.5rem .75rem}
+  .lc-name{font-size:.8rem}
+  .lc-desc{font-size:.72rem}
+  /* Calendário compacto no mobile */
+  .cal-day{font-size:.65rem;border-radius:6px}
+  .cal-grid{gap:2px}
+  /* Flashcards e quiz compactos */
+  .flashcard{padding:1.25rem .9rem;min-height:140px}
+  .quiz-option{padding:.65rem .8rem;font-size:.8rem}
+  /* Cronograma — layout coluna única mas mais compacto */
+  #page-cronograma .grid-2{grid-template-columns:1fr}
+  .crono-day{padding:.65rem .7rem;margin-bottom:.35rem}
+  .crono-slot{padding:.35rem .55rem;font-size:.75rem}
 }
 @media(max-width:400px){
-  #main{padding:.65rem .6rem;}
-  .stat-value{font-size:1.25rem}
+  #main{padding:.5rem .45rem;}
+  .grid-auto{grid-template-columns:1fr 1fr!important;gap:.4rem!important}
+  .stat-value{font-size:1.15rem}
+  .stat-card{padding:.6rem .55rem}
 }
 
 /* ═══ SIDEBAR OVERLAY (MOBILE) ═══ */
@@ -604,7 +639,10 @@ body.sidebar-collapsed #sidebar{overflow:hidden;}
     <div class="breadcrumb">Início › <span>Quizzes</span></div>
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
       <div><h1>Quizzes & Simulados</h1><p>Banco de questões e simulados cronometrados.</p></div>
-      <button class="btn btn-primary" onclick="showModal('modal-quiz')">+ Nova Questão</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer" title="Importar questões de arquivo HTML">📥 Importar HTML<input type="file" accept=".html,.htm" onchange="importarQuizzesHTML(event)" style="display:none"></label>
+        <button class="btn btn-primary" onclick="showModal('modal-quiz')">+ Nova Questão</button>
+      </div>
     </div>
   </div>
   <div class="tabs">
@@ -632,14 +670,17 @@ body.sidebar-collapsed #sidebar{overflow:hidden;}
     <div class="breadcrumb">Início › <span>Flashcards</span></div>
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
       <div><h1>Flashcards</h1><p>Memorize conceitos com revisão espaçada.</p></div>
-      <button class="btn btn-primary" onclick="showModal('modal-flashcard')">+ Novo Card</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer" title="Importar flashcards de arquivo HTML">📥 Importar HTML<input type="file" accept=".html,.htm" onchange="importarFlashcardsHTML(event)" style="display:none"></label>
+        <button class="btn btn-primary" onclick="showModal('modal-flashcard')">+ Novo Card</button>
+      </div>
     </div>
   </div>
   <div class="tabs">
     <div class="tab active" onclick="fcTab('gerenciar')">Gerenciar</div>
     <div class="tab" onclick="fcTab('estudar');initFlashStudy()">Estudar</div>
   </div>
-  <div class="tab-panel active" id="tab-fc-gerenciar"><div class="grid-auto" id="lista-fc"></div></div>
+  <div class="tab-panel active" id="tab-fc-gerenciar"><div class="grid-auto" id="lista-fc" style="align-items:start"></div></div>
   <div class="tab-panel" id="tab-fc-estudar"><div id="fc-study-area"></div></div>
 </div>
 
@@ -2639,6 +2680,213 @@ async function importBackup(e){
 async function limparTudo(){
   for(const s of STORES)await dbClear(s);
   toast('Dados apagados');renderDashboard();updateBadges();
+}
+
+// ════════════════════════════════════════
+//  IMPORTAR QUIZZES DE HTML
+// ════════════════════════════════════════
+// Formato esperado do HTML para questões — 3 formatos suportados:
+// 1) data-attributes: div.questao com data-resposta="a", p.enunciado, p.opcao-a ...
+// 2) formato genérico: HTML com texto "A)" "B)" etc + linha "Gabarito: B"
+// 3) JSON embutido: script#questoes-json type=application/json [{enunciado,opcoes,resposta,categoria,dificuldade}]
+async function importarQuizzesHTML(event){
+  const file=event.target.files[0]; if(!file) return;
+  event.target.value='';
+  const txt=await file.text();
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(txt,'text/html');
+
+  let importados=0;
+  const questoes=[];
+
+  // Formato 1: JSON embutido
+  const jsonEl=doc.getElementById('questoes-json')||doc.querySelector('script[type="application/json"]');
+  if(jsonEl){
+    try{
+      const arr=JSON.parse(jsonEl.textContent);
+      if(Array.isArray(arr)){
+        for(const q of arr){
+          if(q.enunciado&&q.resposta){
+            await dbPut('quizzes',{
+              id:uid(),
+              enunciado:q.enunciado,
+              opcoes:{a:q.opcoes?.a||'',b:q.opcoes?.b||'',c:q.opcoes?.c||'',d:q.opcoes?.d||'',e:q.opcoes?.e||''},
+              resposta:(q.resposta||'a').toLowerCase(),
+              categoria:q.categoria||'Geral',
+              dificuldade:q.dificuldade||'Médio',
+              explicacao:q.explicacao||'',
+              criadoEm:Date.now()
+            });
+            importados++;
+          }
+        }
+        if(importados>0){toast(`✅ ${importados} questão(ões) importada(s)!`);renderQuizzes();return;}
+      }
+    }catch(e){}
+  }
+
+  // Formato 2: elementos com classe .questao ou [data-questao]
+  const cards=doc.querySelectorAll('.questao,[data-questao],li[data-resposta]');
+  if(cards.length){
+    for(const card of cards){
+      const enunciado=(card.querySelector('.enunciado,.pergunta,p:first-child,h3,h4')?.textContent||card.getAttribute('data-enunciado')||'').trim();
+      if(!enunciado) continue;
+      const letras=['a','b','c','d','e'];
+      const opcoes={a:'',b:'',c:'',d:'',e:''};
+      letras.forEach(l=>{
+        const el=card.querySelector(`.opcao-${l},[data-opcao="${l}"],.alternativa-${l}`);
+        if(el) opcoes[l]=el.textContent.replace(/^[a-eA-E][).\s]/,'').trim();
+      });
+      // tenta pegar opções por padrão "A) texto"
+      if(!opcoes.a){
+        const allText=card.textContent;
+        const m=allText.match(/[Aa][).\s]+([^\n]+)/);
+        if(m) opcoes.a=m[1].trim();
+        const mb=allText.match(/[Bb][).\s]+([^\n]+)/);
+        if(mb) opcoes.b=mb[1].trim();
+        const mc=allText.match(/[Cc][).\s]+([^\n]+)/);
+        if(mc) opcoes.c=mc[1].trim();
+        const md=allText.match(/[Dd][).\s]+([^\n]+)/);
+        if(md) opcoes.d=md[1].trim();
+      }
+      const resposta=(card.getAttribute('data-resposta')||card.getAttribute('data-gabarito')||'a').toLowerCase();
+      await dbPut('quizzes',{
+        id:uid(),
+        enunciado,opcoes,
+        resposta:resposta.charAt(0),
+        categoria:card.getAttribute('data-categoria')||'Geral',
+        dificuldade:card.getAttribute('data-dificuldade')||'Médio',
+        explicacao:(card.querySelector('.explicacao,.gabarito-explicacao')?.textContent||'').trim(),
+        criadoEm:Date.now()
+      });
+      importados++;
+    }
+    if(importados>0){toast(`✅ ${importados} questão(ões) importada(s)!`);renderQuizzes();return;}
+  }
+
+  // Formato 3: parsing livre — procura blocos de texto "Q: / Pergunta:"
+  const bodyText=doc.body?.innerText||doc.body?.textContent||txt;
+  // Divide por linhas em branco duplas ou numeração
+  const blocos=bodyText.split(/\n{2,}|\r\n{2,}/).map(b=>b.trim()).filter(b=>b.length>10);
+  let buf=null;
+  for(const bloco of blocos){
+    const linhas=bloco.split(/\n/).map(l=>l.trim()).filter(Boolean);
+    if(!linhas.length) continue;
+    const primeiraLinha=linhas[0];
+    const temOpcao=linhas.some(l=>/^[AaBbCcDdEe][).]\s/.test(l));
+    if(temOpcao){
+      const enunciado=linhas.filter(l=>!/^[AaBbCcDdEe][).]\s/.test(l)&&!/^[Gg]abarito/i.test(l)).join(' ');
+      const opcoes={a:'',b:'',c:'',d:'',e:''};
+      linhas.forEach(l=>{
+        const m=l.match(/^([AaBbCcDdEe])[).]\s+(.+)/);
+        if(m) opcoes[m[1].toLowerCase()]=m[2].trim();
+      });
+      const gabLinha=linhas.find(l=>/^[Gg]abarito/i.test(l));
+      const resposta=gabLinha?(gabLinha.match(/[AaBbCcDdEe]/)||['a'])[0].toLowerCase():'a';
+      if(enunciado&&opcoes.a){
+        await dbPut('quizzes',{id:uid(),enunciado:enunciado.trim(),opcoes,resposta,categoria:'Geral',dificuldade:'Médio',explicacao:'',criadoEm:Date.now()});
+        importados++;
+      }
+    }
+  }
+  if(importados>0){toast(`✅ ${importados} questão(ões) importada(s)!`);renderQuizzes();}
+  else toast('❌ Nenhuma questão encontrada no arquivo. Verifique o formato.','error');
+}
+
+// ════════════════════════════════════════
+//  IMPORTAR FLASHCARDS DE HTML
+// ════════════════════════════════════════
+// Formatos aceitos para flashcards:
+// 1) JSON embutido: script#flashcards-json type=application/json [{frente,verso,categoria}]
+// 2) elementos .flashcard com .frente e .verso
+// 3) tabela HTML: tr > td(frente) td(verso) td(categoria?)
+// 4) texto delimitado: "Pergunta | Resposta" ou "Frente :: Verso"
+async function importarFlashcardsHTML(event){
+  const file=event.target.files[0]; if(!file) return;
+  event.target.value='';
+  const txt=await file.text();
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(txt,'text/html');
+
+  let importados=0;
+
+  // Formato 1: JSON embutido
+  const jsonEl=doc.getElementById('flashcards-json')||doc.querySelector('script[type="application/json"]');
+  if(jsonEl){
+    try{
+      const arr=JSON.parse(jsonEl.textContent);
+      if(Array.isArray(arr)){
+        for(const fc of arr){
+          const frente=fc.frente||fc.front||fc.pergunta||fc.question||'';
+          const verso=fc.verso||fc.back||fc.resposta||fc.answer||'';
+          if(frente&&verso){
+            await dbPut('flashcards',{id:uid(),frente:frente.trim(),verso:verso.trim(),categoria:fc.categoria||fc.category||'Geral',criadoEm:Date.now()});
+            importados++;
+          }
+        }
+        if(importados>0){toast(`✅ ${importados} flashcard(s) importado(s)!`);renderFlashcards();return;}
+      }
+    }catch(e){}
+  }
+
+  // Formato 2: elementos .flashcard, .card, [data-flashcard]
+  const cards=doc.querySelectorAll('.flashcard,.flash-card,[data-flashcard],dl dt');
+  if(cards.length){
+    for(const card of cards){
+      let frente='', verso='', categoria='Geral';
+      if(card.tagName==='DT'){
+        frente=card.textContent.trim();
+        verso=card.nextElementSibling?.textContent.trim()||'';
+      } else {
+        frente=(card.querySelector('.frente,.front,.pergunta,.question,h3,h4,strong:first-child')?.textContent||'').trim();
+        verso=(card.querySelector('.verso,.back,.resposta,.answer,p:not(:first-child)')?.textContent||'').trim();
+        if(!frente){const ps=card.querySelectorAll('p');frente=ps[0]?.textContent.trim()||'';verso=ps[1]?.textContent.trim()||'';}
+        categoria=card.getAttribute('data-categoria')||card.getAttribute('data-category')||'Geral';
+      }
+      if(frente&&verso){
+        await dbPut('flashcards',{id:uid(),frente,verso,categoria,criadoEm:Date.now()});
+        importados++;
+      }
+    }
+    if(importados>0){toast(`✅ ${importados} flashcard(s) importado(s)!`);renderFlashcards();return;}
+  }
+
+  // Formato 3: tabela HTML
+  const rows=doc.querySelectorAll('table tr');
+  if(rows.length>1){
+    for(let i=1;i<rows.length;i++){
+      const cols=rows[i].querySelectorAll('td');
+      if(cols.length>=2){
+        const frente=cols[0].textContent.trim();
+        const verso=cols[1].textContent.trim();
+        const categoria=cols[2]?.textContent.trim()||'Geral';
+        if(frente&&verso){
+          await dbPut('flashcards',{id:uid(),frente,verso,categoria,criadoEm:Date.now()});
+          importados++;
+        }
+      }
+    }
+    if(importados>0){toast(`✅ ${importados} flashcard(s) importado(s)!`);renderFlashcards();return;}
+  }
+
+  // Formato 4: parsing livre de texto "frente | verso" ou "frente :: verso"
+  const bodyText=doc.body?.textContent||txt;
+  const linhas=bodyText.split(/\n/).map(l=>l.trim()).filter(l=>l.length>3);
+  for(const linha of linhas){
+    const sep=linha.includes(' :: ')?'::':linha.includes(' | ')?'|':linha.includes('\t')?'\t':null;
+    if(sep){
+      const parts=linha.split(sep==='|'?' | ':sep==='::' ?' :: ':'\t');
+      if(parts.length>=2){
+        const frente=parts[0].trim(), verso=parts[1].trim(), categoria=parts[2]?.trim()||'Geral';
+        if(frente&&verso){
+          await dbPut('flashcards',{id:uid(),frente,verso,categoria,criadoEm:Date.now()});
+          importados++;
+        }
+      }
+    }
+  }
+  if(importados>0){toast(`✅ ${importados} flashcard(s) importado(s)!`);renderFlashcards();}
+  else toast('❌ Nenhum flashcard encontrado no arquivo. Verifique o formato.','error');
 }
 
 // ════════════════════════════════════════
