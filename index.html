@@ -996,18 +996,77 @@ document.getElementById('theme-toggle').onclick=()=>{
 //  INDEXEDDB
 // ════════════════════════════════════════
 let db;
-const DB='ConcursosPRO_v4';
+const DB='ConcursosPRO';  // nome fixo — nunca muda entre versões
+const DB_VERSION=5;        // incrementar aqui ao adicionar stores futuros
 const STORES=['concursos','disciplinas','cronogramas','eventos','cursos','aulas','quizzes','historico','flashcards','notas','canais','portais','bancas','config'];
+// Nomes de bancos legados usados em versões anteriores da plataforma
+const LEGACY_DBS=['ConcursosPRO_v4','ConcursosPRO_v3','ConcursosPRO_v2'];
 
 function initDB(){
   return new Promise((res,rej)=>{
-    const r=indexedDB.open(DB,4);
+    const r=indexedDB.open(DB,DB_VERSION);
     r.onupgradeneeded=e=>{
       const d=e.target.result;
       STORES.forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id'})});
     };
-    r.onsuccess=e=>{db=e.target.result;res(db)};
+    r.onsuccess=e=>{db=e.target.result; migrateFromLegacy().then(()=>res(db))};
     r.onerror=rej;
+  });
+}
+
+// Migra dados de bancos legados para o banco atual, sem sobrescrever dados existentes
+async function migrateFromLegacy(){
+  for(const legacyName of LEGACY_DBS){
+    try{
+      const data=await readLegacyDB(legacyName);
+      if(!data) continue;
+      let migrated=0;
+      for(const store of STORES){
+        if(!data[store]||!data[store].length) continue;
+        const existing=await dbAll(store);
+        const existingIds=new Set(existing.map(o=>o.id));
+        for(const record of data[store]){
+          if(!existingIds.has(record.id)){
+            await dbPut(store,record);
+            migrated++;
+          }
+        }
+      }
+      if(migrated>0) console.log(`[Migração] ${migrated} registros importados de "${legacyName}"`);
+      // Apaga o banco legado após migrar com sucesso
+      indexedDB.deleteDatabase(legacyName);
+    }catch(e){
+      console.warn(`[Migração] Falha ao migrar "${legacyName}":`,e);
+    }
+  }
+}
+
+// Lê todos os dados de um banco legado, retorna null se não existir ou estiver vazio
+function readLegacyDB(name){
+  return new Promise(res=>{
+    const probe=indexedDB.open(name);
+    probe.onerror=()=>res(null);
+    probe.onupgradeneeded=()=>{
+      // banco não existia — cancela
+      probe.transaction.abort();
+      res(null);
+    };
+    probe.onsuccess=e=>{
+      const ldb=e.target.result;
+      const storeNames=[...ldb.objectStoreNames];
+      if(!storeNames.length){ldb.close();res(null);return;}
+      const result={};
+      const tx=ldb.transaction(storeNames,'readonly');
+      let pending=storeNames.length;
+      storeNames.forEach(s=>{
+        result[s]=[];
+        tx.objectStore(s).getAll().onsuccess=ev=>{
+          result[s]=ev.target.result||[];
+          if(--pending===0){ldb.close();res(result);}
+        };
+      });
+      tx.onerror=()=>{ldb.close();res(null);};
+    };
   });
 }
 const dbAll=s=>new Promise((r,j)=>{const t=db.transaction(s,'readonly');t.objectStore(s).getAll().onsuccess=e=>r(e.target.result);t.onerror=j});
