@@ -6,26 +6,28 @@
 <title>ConcursosPRO — Plataforma de Estudos</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════ TEMA ═══════════════ */
+/* ═══════════════ TEMA — PALETA ACADEMICOPRO ═══════════════ */
 :root {
-  /* DARK THEME */
-  --bg:#0f1117; --bg2:#161b27; --bg3:#1e2535; --bg4:#273047;
-  --surface:#1e2535; --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.14);
-  --accent:#4f7eff; --accent2:#7fa8ff; --accent3:#38d9f5;
-  --green:#10d98e; --red:#f56565; --amber:#f6a623; --pink:#e879f9; --violet:#a78bfa;
-  --text:#eef2ff; --text2:#8b96b8; --text3:#4a5580;
+  /* DARK THEME — cores AcademicoPro */
+  --bg:#0f1520; --bg2:#1a2332; --bg3:#1e2c3a; --bg4:#273047;
+  --surface:#1a2332; --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.15);
+  --accent:#1abc9c; --accent2:#1abc9c; --accent3:#16a085;
+  --green:#27ae60; --red:#e74c3c; --amber:#f1c40f; --pink:#e879f9; --violet:#9b59b6;
+  --text:#ecf0f1; --text2:#8e9ab5; --text3:#4a5a70;
   --shadow:rgba(0,0,0,0.4);
   --radius:14px; --radius2:9px;
   --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
-  --sidebar-w:256px; --topbar-h:58px;
+  --sidebar-w:220px; --topbar-h:58px;
   --transition:all .18s cubic-bezier(.4,0,.2,1);
+  /* Sidebar collapse */
+  --sidebar-collapsed-w:58px;
 }
 [data-theme="light"] {
-  --bg:#f4f6fb; --bg2:#ffffff; --bg3:#edf0f8; --bg4:#dde3f0;
+  --bg:#f0f2f5; --bg2:#ffffff; --bg3:#edf0f7; --bg4:#dce3ee;
   --surface:#ffffff; --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.15);
-  --accent:#3b6ef8; --accent2:#2855d4; --accent3:#0a9fc8;
-  --green:#059669; --red:#dc2626; --amber:#d97706; --pink:#c026d3; --violet:#7c3aed;
-  --text:#1a2035; --text2:#5a6585; --text3:#9ca3af;
+  --accent:#1abc9c; --accent2:#16a085; --accent3:#0e8c75;
+  --green:#27ae60; --red:#e74c3c; --amber:#e67e22; --pink:#c026d3; --violet:#9b59b6;
+  --text:#2c3e50; --text2:#5a6a80; --text3:#95a5a6;
   --shadow:rgba(0,0,0,0.1);
 }
 
@@ -53,8 +55,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.46rem 1rem;border-radius:var(--radius2);font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;transition:var(--transition);border:none;text-decoration:none;line-height:1}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(79,126,255,.35)}
-.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,126,255,.45)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(26,188,156,.35)}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,188,156,.45)}
 .btn-success{background:var(--green);color:#fff}
 .btn-success:hover{opacity:.9}
 .btn-danger{background:var(--red);color:#fff}
@@ -75,7 +77,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   position:fixed;top:var(--topbar-h);left:0;
   width:var(--sidebar-w);height:calc(100vh - var(--topbar-h));
   background:var(--bg2);border-right:1px solid var(--border);
-  overflow-y:auto;z-index:50;transition:transform .22s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;z-index:50;transition:width .25s ease, transform .25s ease;
   display:flex;flex-direction:column;
 }
 .nav-section{padding:1.1rem .9rem .3rem;font-size:.62rem;font-weight:700;letter-spacing:2px;color:var(--text3);text-transform:uppercase}
@@ -86,7 +88,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   transition:var(--transition);font-size:.83rem;color:var(--text2);font-weight:500;
 }
 .nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:linear-gradient(90deg,rgba(79,126,255,.15),rgba(79,126,255,.05));color:var(--accent2);font-weight:600;border-left:3px solid var(--accent)}
+.nav-item.active{background:rgba(26,188,156,.15);color:var(--accent);font-weight:600;border-left:3px solid var(--accent)}
 .nav-item .icon{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
 .nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:.6rem;padding:2px 6px;border-radius:20px;font-weight:700;min-width:18px;text-align:center}
 .nav-badge.green{background:var(--green);color:#fff}
@@ -94,7 +96,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .sidebar-bottom{margin-top:auto;padding:.75rem;border-top:1px solid var(--border)}
 
 /* ═══ MAIN ═══ */
-#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h));padding:1.75rem;max-width:1400px}
+#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h));padding:1.75rem;max-width:1400px;transition:margin-left .25s ease;}
 .page{display:none}
 .page.active{display:block;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -142,7 +144,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .form-group{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
 .form-group label{font-size:.73rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.9px}
 input,textarea,select{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);color:var(--text);font-family:var(--font);font-size:.86rem;padding:.58rem .85rem;width:100%;outline:none;transition:border .15s,box-shadow .15s}
-input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,126,255,.12)}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,188,156,.12)}
 input::placeholder{color:var(--text3)}
 textarea{resize:vertical;min-height:75px;line-height:1.55}
 select option{background:var(--bg3);color:var(--text)}
@@ -151,7 +153,7 @@ select option{background:var(--bg3);color:var(--text)}
 
 /* ═══ BADGE ═══ */
 .badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.67rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
-.badge-purple{background:rgba(79,126,255,.15);color:var(--accent2)}
+.badge-purple{background:rgba(26,188,156,.15);color:var(--accent)}
 .badge-green{background:rgba(16,217,142,.12);color:var(--green)}
 .badge-amber{background:rgba(246,166,35,.12);color:var(--amber)}
 .badge-red{background:rgba(245,101,101,.12);color:var(--red)}
@@ -164,7 +166,7 @@ table{width:100%;border-collapse:collapse;font-size:.83rem}
 th{text-align:left;padding:.65rem 1rem;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);border-bottom:1px solid var(--border)}
 td{padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--text2)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(79,126,255,.03)}
+tr:hover td{background:rgba(26,188,156,.03)}
 
 /* ═══ TABS ═══ */
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto}
@@ -206,7 +208,7 @@ tr:hover td{background:rgba(79,126,255,.03)}
 .concurso-header{padding:1.2rem;display:flex;gap:.85rem;align-items:flex-start;border-bottom:1px solid var(--border)}
 .concurso-emoji{
   width:46px;height:46px;border-radius:12px;
-  background:linear-gradient(135deg,rgba(79,126,255,.15),rgba(56,217,245,.1));
+  background:linear-gradient(135deg,rgba(26,188,156,.18),rgba(22,160,133,.08));
   display:flex;align-items:center;justify-content:center;font-size:1.45rem;flex-shrink:0;
 }
 .concurso-body{padding:1rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:.5rem}
@@ -261,8 +263,8 @@ tr:hover td{background:rgba(79,126,255,.03)}
 
 /* ═══ QUIZ ═══ */
 .quiz-option{padding:.85rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--radius2);cursor:pointer;transition:var(--transition);font-size:.86rem;display:flex;align-items:center;gap:.7rem}
-.quiz-option:hover:not(.disabled){border-color:var(--accent);background:rgba(79,126,255,.07)}
-.quiz-option.selected{border-color:var(--accent);background:rgba(79,126,255,.1);color:var(--accent2)}
+.quiz-option:hover:not(.disabled){border-color:var(--accent);background:rgba(26,188,156,.07)}
+.quiz-option.selected{border-color:var(--accent);background:rgba(26,188,156,.10);color:var(--accent)}
 .quiz-option.correct{border-color:var(--green);background:rgba(16,217,142,.1);color:var(--green)}
 .quiz-option.wrong{border-color:var(--red);background:rgba(245,101,101,.1);color:var(--red)}
 .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
@@ -270,7 +272,7 @@ tr:hover td{background:rgba(79,126,255,.03)}
 /* ═══ FLASHCARD ═══ */
 .flashcard{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:2rem;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);position:relative}
 .flashcard:hover{border-color:var(--border2)}
-.flashcard.flipped{background:rgba(79,126,255,.06);border-color:var(--accent)}
+.flashcard.flipped{background:rgba(26,188,156,.06);border-color:var(--accent)}
 
 /* ═══ NOTE ═══ */
 .note-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius2);padding:1rem 1.2rem;margin-bottom:.75rem}
@@ -284,7 +286,7 @@ tr:hover td{background:rgba(79,126,255,.03)}
 .pill-group{display:flex;gap:.35rem;flex-wrap:wrap}
 .pill{padding:.3rem .8rem;border-radius:20px;font-size:.74rem;font-weight:600;border:1.5px solid var(--border);color:var(--text3);cursor:pointer;transition:var(--transition)}
 .pill:hover{border-color:var(--border2);color:var(--text2)}
-.pill.on{background:rgba(79,126,255,.15);border-color:var(--accent);color:var(--accent2)}
+.pill.on{background:rgba(26,188,156,.15);border-color:var(--accent);color:var(--accent)}
 
 /* ═══ SEP ═══ */
 .sep{height:1px;background:var(--border);margin:1.25rem 0}
@@ -318,24 +320,49 @@ tr:hover td{background:rgba(79,126,255,.03)}
 .aula-item-txt{flex:1}
 .aula-item-h{font-size:.7rem;color:var(--text3);font-family:var(--mono)}
 
+/* ═══ SIDEBAR COLLAPSE (DESKTOP) ═══ */
+#sidebar{transition:width .25s ease, transform .25s ease;}
+#main{transition:margin-left .25s ease;}
+
+/* Estado colapsado desktop */
+body.sidebar-collapsed #sidebar{width:var(--sidebar-collapsed-w);}
+body.sidebar-collapsed #main{margin-left:var(--sidebar-collapsed-w);}
+body.sidebar-collapsed .nav-item .nav-label{display:none;}
+body.sidebar-collapsed .nav-section{display:none;}
+body.sidebar-collapsed .nav-badge{display:none;}
+body.sidebar-collapsed .sidebar-bottom{display:none;}
+body.sidebar-collapsed .nav-item{justify-content:center;padding:.52rem 0;}
+body.sidebar-collapsed .nav-item .icon{width:auto;margin:0;}
+body.sidebar-collapsed #sidebar{overflow:hidden;}
+
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:960px){
-  #sidebar{transform:translateX(-100%)}
+  #sidebar{transform:translateX(-100%);width:var(--sidebar-w)!important;}
   #sidebar.open{transform:translateX(0);box-shadow:4px 0 24px var(--shadow)}
-  #main{margin-left:0}
+  #main{margin-left:0!important;}
   .grid-4{grid-template-columns:1fr 1fr}
   .grid-3{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .form-row,.form-row-3{grid-template-columns:1fr}
-  #topbar .btn-sm span{display:none}
+  #topbar .btn-sm .btn-label{display:none}
 }
 @media(max-width:600px){
-  #main{padding:1rem}
+  #main{padding:.85rem .75rem;}
   .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
-  .page-header h1{font-size:1.25rem}
-  .stat-value{font-size:1.5rem}
-  .modal{max-width:100%}
-  #modal-overlay{padding:1rem .5rem}
+  .page-header h1{font-size:1.2rem}
+  .stat-value{font-size:1.4rem}
+  .modal{max-width:100%;margin:0!important;}
+  #modal-overlay{padding:.75rem .5rem;align-items:flex-end;}
+  .modal{border-radius:var(--radius) var(--radius) 0 0;}
+  .page-header{margin-bottom:1.25rem}
+  .page-header h1{font-size:1.15rem}
+  .card{padding:1rem}
+  #topbar{padding:0 .85rem;gap:.5rem;}
+  #topbar .logo{font-size:1rem;}
+}
+@media(max-width:400px){
+  #main{padding:.65rem .6rem;}
+  .stat-value{font-size:1.25rem}
 }
 
 /* ═══ SIDEBAR OVERLAY (MOBILE) ═══ */
@@ -355,9 +382,6 @@ tr:hover td{background:rgba(79,126,255,.03)}
       <span id="theme-icon">🌙</span>
       <div class="theme-toggle" id="theme-toggle" title="Alternar tema"></div>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="exportBackup()"><span>⬇</span><span> Exportar</span></button>
-    <label class="btn btn-ghost btn-sm" style="cursor:pointer"><span>⬆</span><span> Importar</span><input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
-    <button class="btn btn-primary btn-sm" onclick="openModalConcurso()">+ Concurso</button>
   </div>
 </div>
 
@@ -367,24 +391,24 @@ tr:hover td{background:rgba(79,126,255,.03)}
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="nav-section">Concursos</div>
-  <div class="nav-item active" onclick="gotoPage('dashboard')"><span class="icon">🏠</span>Dashboard</div>
-  <div class="nav-item" onclick="gotoPage('meus-concursos')"><span class="icon">🏛</span>Meus Concursos<span class="nav-badge" id="nb-conc">0</span></div>
-  <div class="nav-item" onclick="gotoPage('cronograma')"><span class="icon">📅</span>Cronograma<span class="nav-badge green" id="nb-crono">Auto</span></div>
+  <div class="nav-item active" onclick="gotoPage('dashboard')"><span class="icon">🏠</span><span class="nav-label">Dashboard</span></div>
+  <div class="nav-item" onclick="gotoPage('meus-concursos')"><span class="icon">🏛</span><span class="nav-label">Meus Concursos</span><span class="nav-badge" id="nb-conc">0</span></div>
+  <div class="nav-item" onclick="gotoPage('cronograma')"><span class="icon">📅</span><span class="nav-label">Cronograma</span><span class="nav-badge green" id="nb-crono">Auto</span></div>
 
   <div class="nav-section">Estudo</div>
-  <div class="nav-item" onclick="gotoPage('cursos')"><span class="icon">📚</span>Cursos / Aulas</div>
-  <div class="nav-item" onclick="gotoPage('quizzes')"><span class="icon">🧠</span>Quizzes</div>
-  <div class="nav-item" onclick="gotoPage('flashcards')"><span class="icon">🃏</span>Flashcards</div>
-  <div class="nav-item" onclick="gotoPage('anotacoes')"><span class="icon">📝</span>Anotações</div>
+  <div class="nav-item" onclick="gotoPage('cursos')"><span class="icon">📚</span><span class="nav-label">Cursos / Aulas</span></div>
+  <div class="nav-item" onclick="gotoPage('quizzes')"><span class="icon">🧠</span><span class="nav-label">Quizzes</span></div>
+  <div class="nav-item" onclick="gotoPage('flashcards')"><span class="icon">🃏</span><span class="nav-label">Flashcards</span></div>
+  <div class="nav-item" onclick="gotoPage('anotacoes')"><span class="icon">📝</span><span class="nav-label">Anotações</span></div>
 
   <div class="nav-section">Recursos</div>
-  <div class="nav-item" onclick="gotoPage('canais-youtube')"><span class="icon">▶</span>Canais YouTube</div>
-  <div class="nav-item" onclick="gotoPage('portais')"><span class="icon">🌐</span>Portais</div>
-  <div class="nav-item" onclick="gotoPage('bancas')"><span class="icon">🏢</span>Bancas</div>
+  <div class="nav-item" onclick="gotoPage('canais-youtube')"><span class="icon">▶</span><span class="nav-label">Canais YouTube</span></div>
+  <div class="nav-item" onclick="gotoPage('portais')"><span class="icon">🌐</span><span class="nav-label">Portais</span></div>
+  <div class="nav-item" onclick="gotoPage('bancas')"><span class="icon">🏢</span><span class="nav-label">Bancas</span></div>
 
   <div class="nav-section">Análise</div>
-  <div class="nav-item" onclick="gotoPage('relatorios')"><span class="icon">📊</span>Relatórios</div>
-  <div class="nav-item" onclick="gotoPage('backup')"><span class="icon">💾</span>Backup</div>
+  <div class="nav-item" onclick="gotoPage('relatorios')"><span class="icon">📊</span><span class="nav-label">Relatórios</span></div>
+  <div class="nav-item" onclick="gotoPage('backup')"><span class="icon">💾</span><span class="nav-label">Backup</span></div>
   <div class="sidebar-bottom">
     <div style="font-size:.7rem;color:var(--text3);text-align:center">ConcursosPRO v4.0</div>
   </div>
@@ -826,7 +850,7 @@ tr:hover td{background:rgba(79,126,255,.03)}
         <label style="display:flex;align-items:center;gap:.35rem;font-size:.82rem;cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400"><input type="checkbox" id="dc-6" value="6" checked> Sáb</label>
       </div>
     </div>
-    <div style="background:rgba(79,126,255,.07);border:1px solid rgba(79,126,255,.15);border-radius:var(--radius2);padding:.75rem 1rem;font-size:.8rem;color:var(--text2);margin-top:.25rem" id="crono-preview">Configure e veja o resumo aqui.</div>
+    <div style="background:rgba(26,188,156,.07);border:1px solid rgba(26,188,156,.15);border-radius:var(--radius2);padding:.75rem 1rem;font-size:.8rem;color:var(--text2);margin-top:.25rem" id="crono-preview">Configure e veja o resumo aqui.</div>
   </div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-amber" onclick="confirmarGerarCronograma()">⚡ Gerar Cronograma</button></div>
 </div>
@@ -1112,8 +1136,14 @@ function closeSidebar(){
 document.getElementById('sidebar-toggle').onclick=()=>{
   const sb=document.getElementById('sidebar');
   const ov=document.getElementById('sidebar-overlay');
-  sb.classList.toggle('open');
-  ov.classList.toggle('show');
+  if(window.innerWidth>960){
+    // Desktop: colapsar/expandir sidebar
+    document.body.classList.toggle('sidebar-collapsed');
+  } else {
+    // Mobile: deslizar sidebar
+    sb.classList.toggle('open');
+    ov.classList.toggle('show');
+  }
 };
 document.getElementById('modal-overlay').onclick=e=>{if(e.target===e.currentTarget)closeModal()};
 
@@ -1402,7 +1432,7 @@ function renderAulasDiscTmp(){
   if(!aulasDiscTmp.length){el.innerHTML='<p style="font-size:.75rem;color:var(--text3)">Nenhuma aula adicionada ainda. O cronograma usará as horas estimadas da disciplina.</p>';return;}
   const totalH=aulasDiscTmp.reduce((s,a)=>s+a.horas,0);
   el.innerHTML=`
-    <div style="background:rgba(79,126,255,.07);border:1px solid rgba(79,126,255,.15);border-radius:7px;padding:.5rem .75rem;font-size:.75rem;color:var(--accent2);margin-bottom:.35rem">
+    <div style="background:rgba(26,188,156,.07);border:1px solid rgba(26,188,156,.15);border-radius:7px;padding:.5rem .75rem;font-size:.75rem;color:var(--accent2);margin-bottom:.35rem">
       📚 ${aulasDiscTmp.length} aula(s) · ${totalH}h total
     </div>
     ${aulasDiscTmp.map((a,i)=>`
@@ -1667,8 +1697,8 @@ async function renderCronogramaConcurso(){
     const dtObj=new Date(data+'T00:00:00');
     const diasSemana=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
     const dsm=diasSemana[dtObj.getDay()];
-    const discColors={'estudo':'rgba(79,126,255,0.06)','revisao':'rgba(246,166,35,0.06)'};
-    html+=`<div class="crono-day" style="${isHoje?'border-color:var(--accent);background:rgba(79,126,255,0.04)':''}${past&&!isHoje?'opacity:.55':''}">
+    const discColors={'estudo':'rgba(26,188,156,0.06)','revisao':'rgba(246,166,35,0.06)'};
+    html+=`<div class="crono-day" style="${isHoje?'border-color:var(--accent);background:rgba(26,188,156,0.04)':''}${past&&!isHoje?'opacity:.55':''}">
       <div class="crono-day-header">
         <span class="crono-day-title">${isHoje?'📍 Hoje — ':dsm+', '}${formatDate(data)}</span>
         <span class="crono-day-date">${ss.reduce((t,x)=>t+x.horas,0).toFixed(1)}h</span>
