@@ -1,262 +1,368 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ConcursosPRO — Plataforma de Estudos</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0d0f14;--bg2:#13161e;--bg3:#1a1e2a;--bg4:#222636;
-  --surface:#1e2230;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
-  --accent:#6c63ff;--accent2:#a78bfa;--accent3:#38bdf8;
-  --green:#22d3a5;--red:#f87171;--amber:#fbbf24;--pink:#f472b6;
-  --text:#f0f2ff;--text2:#9ba3c2;--text3:#5a6180;
-  --radius:12px;--radius2:8px;--font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
-  --sidebar-w:260px;--topbar-h:60px;
+/* ═══════════════ TEMA ═══════════════ */
+:root {
+  /* DARK THEME */
+  --bg:#0f1117; --bg2:#161b27; --bg3:#1e2535; --bg4:#273047;
+  --surface:#1e2535; --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.14);
+  --accent:#4f7eff; --accent2:#7fa8ff; --accent3:#38d9f5;
+  --green:#10d98e; --red:#f56565; --amber:#f6a623; --pink:#e879f9; --violet:#a78bfa;
+  --text:#eef2ff; --text2:#8b96b8; --text3:#4a5580;
+  --shadow:rgba(0,0,0,0.4);
+  --radius:14px; --radius2:9px;
+  --font:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --sidebar-w:256px; --topbar-h:58px;
+  --transition:all .18s cubic-bezier(.4,0,.2,1);
 }
+[data-theme="light"] {
+  --bg:#f4f6fb; --bg2:#ffffff; --bg3:#edf0f8; --bg4:#dde3f0;
+  --surface:#ffffff; --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.15);
+  --accent:#3b6ef8; --accent2:#2855d4; --accent3:#0a9fc8;
+  --green:#059669; --red:#dc2626; --amber:#d97706; --pink:#c026d3; --violet:#7c3aed;
+  --text:#1a2035; --text2:#5a6585; --text3:#9ca3af;
+  --shadow:rgba(0,0,0,0.1);
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;line-height:1.5}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:10px}
 
-/* TOPBAR */
-#topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:rgba(13,15,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.25rem;gap:0.75rem;z-index:100}
-#topbar .logo{font-size:1.15rem;font-weight:700;color:var(--accent2);letter-spacing:-0.5px;white-space:nowrap}
-#topbar .logo span{color:var(--accent3)}
+/* ═══ TOPBAR ═══ */
+#topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:var(--bg2);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 1.25rem;gap:.75rem;z-index:100;
+  box-shadow:0 2px 16px var(--shadow);
+}
+#topbar .logo{font-size:1.15rem;font-weight:800;color:var(--text);letter-spacing:-0.7px;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+#topbar .logo .logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent3));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+#topbar .logo span{color:var(--accent)}
 .spacer{flex:1}
-.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:var(--radius2);font-family:var(--font);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all .15s;border:none;text-decoration:none}
+
+/* ═══ BOTÕES ═══ */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.46rem 1rem;border-radius:var(--radius2);font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;transition:var(--transition);border:none;text-decoration:none;line-height:1}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:#7c74ff}
-.btn-success{background:var(--green);color:#071a13}
-.btn-success:hover{background:#1ab892}
-.btn-danger{background:var(--red);color:#1a0505}
-.btn-danger:hover{background:#ef4444}
-.btn-amber{background:var(--amber);color:#1a0e00}
-.btn-amber:hover{background:#f59e0b}
-.btn-sm{padding:0.3rem 0.7rem;font-size:0.78rem}
-.btn-icon{width:34px;height:34px;padding:0;justify-content:center}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(79,126,255,.35)}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,126,255,.45)}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{opacity:.9}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{opacity:.9}
+.btn-amber{background:var(--amber);color:#fff}
+.btn-amber:hover{opacity:.9}
+.btn-sm{padding:.28rem .7rem;font-size:.77rem}
+.btn-icon{width:32px;height:32px;padding:0;justify-content:center;border-radius:8px}
 
-/* SIDEBAR */
-#sidebar{position:fixed;top:var(--topbar-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--topbar-h));background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:50;transition:transform .2s}
-.nav-section{padding:1rem 0.75rem 0.3rem;font-size:0.65rem;font-weight:600;letter-spacing:1.8px;color:var(--text3);text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:0.65rem;padding:0.55rem 1rem;margin:0.08rem 0.5rem;border-radius:var(--radius2);cursor:pointer;transition:all .12s;font-size:0.83rem;color:var(--text2)}
+/* ═══ THEME TOGGLE ═══ */
+.theme-toggle{width:36px;height:20px;border-radius:20px;background:var(--bg4);border:1px solid var(--border2);cursor:pointer;position:relative;transition:var(--transition);flex-shrink:0}
+.theme-toggle::after{content:'';position:absolute;width:14px;height:14px;background:var(--accent2);border-radius:50%;top:2px;left:2px;transition:var(--transition)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(16px);background:var(--amber)}
+.theme-toggle-wrap{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--text2)}
+
+/* ═══ SIDEBAR ═══ */
+#sidebar{
+  position:fixed;top:var(--topbar-h);left:0;
+  width:var(--sidebar-w);height:calc(100vh - var(--topbar-h));
+  background:var(--bg2);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:50;transition:transform .22s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.nav-section{padding:1.1rem .9rem .3rem;font-size:.62rem;font-weight:700;letter-spacing:2px;color:var(--text3);text-transform:uppercase}
+.nav-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.52rem 1rem;margin:.05rem .5rem;
+  border-radius:var(--radius2);cursor:pointer;
+  transition:var(--transition);font-size:.83rem;color:var(--text2);font-weight:500;
+}
 .nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:rgba(108,99,255,0.15);color:var(--accent2);font-weight:500}
-.nav-item .icon{font-size:1rem;width:18px;text-align:center;flex-shrink:0}
-.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:0.62rem;padding:1px 6px;border-radius:20px;font-weight:600;min-width:18px;text-align:center}
-.nav-badge.green{background:var(--green);color:#071a13}
-.nav-badge.amber{background:var(--amber);color:#1a0e00}
+.nav-item.active{background:linear-gradient(90deg,rgba(79,126,255,.15),rgba(79,126,255,.05));color:var(--accent2);font-weight:600;border-left:3px solid var(--accent)}
+.nav-item .icon{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:.6rem;padding:2px 6px;border-radius:20px;font-weight:700;min-width:18px;text-align:center}
+.nav-badge.green{background:var(--green);color:#fff}
+.nav-badge.amber{background:var(--amber);color:#fff}
+.sidebar-bottom{margin-top:auto;padding:.75rem;border-top:1px solid var(--border)}
 
-/* MAIN */
-#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h));padding:1.75rem}
+/* ═══ MAIN ═══ */
+#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h));padding:1.75rem;max-width:1400px}
 .page{display:none}
-.page.active{display:block}
+.page.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
 .page-header{margin-bottom:1.75rem}
-.page-header h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.5px}
-.page-header p{color:var(--text2);font-size:0.88rem;margin-top:0.35rem}
-.breadcrumb{font-size:0.75rem;color:var(--text3);margin-bottom:0.6rem}
-.breadcrumb .link{color:var(--text2);cursor:pointer}
-.breadcrumb .link:hover{color:var(--accent2)}
+.page-header h1{font-size:1.55rem;font-weight:800;letter-spacing:-.5px}
+.page-header p{color:var(--text2);font-size:.88rem;margin-top:.35rem}
+.breadcrumb{font-size:.73rem;color:var(--text3);margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem}
+.breadcrumb .link{color:var(--text2);cursor:pointer;font-weight:500}
+.breadcrumb .link:hover{color:var(--accent)}
 
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+/* ═══ CARDS ═══ */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;transition:var(--transition)}
 .card-sm{padding:1rem}
-.card-hover{transition:all .15s;cursor:pointer}
-.card-hover:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.card-hover{cursor:pointer}
+.card-hover:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px var(--shadow)}
 
-/* GRIDS */
+/* ═══ GRIDS ═══ */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
 .grid-auto-sm{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
 
-/* STATS */
-.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;gap:0.4rem}
-.stat-label{font-size:0.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
-.stat-value{font-size:1.9rem;font-weight:700;font-family:var(--mono);line-height:1}
-.stat-sub{font-size:0.75rem;color:var(--text2)}
+/* ═══ STATS ═══ */
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;gap:.45rem;transition:var(--transition)}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--shadow)}
+.stat-label{font-size:.67rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600}
+.stat-value{font-size:1.9rem;font-weight:800;font-family:var(--mono);line-height:1}
+.stat-sub{font-size:.74rem;color:var(--text2)}
 .stat-accent{border-top:3px solid var(--accent)}
 .stat-green{border-top:3px solid var(--green)}
 .stat-amber{border-top:3px solid var(--amber)}
 .stat-red{border-top:3px solid var(--red)}
 .stat-pink{border-top:3px solid var(--pink)}
 
-/* PROGRESS */
+/* ═══ PROGRESS ═══ */
 .progress{background:var(--bg4);border-radius:10px;height:6px;overflow:hidden}
-.progress-bar{height:100%;background:var(--accent);border-radius:10px;transition:width .4s}
+.progress-bar{height:100%;background:var(--accent);border-radius:10px;transition:width .4s ease}
 .progress-bar.green{background:var(--green)}
 .progress-bar.amber{background:var(--amber)}
 .progress-bar.red{background:var(--red)}
 
-/* FORMS */
-.form-group{display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.9rem}
-.form-group label{font-size:0.75rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.8px}
-input,textarea,select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);color:var(--text);font-family:var(--font);font-size:0.86rem;padding:0.58rem 0.85rem;width:100%;outline:none;transition:border .12s}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
-textarea{resize:vertical;min-height:75px;line-height:1.5}
-select option{background:var(--bg3)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem}
+/* ═══ FORMS ═══ */
+.form-group{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
+.form-group label{font-size:.73rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.9px}
+input,textarea,select{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius2);color:var(--text);font-family:var(--font);font-size:.86rem;padding:.58rem .85rem;width:100%;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,126,255,.12)}
+input::placeholder{color:var(--text3)}
+textarea{resize:vertical;min-height:75px;line-height:1.55}
+select option{background:var(--bg3);color:var(--text)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem}
 
-/* BADGE */
-.badge{display:inline-flex;align-items:center;gap:0.25rem;font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:20px}
-.badge-purple{background:rgba(108,99,255,0.2);color:var(--accent2)}
-.badge-green{background:rgba(34,211,165,0.15);color:var(--green)}
-.badge-amber{background:rgba(251,191,36,0.15);color:var(--amber)}
-.badge-red{background:rgba(248,113,113,0.15);color:var(--red)}
-.badge-blue{background:rgba(56,189,248,0.15);color:var(--accent3)}
-.badge-pink{background:rgba(244,114,182,0.15);color:var(--pink)}
+/* ═══ BADGE ═══ */
+.badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.67rem;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
+.badge-purple{background:rgba(79,126,255,.15);color:var(--accent2)}
+.badge-green{background:rgba(16,217,142,.12);color:var(--green)}
+.badge-amber{background:rgba(246,166,35,.12);color:var(--amber)}
+.badge-red{background:rgba(245,101,101,.12);color:var(--red)}
+.badge-blue{background:rgba(56,217,245,.12);color:var(--accent3)}
+.badge-pink{background:rgba(232,121,249,.12);color:var(--pink)}
+.badge-violet{background:rgba(167,139,250,.12);color:var(--violet)}
 
-/* TABLES */
-table{width:100%;border-collapse:collapse;font-size:0.83rem}
-th{text-align:left;padding:0.65rem 1rem;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);border-bottom:1px solid var(--border)}
-td{padding:0.7rem 1rem;border-bottom:1px solid var(--border);color:var(--text2)}
+/* ═══ TABLES ═══ */
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{text-align:left;padding:.65rem 1rem;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);border-bottom:1px solid var(--border)}
+td{padding:.7rem 1rem;border-bottom:1px solid var(--border);color:var(--text2)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,0.015)}
+tr:hover td{background:rgba(79,126,255,.03)}
 
-/* TABS */
+/* ═══ TABS ═══ */
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto}
-.tab{padding:0.6rem 1.2rem;cursor:pointer;font-size:0.83rem;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;font-weight:500;white-space:nowrap}
+.tab{padding:.55rem 1.1rem;cursor:pointer;font-size:.82rem;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:var(--transition);font-weight:600;white-space:nowrap}
 .tab:hover{color:var(--text2)}
-.tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
-/* MODAL */
-#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+/* ═══ MODAL ═══ */
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;backdrop-filter:blur(4px)}
 #modal-overlay.show{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);width:100%;max-width:620px;margin:auto}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);width:100%;max-width:620px;margin:auto;box-shadow:0 24px 64px rgba(0,0,0,.5)}
 .modal-lg{max-width:820px}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1}
-.modal-header h2{font-size:0.98rem;font-weight:600}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.15rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;border-radius:var(--radius) var(--radius) 0 0}
+.modal-header h2{font-size:.97rem;font-weight:700}
 .modal-body{padding:1.5rem}
-.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:0.5rem;position:sticky;bottom:0;background:var(--bg2)}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.5rem;position:sticky;bottom:0;background:var(--bg2);border-radius:0 0 var(--radius) var(--radius)}
 
-/* TOAST */
-#toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;display:flex;flex-direction:column;gap:0.5rem}
-.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius2);padding:0.7rem 1.1rem;font-size:0.83rem;display:flex;align-items:center;gap:0.6rem;animation:slideIn .2s;min-width:250px;max-width:360px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.toast.success{border-color:rgba(34,211,165,0.3)}
-.toast.error{border-color:rgba(248,113,113,0.3)}
-@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+/* ═══ TOAST ═══ */
+#toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius2);padding:.7rem 1.1rem;font-size:.82rem;display:flex;align-items:center;gap:.6rem;animation:slideIn .22s;min-width:250px;max-width:360px;box-shadow:0 8px 24px var(--shadow)}
+.toast.success{border-left:3px solid var(--green)}
+.toast.error{border-left:3px solid var(--red)}
+@keyframes slideIn{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* EMPTY */
-.empty-state{text-align:center;padding:2.5rem 1.5rem;color:var(--text3)}
-.empty-state .ei{font-size:3rem;margin-bottom:0.75rem;opacity:.5}
+/* ═══ EMPTY ═══ */
+.empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text3)}
+.empty-state .ei{font-size:3.2rem;margin-bottom:.9rem;opacity:.45}
+.empty-state p{font-size:.88rem;line-height:1.6}
 
-/* CONCURSO CARD */
-.concurso-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .15s;cursor:pointer}
-.concurso-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
-.concurso-header{padding:1.2rem;display:flex;gap:0.75rem;align-items:flex-start;border-bottom:1px solid var(--border)}
-.concurso-emoji{width:44px;height:44px;border-radius:10px;background:rgba(108,99,255,0.12);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
-.concurso-body{padding:1rem 1.2rem}
-.dias-badge{display:inline-flex;align-items:center;gap:0.4rem;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;font-family:var(--mono)}
-.dias-urgente{background:rgba(248,113,113,0.15);color:var(--red)}
-.dias-proximo{background:rgba(251,191,36,0.15);color:var(--amber)}
-.dias-ok{background:rgba(34,211,165,0.12);color:var(--green)}
+/* ═══ CONCURSO CARD ═══ */
+.concurso-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:var(--transition);cursor:pointer;
+  display:flex;flex-direction:column;
+}
+.concurso-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 36px var(--shadow)}
+.concurso-header{padding:1.2rem;display:flex;gap:.85rem;align-items:flex-start;border-bottom:1px solid var(--border)}
+.concurso-emoji{
+  width:46px;height:46px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(79,126,255,.15),rgba(56,217,245,.1));
+  display:flex;align-items:center;justify-content:center;font-size:1.45rem;flex-shrink:0;
+}
+.concurso-body{padding:1rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:.5rem}
+.concurso-footer{padding:.75rem 1.2rem;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.dias-badge{display:inline-flex;align-items:center;gap:.4rem;padding:4px 10px;border-radius:20px;font-size:.73rem;font-weight:800;font-family:var(--mono)}
+.dias-urgente{background:rgba(245,101,101,.15);color:var(--red)}
+.dias-proximo{background:rgba(246,166,35,.15);color:var(--amber)}
+.dias-ok{background:rgba(16,217,142,.12);color:var(--green)}
 
-/* DISCIPLINA ITEM */
-.disc-item{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.9rem;border-radius:var(--radius2);background:var(--bg3);margin-bottom:0.4rem;border:1px solid transparent;transition:all .12s}
-.disc-item:hover{border-color:var(--border)}
-.disc-pct{font-size:0.72rem;font-family:var(--mono);color:var(--text3);width:32px;text-align:right;flex-shrink:0}
+/* ═══ DISCIPLINA ITEM ═══ */
+.disc-item{display:flex;align-items:flex-start;gap:.75rem;padding:.8rem 1rem;border-radius:var(--radius2);background:var(--bg3);margin-bottom:.45rem;border:1px solid transparent;transition:var(--transition)}
+.disc-item:hover{border-color:var(--border);background:var(--bg2)}
+.disc-pct{font-size:.72rem;font-family:var(--mono);color:var(--text3);width:32px;text-align:right;flex-shrink:0;font-weight:600}
 
-/* CRONOGRAMA */
-.crono-day{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:0.9rem;margin-bottom:0.5rem}
-.crono-day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem}
-.crono-day-title{font-size:0.82rem;font-weight:600}
-.crono-day-date{font-size:0.72rem;color:var(--text3);font-family:var(--mono)}
-.crono-slot{display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0.7rem;border-radius:6px;margin-bottom:0.3rem;font-size:0.8rem}
-.crono-done{text-decoration:line-through;opacity:.5}
-.crono-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all .12s}
-.crono-check.checked{background:var(--green);border-color:var(--green);color:#071a13}
+/* ═══ CRONOGRAMA ═══ */
+.crono-day{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:.9rem;margin-bottom:.5rem;transition:var(--transition)}
+.crono-day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
+.crono-day-title{font-size:.83rem;font-weight:700}
+.crono-day-date{font-size:.72rem;color:var(--text3);font-family:var(--mono)}
+.crono-slot{display:flex;align-items:center;gap:.6rem;padding:.45rem .75rem;border-radius:7px;margin-bottom:.3rem;font-size:.8rem}
+.crono-done{text-decoration:line-through;opacity:.45}
+.crono-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;transition:var(--transition)}
+.crono-check.checked{background:var(--green);border-color:var(--green);color:#fff}
 
-/* CANAL / PORTAL CARD */
-.link-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;display:flex;gap:0.85rem;align-items:flex-start;transition:all .15s}
-.link-card:hover{border-color:var(--border2)}
-.link-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
-.link-yt{background:rgba(255,80,80,0.12)}
-.link-portal{background:rgba(56,189,248,0.1)}
-.link-banca{background:rgba(251,191,36,0.1)}
-.link-card .lc-name{font-size:0.9rem;font-weight:600;margin-bottom:0.2rem}
-.link-card .lc-url{font-size:0.72rem;color:var(--accent3);font-family:var(--mono)}
-.link-card .lc-desc{font-size:0.78rem;color:var(--text3);margin-top:0.3rem;line-height:1.4}
-.link-actions{margin-left:auto;display:flex;gap:0.3rem;flex-shrink:0}
+/* ═══ CANAL / PORTAL CARD (REDESENHADO) ═══ */
+.link-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:var(--transition);display:flex;flex-direction:column;
+}
+.link-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 28px var(--shadow)}
+.link-card-header{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.8rem;border-bottom:1px solid var(--border)}
+.link-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.link-yt{background:linear-gradient(135deg,rgba(255,80,80,.2),rgba(255,80,80,.07))}
+.link-portal{background:linear-gradient(135deg,rgba(56,217,245,.2),rgba(56,217,245,.07))}
+.link-banca{background:linear-gradient(135deg,rgba(246,166,35,.2),rgba(246,166,35,.07))}
+.link-card-body{padding:.9rem 1.1rem;flex:1}
+.lc-name{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
+.lc-url{font-size:.7rem;color:var(--accent3);font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;margin-bottom:.4rem}
+.lc-tag{display:inline-flex;margin-bottom:.35rem}
+.lc-desc{font-size:.78rem;color:var(--text2);line-height:1.5}
+.link-card-footer{padding:.7rem 1.1rem;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 
-/* CALENDAR */
+/* ═══ CALENDAR ═══ */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;font-size:0.75rem;cursor:pointer;transition:all .1s;position:relative}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:.74rem;cursor:pointer;transition:all .1s;position:relative;font-weight:500}
 .cal-day:hover{background:var(--bg4)}
-.cal-day.today{background:var(--accent);color:#fff;font-weight:700}
+.cal-day.today{background:var(--accent);color:#fff;font-weight:800}
 .cal-day.has-event::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);position:absolute;bottom:3px}
-.cal-day.prova-day{background:rgba(248,113,113,0.2);border:1px solid rgba(248,113,113,0.4)}
-.cal-day.crono-day{background:rgba(34,211,165,0.08);border:1px solid rgba(34,211,165,0.15)}
-.cal-day.other-month{color:var(--text3);opacity:.35}
+.cal-day.prova-day{background:rgba(245,101,101,.18);border:1px solid rgba(245,101,101,.35);color:var(--red)}
+.cal-day.crono-day{background:rgba(16,217,142,.08);border:1px solid rgba(16,217,142,.18)}
+.cal-day.other-month{color:var(--text3);opacity:.3}
 
-/* QUIZ */
-.quiz-option{padding:0.85rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius2);cursor:pointer;transition:all .15s;font-size:0.86rem;display:flex;align-items:center;gap:0.7rem}
-.quiz-option:hover:not(.disabled){border-color:var(--accent);background:rgba(108,99,255,0.07)}
-.quiz-option.selected{border-color:var(--accent);background:rgba(108,99,255,0.12);color:var(--accent2)}
-.quiz-option.correct{border-color:var(--green);background:rgba(34,211,165,0.1);color:var(--green)}
-.quiz-option.wrong{border-color:var(--red);background:rgba(248,113,113,0.1);color:var(--red)}
-.opt-letter{width:24px;height:24px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:600;flex-shrink:0}
+/* ═══ QUIZ ═══ */
+.quiz-option{padding:.85rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--radius2);cursor:pointer;transition:var(--transition);font-size:.86rem;display:flex;align-items:center;gap:.7rem}
+.quiz-option:hover:not(.disabled){border-color:var(--accent);background:rgba(79,126,255,.07)}
+.quiz-option.selected{border-color:var(--accent);background:rgba(79,126,255,.1);color:var(--accent2)}
+.quiz-option.correct{border-color:var(--green);background:rgba(16,217,142,.1);color:var(--green)}
+.quiz-option.wrong{border-color:var(--red);background:rgba(245,101,101,.1);color:var(--red)}
+.opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
 
-/* FLASHCARD */
-.flashcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative}
+/* ═══ FLASHCARD ═══ */
+.flashcard{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:2rem;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);position:relative}
 .flashcard:hover{border-color:var(--border2)}
-.flashcard.flipped{background:rgba(108,99,255,0.07);border-color:var(--accent)}
+.flashcard.flipped{background:rgba(79,126,255,.06);border-color:var(--accent)}
 
-/* NOTE */
-.note-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius2);padding:1rem 1.2rem;margin-bottom:0.75rem}
+/* ═══ NOTE ═══ */
+.note-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius2);padding:1rem 1.2rem;margin-bottom:.75rem}
 
-/* SEARCH */
+/* ═══ SEARCH ═══ */
 .search-wrap{position:relative}
-.search-wrap .si{position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;font-size:.9rem}
+.search-wrap .si{position:absolute;left:.78rem;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;font-size:.9rem}
 .search-wrap input{padding-left:2.2rem}
 
-/* PILL TOGGLE */
-.pill-group{display:flex;gap:0.35rem;flex-wrap:wrap}
-.pill{padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;font-weight:500;border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .12s}
+/* ═══ PILL TOGGLE ═══ */
+.pill-group{display:flex;gap:.35rem;flex-wrap:wrap}
+.pill{padding:.3rem .8rem;border-radius:20px;font-size:.74rem;font-weight:600;border:1.5px solid var(--border);color:var(--text3);cursor:pointer;transition:var(--transition)}
 .pill:hover{border-color:var(--border2);color:var(--text2)}
-.pill.on{background:rgba(108,99,255,0.18);border-color:var(--accent);color:var(--accent2)}
+.pill.on{background:rgba(79,126,255,.15);border-color:var(--accent);color:var(--accent2)}
 
-/* SEPARATOR */
+/* ═══ SEP ═══ */
 .sep{height:1px;background:var(--border);margin:1.25rem 0}
 
-/* LESSON ITEM */
-.lesson-item{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 0.9rem;border-radius:var(--radius2);border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:all .12s;margin-bottom:0.3rem}
+/* ═══ LESSON ITEM ═══ */
+.lesson-item{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border-radius:var(--radius2);border:1px solid var(--border);background:var(--bg2);cursor:pointer;transition:var(--transition);margin-bottom:.3rem}
 .lesson-item:hover{background:var(--bg3);border-color:var(--border2)}
-.lesson-item.completed{border-color:rgba(34,211,165,0.2)}
+.lesson-item.completed{border-color:rgba(16,217,142,.25)}
 
-/* PLAYER */
+/* ═══ PLAYER ═══ */
 .player-wrap{background:var(--bg3);border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
 .player-wrap iframe,.player-wrap video{width:100%;height:100%}
 
-@media(max-width:900px){
-  #sidebar{transform:translateX(-100%)}
-  #sidebar.open{transform:translateX(0)}
-  #main{margin-left:0}
-  .grid-4,.grid-3,.grid-2,.form-row,.form-row-3{grid-template-columns:1fr}
+/* ═══ TÓPICOS ═══ */
+.topico-item{display:flex;align-items:center;gap:.5rem;padding:.38rem .65rem;background:var(--bg3);border-radius:7px;border:1.5px solid var(--border);transition:var(--transition)}
+.topico-item:hover{border-color:var(--border2)}
+.topico-num{font-size:.7rem;color:var(--text3);font-family:var(--mono);width:18px;flex-shrink:0;font-weight:600}
+.topico-txt{flex:1;font-size:.82rem}
+
+/* ═══ CONTEUDO AULAS ═══ */
+.conteudo-aulas-area{
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:var(--radius2);padding:.85rem;margin-top:.65rem
 }
+.aula-item{
+  display:flex;align-items:center;gap:.5rem;padding:.4rem .65rem;
+  background:var(--bg2);border-radius:7px;border:1px solid var(--border);
+  margin-bottom:.35rem;font-size:.82rem;
+}
+.aula-item-num{font-size:.68rem;color:var(--text3);font-family:var(--mono);width:18px;font-weight:600}
+.aula-item-txt{flex:1}
+.aula-item-h{font-size:.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:960px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0);box-shadow:4px 0 24px var(--shadow)}
+  #main{margin-left:0}
+  .grid-4{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+  #topbar .btn-sm span{display:none}
+}
+@media(max-width:600px){
+  #main{padding:1rem}
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+  .page-header h1{font-size:1.25rem}
+  .stat-value{font-size:1.5rem}
+  .modal{max-width:100%}
+  #modal-overlay{padding:1rem .5rem}
+}
+
+/* ═══ SIDEBAR OVERLAY (MOBILE) ═══ */
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:49}
+#sidebar-overlay.show{display:block}
 </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
 <div id="topbar">
-  <button class="btn btn-ghost btn-icon" id="sidebar-toggle">☰</button>
-  <div class="logo">Concursos<span>PRO</span></div>
+  <button class="btn btn-ghost btn-icon" id="sidebar-toggle" style="font-size:1.1rem">☰</button>
+  <div class="logo"><div class="logo-icon">🏛</div>Concursos<span>PRO</span></div>
   <div class="spacer"></div>
-  <div style="display:flex;gap:0.5rem;align-items:center">
-    <button class="btn btn-ghost btn-sm" onclick="exportBackup()">⬇ Exportar</button>
-    <label class="btn btn-ghost btn-sm" style="cursor:pointer">⬆ Importar<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
+  <div style="display:flex;gap:.5rem;align-items:center">
+    <div class="theme-toggle-wrap">
+      <span id="theme-icon">🌙</span>
+      <div class="theme-toggle" id="theme-toggle" title="Alternar tema"></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="exportBackup()"><span>⬇</span><span> Exportar</span></button>
+    <label class="btn btn-ghost btn-sm" style="cursor:pointer"><span>⬆</span><span> Importar</span><input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
     <button class="btn btn-primary btn-sm" onclick="openModalConcurso()">+ Concurso</button>
   </div>
 </div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- SIDEBAR -->
 <div id="sidebar">
@@ -273,12 +379,15 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 
   <div class="nav-section">Recursos</div>
   <div class="nav-item" onclick="gotoPage('canais-youtube')"><span class="icon">▶</span>Canais YouTube</div>
-  <div class="nav-item" onclick="gotoPage('portais')"><span class="icon">🌐</span>Portais de Concursos</div>
-  <div class="nav-item" onclick="gotoPage('bancas')"><span class="icon">🏢</span>Bancas Organizadoras</div>
+  <div class="nav-item" onclick="gotoPage('portais')"><span class="icon">🌐</span>Portais</div>
+  <div class="nav-item" onclick="gotoPage('bancas')"><span class="icon">🏢</span>Bancas</div>
 
   <div class="nav-section">Análise</div>
   <div class="nav-item" onclick="gotoPage('relatorios')"><span class="icon">📊</span>Relatórios</div>
   <div class="nav-item" onclick="gotoPage('backup')"><span class="icon">💾</span>Backup</div>
+  <div class="sidebar-bottom">
+    <div style="font-size:.7rem;color:var(--text3);text-align:center">ConcursosPRO v4.0</div>
+  </div>
 </div>
 
 <!-- MAIN -->
@@ -296,14 +405,14 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div>
       <div class="card" style="margin-bottom:1.25rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <h3 style="font-size:0.92rem;font-weight:600">🏛 Concursos inscritos</h3>
+          <h3 style="font-size:.92rem;font-weight:700">🏛 Concursos inscritos</h3>
           <button class="btn btn-ghost btn-sm" onclick="gotoPage('meus-concursos')">Ver todos →</button>
         </div>
         <div id="dash-concursos"></div>
       </div>
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <h3 style="font-size:0.92rem;font-weight:600">📅 Estudos de hoje</h3>
+          <h3 style="font-size:.92rem;font-weight:700">📅 Estudos de hoje</h3>
           <button class="btn btn-ghost btn-sm" onclick="gotoPage('cronograma')">Ver cronograma →</button>
         </div>
         <div id="dash-hoje"></div>
@@ -312,12 +421,12 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div>
       <div class="card" style="margin-bottom:1.25rem">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-          <h3 style="font-size:0.92rem;font-weight:600">📊 Progresso por disciplina</h3>
+          <h3 style="font-size:.92rem;font-weight:700">📊 Progresso por disciplina</h3>
         </div>
         <div id="dash-disciplinas"></div>
       </div>
       <div class="card">
-        <h3 style="font-size:0.92rem;font-weight:600;margin-bottom:0.75rem">🔗 Recursos rápidos</h3>
+        <h3 style="font-size:.92rem;font-weight:700;margin-bottom:.75rem">🔗 Recursos rápidos</h3>
         <div id="dash-links"></div>
       </div>
     </div>
@@ -343,9 +452,9 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
       <div>
         <h1 id="cd-titulo"></h1>
-        <div style="display:flex;gap:0.5rem;align-items:center;margin-top:0.5rem;flex-wrap:wrap" id="cd-badges"></div>
+        <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;flex-wrap:wrap" id="cd-badges"></div>
       </div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <button class="btn btn-ghost btn-sm" onclick="editarConcurso(concursoAtualId)">✏️ Editar</button>
         <button class="btn btn-amber btn-sm" onclick="abrirCronoConfig(concursoAtualId)">📅 Gerar Cronograma</button>
         <button class="btn btn-danger btn-sm" onclick="excluirConcurso(concursoAtualId)">🗑</button>
@@ -358,8 +467,8 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div class="tab" onclick="cdTab('materiais')">📎 Materiais</div>
   </div>
   <div class="tab-panel active" id="cd-tab-disciplinas">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-      <h3 style="font-size:0.92rem;font-weight:600">Disciplinas do concurso</h3>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem">
+      <h3 style="font-size:.92rem;font-weight:700">Disciplinas do concurso</h3>
       <button class="btn btn-primary btn-sm" onclick="openModalDisciplina()">+ Disciplina</button>
     </div>
     <div id="lista-disciplinas-cd"></div>
@@ -368,7 +477,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div id="crono-concurso-area"></div>
   </div>
   <div class="tab-panel" id="cd-tab-materiais">
-    <p style="color:var(--text3);font-size:0.85rem;margin-bottom:1rem">Anotações e materiais vinculados a este concurso.</p>
+    <p style="color:var(--text3);font-size:.85rem;margin-bottom:1rem">Anotações e materiais vinculados a este concurso.</p>
     <div id="materiais-cd"></div>
   </div>
 </div>
@@ -379,7 +488,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
     <div class="breadcrumb">Início › <span>Cronograma</span></div>
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
       <div><h1>Cronograma de Estudos</h1><p>Visão geral de todos os seus estudos planejados.</p></div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <button class="btn btn-amber btn-sm" onclick="gerarCronogramaGeral()">⚡ Gerar Auto</button>
         <button class="btn btn-ghost btn-sm" onclick="showModal('modal-evento')">+ Evento Manual</button>
       </div>
@@ -387,25 +496,63 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   </div>
   <div class="grid-2" style="gap:1.5rem">
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem">
         <button class="btn btn-ghost btn-sm" onclick="calPrev()">← Ant</button>
-        <h3 id="cal-titulo" style="font-size:0.92rem;font-weight:600"></h3>
+        <h3 id="cal-titulo" style="font-size:.92rem;font-weight:700"></h3>
         <button class="btn btn-ghost btn-sm" onclick="calNext()">Prox →</button>
       </div>
-      <div class="cal-grid" id="cal-header" style="margin-bottom:0.4rem"></div>
-      <div class="cal-grid" id="cal-body"></div>
-      <div style="display:flex;gap:1rem;margin-top:0.75rem;flex-wrap:wrap">
-        <span style="font-size:0.7rem;color:var(--text3);display:flex;align-items:center;gap:0.3rem"><span style="width:10px;height:10px;background:rgba(248,113,113,0.3);border:1px solid rgba(248,113,113,0.5);border-radius:2px"></span>Prova</span>
-        <span style="font-size:0.7rem;color:var(--text3);display:flex;align-items:center;gap:0.3rem"><span style="width:10px;height:10px;background:rgba(34,211,165,0.1);border:1px solid rgba(34,211,165,0.2);border-radius:2px"></span>Estudo</span>
+      <div class="cal-grid" id="cal-header"></div>
+      <div class="cal-grid" style="margin-top:3px" id="cal-body"></div>
+      <div style="display:flex;gap:.75rem;margin-top:.85rem;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:var(--text3)"><div style="width:10px;height:10px;border-radius:3px;background:rgba(245,101,101,.18);border:1px solid rgba(245,101,101,.35)"></div>Prova</div>
+        <div style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:var(--text3)"><div style="width:10px;height:10px;border-radius:3px;background:rgba(16,217,142,.08);border:1px solid rgba(16,217,142,.18)"></div>Estudo</div>
+        <div style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:var(--text3)"><div style="width:10px;height:10px;border-radius:3px;background:var(--accent)"></div>Hoje</div>
       </div>
     </div>
     <div>
-      <div id="cal-selected-day" class="card" style="margin-bottom:1rem">
-        <p style="color:var(--text3);font-size:0.85rem">Clique em um dia para ver os estudos.</p>
+      <div class="card" style="margin-bottom:1.25rem">
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:.75rem">📌 Detalhes do dia</h3>
+        <div id="cal-selected-day"><p style="color:var(--text3);font-size:.83rem">Clique em um dia no calendário.</p></div>
       </div>
       <div class="card">
-        <h3 style="font-size:0.92rem;font-weight:600;margin-bottom:0.75rem">Próximas provas</h3>
+        <h3 style="font-size:.9rem;font-weight:700;margin-bottom:.75rem">🏛 Próximas provas</h3>
         <div id="proximas-provas"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CURSO DETALHE ═══ -->
+<div class="page" id="page-curso-detalhe">
+  <div class="page-header">
+    <div class="breadcrumb">Início › <span class="link" onclick="gotoPage('cursos')">Cursos</span> › <span id="cursoD-bc"></span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div>
+        <h1 id="cursoD-titulo"></h1>
+        <p id="cursoD-desc" style="color:var(--text2);font-size:.86rem;margin-top:.3rem"></p>
+        <span class="badge badge-purple" style="margin-top:.4rem" id="cd2-cat"></span>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="editCurso()">✏️ Editar</button>
+        <button class="btn btn-primary btn-sm" onclick="showModal('modal-aula')">+ Aula</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCurso()">🗑</button>
+      </div>
+    </div>
+    <div style="margin-top:.75rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <div class="progress" style="flex:1;min-width:120px"><div class="progress-bar green" id="cd2-bar" style="width:0%"></div></div>
+      <span style="font-size:.78rem;color:var(--text2);white-space:nowrap"><span id="cd2-done">0</span>/<span id="cd2-total">0</span> aulas (<span id="cd2-pct">0</span>%)</span>
+    </div>
+  </div>
+  <div class="grid-2" style="gap:1.5rem">
+    <div><div id="lista-aulas-d"></div></div>
+    <div>
+      <div class="card">
+        <div class="player-wrap" id="player-wrap"><div style="display:flex;flex-direction:column;align-items:center;gap:.75rem;color:var(--text3)"><span style="font-size:2.5rem;opacity:.3">▶</span><p style="font-size:.83rem">Selecione uma aula</p></div></div>
+        <div style="padding:.9rem 0 0">
+          <h3 id="player-titulo" style="font-size:.95rem;font-weight:700;margin-bottom:.4rem">—</h3>
+          <p id="player-desc" style="font-size:.8rem;color:var(--text2);line-height:1.5"></p>
+          <div id="player-actions" style="display:flex;gap:.4rem;margin-top:.65rem;flex-wrap:wrap"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -414,55 +561,17 @@ tr:hover td{background:rgba(255,255,255,0.015)}
 <!-- ═══ CURSOS ═══ -->
 <div class="page" id="page-cursos">
   <div class="page-header">
-    <div class="breadcrumb">Início › <span>Cursos</span></div>
+    <div class="breadcrumb">Início › <span>Cursos / Aulas</span></div>
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-      <div><h1>Cursos & Aulas</h1><p>Gerencie seus cursos e aulas de estudo.</p></div>
+      <div><h1>Cursos & Aulas</h1><p>Organize seu conteúdo de estudo.</p></div>
       <button class="btn btn-primary" onclick="showModal('modal-curso')">+ Novo Curso</button>
     </div>
   </div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
+  <div style="display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap">
     <div class="search-wrap" style="flex:1;min-width:180px"><span class="si">🔍</span><input type="text" placeholder="Buscar cursos..." id="search-cursos" oninput="renderCursos()"></div>
-    <select id="filter-cursos" onchange="renderCursos()" style="width:170px"><option value="">Todas categorias</option><option>Direito</option><option>Contabilidade</option><option>Informática</option><option>Português</option><option>Matemática</option><option>Raciocínio Lógico</option><option>Outros</option></select>
+    <select id="filter-cursos" onchange="renderCursos()" style="width:160px"><option value="">Todas categorias</option><option>Direito</option><option>Contabilidade</option><option>Informática</option><option>Português</option><option>Matemática</option><option>Raciocínio Lógico</option><option>Outros</option></select>
   </div>
   <div class="grid-auto" id="lista-cursos"></div>
-</div>
-
-<!-- ═══ DETALHE CURSO ═══ -->
-<div class="page" id="page-curso-detalhe">
-  <div class="page-header">
-    <div class="breadcrumb">Início › <span class="link" onclick="gotoPage('cursos')">Cursos</span> › <span id="cursoD-bc"></span></div>
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
-      <div><h1 id="cursoD-titulo"></h1><p id="cursoD-desc" style="margin-top:.3rem"></p></div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" onclick="editCurso()">✏️</button>
-        <button class="btn btn-primary btn-sm" onclick="showModal('modal-aula')">+ Aula</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteCurso()">🗑</button>
-      </div>
-    </div>
-  </div>
-  <div class="grid-2" style="gap:1.5rem">
-    <div>
-      <div class="card" style="margin-bottom:1rem">
-        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
-          <div><div class="stat-label">CATEGORIA</div><div id="cd2-cat" class="badge badge-purple" style="font-size:.8rem;margin-top:3px"></div></div>
-          <div><div class="stat-label">AULAS</div><div id="cd2-total" style="font-weight:700;font-family:var(--mono)">0</div></div>
-          <div><div class="stat-label">CONCLUÍDAS</div><div id="cd2-done" style="font-weight:700;font-family:var(--mono);color:var(--green)">0</div></div>
-          <div style="flex:1;min-width:120px"><div class="stat-label" style="margin-bottom:.4rem">PROGRESSO</div><div class="progress"><div class="progress-bar green" id="cd2-bar" style="width:0%"></div></div><div style="font-size:.72rem;color:var(--text2);margin-top:.25rem"><span id="cd2-pct">0</span>%</div></div>
-        </div>
-      </div>
-      <div id="lista-aulas-d"></div>
-    </div>
-    <div>
-      <div class="card">
-        <div class="player-wrap" id="player-wrap"><div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;color:var(--text3)"><span style="font-size:2.5rem;opacity:.4">▶</span><p style="font-size:.83rem">Selecione uma aula</p></div></div>
-        <div style="padding:.9rem 0 0">
-          <h3 id="player-titulo" style="font-size:.95rem;font-weight:600;margin-bottom:.4rem">—</h3>
-          <p id="player-desc" style="font-size:.8rem;color:var(--text2);line-height:1.5"></p>
-          <div id="player-actions" style="display:flex;gap:.4rem;margin-top:.65rem;flex-wrap:wrap"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ═══ QUIZZES ═══ -->
@@ -482,7 +591,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   <div class="tab-panel active" id="tab-q-banco"><div class="grid-auto" id="lista-quizzes"></div></div>
   <div class="tab-panel" id="tab-q-simulado">
     <div id="sim-config" class="card" style="max-width:460px">
-      <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1rem">Configurar Simulado</h3>
+      <h3 style="font-size:.95rem;font-weight:700;margin-bottom:1rem">Configurar Simulado</h3>
       <div class="form-group"><label>Questões</label><input type="number" id="sim-qtd" value="10" min="1"></div>
       <div class="form-group"><label>Categoria</label><select id="sim-cat"><option value="">Todas</option><option>Direito</option><option>Contabilidade</option><option>Informática</option><option>Português</option><option>Matemática</option><option>Raciocínio Lógico</option></select></div>
       <div class="form-group"><label>Dificuldade</label><select id="sim-dif"><option value="">Todas</option><option>Fácil</option><option>Médio</option><option>Difícil</option></select></div>
@@ -532,7 +641,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       <button class="btn btn-primary" onclick="showModal('modal-canal')">+ Adicionar Canal</button>
     </div>
   </div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem">
     <div class="search-wrap" style="flex:1;min-width:180px"><span class="si">🔍</span><input type="text" placeholder="Buscar canais..." id="search-canais" oninput="renderCanais()"></div>
     <select id="filter-canais" onchange="renderCanais()" style="width:170px"><option value="">Todas matérias</option><option>Geral</option><option>Direito</option><option>Contabilidade</option><option>Informática</option><option>Português</option><option>Matemática</option><option>Raciocínio Lógico</option><option>Redação</option></select>
   </div>
@@ -571,8 +680,8 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   </div>
   <div class="grid-4" style="margin-bottom:1.5rem" id="rel-stats"></div>
   <div class="grid-2" style="gap:1.5rem">
-    <div class="card"><h3 style="font-size:.92rem;font-weight:600;margin-bottom:1rem">Por Categoria</h3><div id="rel-cats"></div></div>
-    <div class="card"><h3 style="font-size:.92rem;font-weight:600;margin-bottom:1rem">Progresso dos Cursos</h3><div id="rel-cursos-prog"></div></div>
+    <div class="card"><h3 style="font-size:.92rem;font-weight:700;margin-bottom:1rem">Por Categoria</h3><div id="rel-cats"></div></div>
+    <div class="card"><h3 style="font-size:.92rem;font-weight:700;margin-bottom:1rem">Progresso dos Cursos</h3><div id="rel-cursos-prog"></div></div>
   </div>
 </div>
 
@@ -584,18 +693,18 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   </div>
   <div class="grid-2" style="gap:1.5rem">
     <div class="card">
-      <h3 style="font-size:.92rem;font-weight:600;margin-bottom:.65rem">⬇ Exportar Dados</h3>
+      <h3 style="font-size:.92rem;font-weight:700;margin-bottom:.65rem">⬇ Exportar Dados</h3>
       <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.1rem;line-height:1.6">Exporta todos os dados em arquivo JSON.</p>
       <button class="btn btn-success" onclick="exportBackup()">Exportar Backup Completo</button>
     </div>
     <div class="card">
-      <h3 style="font-size:.92rem;font-weight:600;margin-bottom:.65rem">⬆ Importar Dados</h3>
+      <h3 style="font-size:.92rem;font-weight:700;margin-bottom:.65rem">⬆ Importar Dados</h3>
       <p style="font-size:.83rem;color:var(--text2);margin-bottom:1.1rem;line-height:1.6"><strong style="color:var(--red)">Atenção: substituirá todos os dados atuais.</strong></p>
       <label class="btn btn-ghost" style="cursor:pointer">Selecionar .json<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
     </div>
   </div>
   <div class="card" style="margin-top:1.25rem">
-    <h3 style="font-size:.92rem;font-weight:600;margin-bottom:.65rem">⚠️ Limpar Tudo</h3>
+    <h3 style="font-size:.92rem;font-weight:700;margin-bottom:.65rem">⚠️ Limpar Tudo</h3>
     <p style="font-size:.83rem;color:var(--text2);margin-bottom:1rem">Remove permanentemente todos os dados.</p>
     <button class="btn btn-danger" onclick="if(confirm('Tem certeza? Esta ação é irreversível!'))limparTudo()">Limpar Todos os Dados</button>
   </div>
@@ -620,8 +729,8 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       <div class="form-group" style="margin:0"><label>Nível</label><select id="mc-nivel"><option>Superior</option><option>Médio</option><option>Técnico</option><option>Fundamental</option></select></div>
     </div>
     <div class="form-row" style="margin-top:.9rem">
-      <div class="form-group" style="margin:0"><label>Salário (R$)</label><input id="mc-salario" placeholder="Ex: 21.029,00" type="text"></div>
-      <div class="form-group" style="margin:0"><label>Vagas</label><input id="mc-vagas" placeholder="Ex: 699" type="text"></div>
+      <div class="form-group" style="margin:0"><label>Salário (R$)</label><input id="mc-salario" placeholder="Ex: 21.029,00"></div>
+      <div class="form-group" style="margin:0"><label>Vagas</label><input id="mc-vagas" placeholder="Ex: 699"></div>
     </div>
     <div class="form-group" style="margin-top:.9rem"><label>Edital / Link de inscrição</label><input id="mc-edital" placeholder="https://..."></div>
     <div class="form-group"><label>Observações</label><textarea id="mc-obs" placeholder="Notas sobre este concurso..."></textarea></div>
@@ -642,18 +751,36 @@ tr:hover td{background:rgba(255,255,255,0.015)}
       <div class="form-group" style="margin:0"><label>Horas estimadas de estudo</label><input type="number" id="md-horas" placeholder="40" min="1"></div>
       <div class="form-group" style="margin:0"><label>Prioridade</label><select id="md-prioridade"><option value="alta">🔴 Alta</option><option value="media" selected>🟡 Média</option><option value="baixa">🟢 Baixa</option></select></div>
     </div>
+
+    <!-- CONTEÚDO PROGRAMÁTICO - TÓPICOS -->
     <div class="form-group" style="margin-top:.9rem">
       <label>Conteúdo Programático — Tópicos</label>
       <p style="font-size:.75rem;color:var(--text3);margin-bottom:.5rem">Adicione cada tópico do edital. Você poderá marcar cada um como estudado.</p>
-      <div id="topicos-lista" style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem"></div>
+      <div id="topicos-lista" style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.6rem"></div>
       <div style="display:flex;gap:.5rem">
         <input id="topico-novo" placeholder="Ex: Princípios Constitucionais" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();adicionarTopico()}">
         <button type="button" class="btn btn-primary btn-sm" onclick="adicionarTopico()">+ Add</button>
       </div>
-      <div style="margin-top:.6rem;display:flex;gap:.4rem;flex-wrap:wrap">
+      <div style="margin-top:.5rem">
         <button type="button" class="btn btn-ghost btn-sm" onclick="importarTopicosTexto()">📋 Importar lista</button>
       </div>
     </div>
+
+    <!-- CONTEÚDO DE AULAS (NOVO) -->
+    <div class="form-group" style="margin-top:.75rem">
+      <label>Conteúdo de Aulas — Para o cronograma</label>
+      <p style="font-size:.75rem;color:var(--text3);margin-bottom:.5rem">Defina as aulas que esta disciplina terá. O cronograma usará estes dados para distribuir o estudo de forma inteligente.</p>
+      <div id="aulas-disc-lista" style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.6rem"></div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <input id="aula-disc-titulo" placeholder="Ex: Aula 01 — Princípios Constitucionais" style="flex:1;min-width:140px" onkeydown="if(event.key==='Enter'){event.preventDefault();adicionarAulaDisc()}">
+        <input id="aula-disc-horas" type="number" placeholder="h" min="0.5" step="0.5" style="width:70px">
+        <button type="button" class="btn btn-primary btn-sm" onclick="adicionarAulaDisc()">+ Add</button>
+      </div>
+      <div style="margin-top:.5rem">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="importarAulasTexto()">📋 Importar aulas em lote</button>
+      </div>
+    </div>
+
     <div class="form-group"><label>Observações / Fontes</label><textarea id="md-obs" rows="2" placeholder="Ex: Estudar pela CF/88 comentada, Livro do Prof. Pedro Lenza..."></textarea></div>
   </div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarDisciplina()">Salvar Disciplina</button></div>
@@ -664,16 +791,26 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   <div class="modal-header"><h2>Importar Tópicos em Lote</h2><button class="btn btn-ghost btn-icon" onclick="closeModalSecundario()">✕</button></div>
   <div class="modal-body">
     <p style="font-size:.83rem;color:var(--text2);margin-bottom:.75rem">Cole a lista de tópicos abaixo. Um tópico por linha ou separados por ponto e vírgula.</p>
-    <textarea id="import-topicos-txt" rows="8" placeholder="Princípios Constitucionais&#10;Direitos Fundamentais&#10;Organização do Estado&#10;Poder Legislativo&#10;Poder Executivo&#10;Poder Judiciário"></textarea>
+    <textarea id="import-topicos-txt" rows="8" placeholder="Princípios Constitucionais&#10;Direitos Fundamentais&#10;Organização do Estado"></textarea>
   </div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModalSecundario()">Cancelar</button><button class="btn btn-primary" onclick="confirmarImportarTopicos()">Importar</button></div>
+</div>
+
+<!-- Modal Importar Aulas -->
+<div class="modal" id="modal-import-aulas" style="display:none">
+  <div class="modal-header"><h2>Importar Aulas em Lote</h2><button class="btn btn-ghost btn-icon" onclick="closeModalSecundarioAulas()">✕</button></div>
+  <div class="modal-body">
+    <p style="font-size:.83rem;color:var(--text2);margin-bottom:.75rem">Cole a lista de aulas abaixo. Uma aula por linha. Formato: "Título da Aula | horas" (ex: "Aula 01 — Princípios | 2").</p>
+    <textarea id="import-aulas-txt" rows="8" placeholder="Aula 01 — Princípios Constitucionais | 2&#10;Aula 02 — Direitos Fundamentais | 1.5&#10;Aula 03 — Organização do Estado | 2"></textarea>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModalSecundarioAulas()">Cancelar</button><button class="btn btn-primary" onclick="confirmarImportarAulas()">Importar</button></div>
 </div>
 
 <!-- Modal Configurar Cronograma -->
 <div class="modal" id="modal-crono-config" style="display:none">
   <div class="modal-header"><h2>⚡ Configurar Cronograma Automático</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
   <div class="modal-body">
-    <p style="font-size:.83rem;color:var(--text2);margin-bottom:1rem;line-height:1.5">O sistema irá distribuir o tempo de estudo de cada disciplina proporcionalmente ao seu peso, priorizando as de alta prioridade. Os últimos dias serão reservados para revisão.</p>
+    <p style="font-size:.83rem;color:var(--text2);margin-bottom:1rem;line-height:1.6">O sistema irá distribuir o tempo de estudo de forma <strong>alternada</strong> entre as disciplinas — nunca estudando a mesma matéria dois dias seguidos. As disciplinas com conteúdo de aulas cadastrado terão distribuição precisa por aula.</p>
     <div class="form-row">
       <div class="form-group" style="margin:0"><label>Horas de estudo por dia</label><input type="number" id="crono-horas-dia" value="3" min="1" max="12" step="0.5"></div>
       <div class="form-group" style="margin:0"><label>Dias reservados p/ revisão</label><input type="number" id="crono-dias-revisao" value="7" min="0" max="30"></div>
@@ -689,7 +826,7 @@ tr:hover td{background:rgba(255,255,255,0.015)}
         <label style="display:flex;align-items:center;gap:.35rem;font-size:.82rem;cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400"><input type="checkbox" id="dc-6" value="6" checked> Sáb</label>
       </div>
     </div>
-    <div style="background:rgba(108,99,255,.07);border:1px solid rgba(108,99,255,.15);border-radius:var(--radius2);padding:.75rem 1rem;font-size:.8rem;color:var(--text2);margin-top:.25rem" id="crono-preview">Configure e veja o resumo aqui.</div>
+    <div style="background:rgba(79,126,255,.07);border:1px solid rgba(79,126,255,.15);border-radius:var(--radius2);padding:.75rem 1rem;font-size:.8rem;color:var(--text2);margin-top:.25rem" id="crono-preview">Configure e veja o resumo aqui.</div>
   </div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-amber" onclick="confirmarGerarCronograma()">⚡ Gerar Cronograma</button></div>
 </div>
@@ -710,6 +847,8 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   </div>
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarEvento()">Salvar</button></div>
 </div>
+
+<!-- Modal Canal YouTube -->
 <div class="modal" id="modal-canal" style="display:none">
   <div class="modal-header"><h2>Adicionar Canal YouTube</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
   <div class="modal-body">
@@ -829,32 +968,40 @@ tr:hover td{background:rgba(255,255,255,0.015)}
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarNota()">Salvar</button></div>
 </div>
 
-
-
-<!-- Modal Cronograma Gerado -->
-<div class="modal modal-lg" id="modal-crono-gerado" style="display:none">
-  <div class="modal-header"><h2>📅 Cronograma Gerado</h2><button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button></div>
-  <div class="modal-body" id="crono-gerado-body"></div>
-  <div class="modal-footer">
-    <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
-    <button class="btn btn-primary" id="btn-salvar-crono" onclick="">Salvar Cronograma</button>
-  </div>
-</div>
-
 </div><!-- /modal-overlay -->
 <div id="toast-wrap"></div>
 
 <script>
 // ════════════════════════════════════════
+//  TEMA
+// ════════════════════════════════════════
+const savedTheme=localStorage.getItem('cspro-theme')||'dark';
+document.documentElement.setAttribute('data-theme',savedTheme);
+updateThemeIcon(savedTheme);
+
+function updateThemeIcon(t){
+  const el=document.getElementById('theme-icon');
+  if(el) el.textContent=t==='light'?'☀️':'🌙';
+}
+
+document.getElementById('theme-toggle').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  localStorage.setItem('cspro-theme',next);
+  updateThemeIcon(next);
+};
+
+// ════════════════════════════════════════
 //  INDEXEDDB
 // ════════════════════════════════════════
 let db;
-const DB='ConcursosPRO_v2';
+const DB='ConcursosPRO_v4';
 const STORES=['concursos','disciplinas','cronogramas','eventos','cursos','aulas','quizzes','historico','flashcards','notas','canais','portais','bancas','config'];
 
 function initDB(){
   return new Promise((res,rej)=>{
-    const r=indexedDB.open(DB,2);
+    const r=indexedDB.open(DB,4);
     r.onupgradeneeded=e=>{
       const d=e.target.result;
       STORES.forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id'})});
@@ -895,10 +1042,20 @@ function gotoPage(id){
     if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"))n.classList.add('active');
   });
   if(pageHandlers[id]) pageHandlers[id]();
-  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+  if(window.innerWidth<960) closeSidebar();
 }
 
-document.getElementById('sidebar-toggle').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+document.getElementById('sidebar-toggle').onclick=()=>{
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+};
 document.getElementById('modal-overlay').onclick=e=>{if(e.target===e.currentTarget)closeModal()};
 
 // ════════════════════════════════════════
@@ -961,28 +1118,39 @@ async function renderMeusConcursos(){
   if(!el) return;
   const cs=await dbAll('concursos');
   const discs=await dbAll('disciplinas');
-  if(!cs.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="ei">🏛</div><p>Nenhum concurso cadastrado.<br>Clique em <strong>+ Novo Concurso</strong> para começar!</p></div>';return;}
+  const crono=await dbAll('cronogramas');
+  if(!cs.length){
+    el.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="ei">🏛</div><p>Nenhum concurso cadastrado.<br>Clique em <strong>+ Novo Concurso</strong> para começar!</p></div>';
+    return;
+  }
   el.innerHTML=cs.sort((a,b)=>a.dataProva?.localeCompare(b.dataProva)).map(c=>{
     const dias=diasParaProva(c.dataProva);
     const discsC=discs.filter(d=>d.concursoId===c.id);
+    const cronoC=crono.filter(s=>s.concursoId===c.id);
+    const concl=cronoC.filter(s=>s.concluido).length;
+    const pct=cronoC.length?Math.round(concl/cronoC.length*100):0;
     const cls=dias<30?'dias-urgente':dias<90?'dias-proximo':'dias-ok';
     return `<div class="concurso-card" onclick="abrirConcurso('${c.id}')">
       <div class="concurso-header">
         <div class="concurso-emoji">${c.emoji||'🏛'}</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:.95rem;font-weight:600;margin-bottom:.3rem">${c.orgao}</div>
+          <div style="font-size:.95rem;font-weight:700;margin-bottom:.3rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.orgao}</div>
           <div style="font-size:.75rem;color:var(--text3)">${c.banca?c.banca+' · ':''}${c.nivel||'Superior'}</div>
         </div>
         <span class="dias-badge ${cls}">⏱ ${dias>0?dias+'d':'HOJE'}</span>
       </div>
       <div class="concurso-body">
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.65rem">
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap">
           ${c.dataProva?`<span class="badge badge-red">📅 ${formatDate(c.dataProva)}</span>`:''}
           ${c.vagas?`<span class="badge badge-blue">👥 ${c.vagas} vagas</span>`:''}
           ${c.salario?`<span class="badge badge-green">💰 R$ ${c.salario}</span>`:''}
         </div>
         <div style="font-size:.78rem;color:var(--text3)">📖 ${discsC.length} disciplina(s) cadastrada(s)</div>
-        ${c.edital?`<a href="${c.edital}" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:.6rem;font-size:.73rem" onclick="event.stopPropagation()">🔗 Ver Edital</a>`:''}
+        ${cronoC.length?`<div style="margin-top:.3rem"><div class="progress" style="height:4px"><div class="progress-bar green" style="width:${pct}%"></div></div><div style="font-size:.7rem;color:var(--text3);margin-top:.2rem">${pct}% do cronograma concluído</div></div>`:''}
+      </div>
+      <div class="concurso-footer">
+        ${c.edital?`<a href="${c.edital}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:.73rem" onclick="event.stopPropagation()">🔗 Edital</a>`:'<span></span>'}
+        <span style="font-size:.75rem;color:var(--text3)">Ver detalhes →</span>
       </div>
     </div>`;
   }).join('');
@@ -1034,34 +1202,39 @@ async function renderDisciplinasCd(){
     const topicos=d.topicos||[];
     const topStudied=topicos.filter(t=>t.estudado).length;
     const topPct=topicos.length?Math.round(topStudied/topicos.length*100):0;
+    const aulasDisc=d.aulasConteudo||[];
     const topicosList=topicos.length?`
       <div style="margin-top:.65rem;border-top:1px solid var(--border);padding-top:.6rem">
-        <div style="font-size:.7rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:.4rem">
-          Tópicos do Conteúdo — ${topStudied}/${topicos.length} estudados
-        </div>
+        <div style="font-size:.7rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:.4rem">Tópicos — ${topStudied}/${topicos.length} estudados</div>
         <div style="margin-bottom:.3rem"><div class="progress" style="height:4px"><div class="progress-bar green" style="width:${topPct}%"></div></div></div>
         <div style="display:flex;flex-direction:column;gap:.25rem;max-height:200px;overflow-y:auto">
-          ${topicos.map(t=>`
-            <label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.25rem 0;font-size:.78rem">
-              <input type="checkbox" ${t.estudado?'checked':''} onchange="toggleTopico('${d.id}','${t.id}')" style="width:auto;margin-top:2px;accent-color:var(--green)">
-              <span style="${t.estudado?'text-decoration:line-through;color:var(--text3)':''}">${t.texto}</span>
-            </label>`).join('')}
+          ${topicos.map(t=>`<label style="display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.2rem 0;font-size:.78rem">
+            <input type="checkbox" ${t.estudado?'checked':''} onchange="toggleTopico('${d.id}','${t.id}')" style="width:auto;margin-top:2px;accent-color:var(--green)">
+            <span style="${t.estudado?'text-decoration:line-through;color:var(--text3)':''}">${t.texto}</span>
+          </label>`).join('')}
         </div>
-      </div>`:
-      (d.conteudo?`<p style="font-size:.75rem;color:var(--text3);line-height:1.4;margin-top:.4rem">${d.conteudo.slice(0,140)}${d.conteudo.length>140?'...':''}</p>`:'');
+      </div>`:''
+    ;
+    const aulasHtml=aulasDisc.length?`
+      <div class="conteudo-aulas-area">
+        <div style="font-size:.68rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:.5rem">📋 Conteúdo de Aulas (${aulasDisc.length})</div>
+        ${aulasDisc.map((a,i)=>`<div class="aula-item"><span class="aula-item-num">${i+1}</span><span class="aula-item-txt">${a.titulo}</span>${a.horas?`<span class="aula-item-h">${a.horas}h</span>`:''}</div>`).join('')}
+      </div>`:''
+    ;
     return `<div class="disc-item">
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem">
-          <span style="font-size:.88rem;font-weight:500">${d.nome}</span>
-          <span class="badge ${priorCls}" style="font-size:.65rem">${d.prioridade==='alta'?'🔴 Alta':d.prioridade==='baixa'?'🟢 Baixa':'🟡 Média'}</span>
+          <span style="font-size:.88rem;font-weight:600">${d.nome}</span>
+          <span class="badge ${priorCls}" style="font-size:.64rem">${d.prioridade==='alta'?'🔴 Alta':d.prioridade==='baixa'?'🟢 Baixa':'🟡 Média'}</span>
           ${topicos.length?`<span class="badge badge-blue" style="font-size:.62rem">📋 ${topicos.length} tópicos</span>`:''}
+          ${aulasDisc.length?`<span class="badge badge-violet" style="font-size:.62rem">🎬 ${aulasDisc.length} aulas</span>`:''}
         </div>
-        <div style="display:flex;gap:.75rem;font-size:.72rem;color:var(--text3)">
+        <div style="display:flex;gap:.75rem;font-size:.72rem;color:var(--text3);flex-wrap:wrap">
           <span>⚖️ Peso: ${d.peso||0}%</span>
           <span>⏱ ${d.horas||0}h estimadas</span>
           ${d.obs?`<span title="${d.obs}">📌 Obs</span>`:''}
         </div>
-        ${topicosList}
+        ${topicosList}${aulasHtml}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0">
         <div class="disc-pct">${pPct}%</div>
@@ -1080,7 +1253,9 @@ function openModalDisciplina(id){
   document.getElementById('md-concurso-id').value=concursoAtualId||'';
   document.getElementById('md-titulo-h').textContent='Nova Disciplina';
   topicosTmp=[];
+  aulasDiscTmp=[];
   renderTopicosTmp();
+  renderAulasDiscTmp();
   if(id){
     dbAll('disciplinas').then(ds=>{
       const d=ds.find(x=>x.id===id);
@@ -1093,13 +1268,16 @@ function openModalDisciplina(id){
       document.getElementById('md-prioridade').value=d.prioridade||'media';
       document.getElementById('md-titulo-h').textContent='Editar Disciplina';
       topicosTmp=(d.topicos||[]).map(t=>({...t}));
+      aulasDiscTmp=(d.aulasConteudo||[]).map(a=>({...a}));
       renderTopicosTmp();
+      renderAulasDiscTmp();
     });
   }
   showModal('modal-disciplina');
 }
 
 let topicosTmp=[];
+let aulasDiscTmp=[];
 
 function adicionarTopico(){
   const inp=document.getElementById('topico-novo');
@@ -1116,10 +1294,10 @@ function renderTopicosTmp(){
   if(!el) return;
   if(!topicosTmp.length){el.innerHTML='<p style="font-size:.75rem;color:var(--text3)">Nenhum tópico adicionado ainda.</p>';return;}
   el.innerHTML=topicosTmp.map((t,i)=>`
-    <div style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">
-      <span style="font-size:.75rem;color:var(--text3);font-family:var(--mono);width:18px;flex-shrink:0">${i+1}</span>
-      <span style="flex:1;font-size:.82rem">${t.texto}</span>
-      <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="removerTopico(${i})">×</button>
+    <div class="topico-item">
+      <span class="topico-num">${i+1}</span>
+      <span class="topico-txt">${t.texto}</span>
+      <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="removerTopico(${i})" style="width:26px;height:26px">×</button>
     </div>`).join('');
 }
 
@@ -1145,12 +1323,80 @@ function confirmarImportarTopicos(){
   toast(`${linhas.length} tópico(s) importados!`);
 }
 
+// ════════ AULAS DO CONTEÚDO ════════
+function adicionarAulaDisc(){
+  const tituloInp=document.getElementById('aula-disc-titulo');
+  const horasInp=document.getElementById('aula-disc-horas');
+  const titulo=tituloInp.value.trim();
+  if(!titulo) return;
+  const horas=parseFloat(horasInp.value)||1;
+  aulasDiscTmp.push({id:uid(),titulo,horas});
+  tituloInp.value='';
+  horasInp.value='';
+  renderAulasDiscTmp();
+  tituloInp.focus();
+}
+
+function renderAulasDiscTmp(){
+  const el=document.getElementById('aulas-disc-lista');
+  if(!el) return;
+  if(!aulasDiscTmp.length){el.innerHTML='<p style="font-size:.75rem;color:var(--text3)">Nenhuma aula adicionada ainda. O cronograma usará as horas estimadas da disciplina.</p>';return;}
+  const totalH=aulasDiscTmp.reduce((s,a)=>s+a.horas,0);
+  el.innerHTML=`
+    <div style="background:rgba(79,126,255,.07);border:1px solid rgba(79,126,255,.15);border-radius:7px;padding:.5rem .75rem;font-size:.75rem;color:var(--accent2);margin-bottom:.35rem">
+      📚 ${aulasDiscTmp.length} aula(s) · ${totalH}h total
+    </div>
+    ${aulasDiscTmp.map((a,i)=>`
+    <div class="aula-item">
+      <span class="aula-item-num">${i+1}</span>
+      <span class="aula-item-txt">${a.titulo}</span>
+      <span class="aula-item-h">${a.horas}h</span>
+      <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="removerAulaDisc(${i})" style="width:24px;height:24px">×</button>
+    </div>`).join('')}`;
+}
+
+function removerAulaDisc(idx){ aulasDiscTmp.splice(idx,1); renderAulasDiscTmp(); }
+
+function importarAulasTexto(){
+  document.getElementById('import-aulas-txt').value='';
+  document.getElementById('modal-import-aulas').style.display='block';
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function closeModalSecundarioAulas(){
+  document.getElementById('modal-import-aulas').style.display='none';
+  document.getElementById('modal-disciplina').style.display='block';
+}
+
+function confirmarImportarAulas(){
+  const txt=document.getElementById('import-aulas-txt').value;
+  const linhas=txt.split('\n').map(l=>l.trim()).filter(l=>l.length>2);
+  linhas.forEach(l=>{
+    const parts=l.split('|');
+    const titulo=parts[0].trim().replace(/^[-•*]\s*/,'');
+    const horas=parseFloat((parts[1]||'1').trim())||1;
+    if(titulo) aulasDiscTmp.push({id:uid(),titulo,horas});
+  });
+  renderAulasDiscTmp();
+  closeModalSecundarioAulas();
+  toast(`${linhas.length} aula(s) importadas!`);
+}
+
 async function salvarDisciplina(){
   const nome=document.getElementById('md-nome').value.trim();
   const concursoId=document.getElementById('md-concurso-id').value||concursoAtualId;
   if(!nome||!concursoId){toast('Preencha o nome da disciplina','error');return;}
   const id=document.getElementById('md-id').value||uid();
-  await dbPut('disciplinas',{id,concursoId,nome,peso:parseFloat(document.getElementById('md-peso').value)||0,horas:parseInt(document.getElementById('md-horas').value)||0,topicos:topicosTmp,obs:document.getElementById('md-obs').value,prioridade:document.getElementById('md-prioridade').value,criadoEm:Date.now()});
+  await dbPut('disciplinas',{
+    id,concursoId,nome,
+    peso:parseFloat(document.getElementById('md-peso').value)||0,
+    horas:parseInt(document.getElementById('md-horas').value)||0,
+    topicos:topicosTmp,
+    aulasConteudo:aulasDiscTmp,
+    obs:document.getElementById('md-obs').value,
+    prioridade:document.getElementById('md-prioridade').value,
+    criadoEm:Date.now()
+  });
   closeModal();
   toast('Disciplina salva!');
   renderDisciplinasCd();
@@ -1185,10 +1431,8 @@ let cronoConcursoTarget=null;
 
 function abrirCronoConfig(concursoId){
   cronoConcursoTarget=concursoId;
-  // Calcular preview
   atualizarCronoPreview();
   showModal('modal-crono-config');
-  // Listeners para preview ao vivo
   ['crono-horas-dia','crono-dias-revisao'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.oninput=atualizarCronoPreview;
@@ -1217,7 +1461,7 @@ async function atualizarCronoPreview(){
   const totalHoras=(diasEstudo*horasDia).toFixed(0);
   const ds=await dbAll('disciplinas');
   const ndiscs=ds.filter(d=>d.concursoId===cronoConcursoTarget).length;
-  el.innerHTML=`📅 <strong>${diasTotal}</strong> dias até a prova &nbsp;·&nbsp; 📖 <strong>${diasEstudo}</strong> dias de estudo &nbsp;·&nbsp; 🔄 <strong>${diasRevisao}</strong> dias de revisão<br>⏱ Total estimado: <strong>${totalHoras}h</strong> em <strong>${ndiscs}</strong> disciplinas`;
+  el.innerHTML=`📅 <strong>${diasTotal}</strong> dias até a prova &nbsp;·&nbsp; 📖 <strong>${diasEstudo}</strong> dias de estudo &nbsp;·&nbsp; 🔄 <strong>${diasRevisao}</strong> dias de revisão<br>⏱ Total estimado: <strong>${totalHoras}h</strong> em <strong>${ndiscs}</strong> disciplinas<br><span style="color:var(--green);font-size:.76rem">✅ Distribuição alternada ativada — sem repetição de matéria em dias consecutivos</span>`;
 }
 
 async function confirmarGerarCronograma(){
@@ -1229,7 +1473,7 @@ async function confirmarGerarCronograma(){
 }
 
 // ════════════════════════════════════════
-//  CRONOGRAMA AUTOMÁTICO
+//  CRONOGRAMA AUTOMÁTICO ALTERNADO
 // ════════════════════════════════════════
 async function gerarCronograma(concursoId, HORAS_DIA=3, diasRevisaoConf=7, diasDescanso=new Set()){
   const cs=await dbAll('concursos');
@@ -1247,7 +1491,7 @@ async function gerarCronograma(concursoId, HORAS_DIA=3, diasRevisaoConf=7, diasD
   const diasRevisaoEfetivo=Math.min(diasRevisaoConf, Math.floor(diasTotal*0.2));
   const diasEstudoTot=Math.max(diasTotal-diasRevisaoEfetivo,1);
 
-  // Coletar dias úteis de estudo (excluindo descanso)
+  // Dias úteis de estudo
   const diasEstudoLista=[];
   for(let i=0;i<diasEstudoTot;i++){
     const dt=new Date(hoje); dt.setDate(hoje.getDate()+i);
@@ -1257,34 +1501,68 @@ async function gerarCronograma(concursoId, HORAS_DIA=3, diasRevisaoConf=7, diasD
   const totalHorasEstudo=diasEstudoLista.length*HORAS_DIA;
   const totalPeso=discs.reduce((s,d)=>s+(d.peso||1),0);
   const prioOrd={alta:0,media:1,baixa:2};
+
+  // Calcular horas por disciplina (considerando conteúdo de aulas se disponível)
   const planejamento=discs.map(d=>{
     const prop=(d.peso||1)/totalPeso;
-    return {...d, horasAlocar:Math.max(1,parseFloat((totalHorasEstudo*prop).toFixed(1)))};
+    let horasAlocar=Math.max(1,parseFloat((totalHorasEstudo*prop).toFixed(1)));
+    // Se tem aulas cadastradas, usar a soma das horas delas
+    if(d.aulasConteudo&&d.aulasConteudo.length){
+      const totalAulas=d.aulasConteudo.reduce((s,a)=>s+(a.horas||1),0);
+      if(totalAulas>0) horasAlocar=totalAulas;
+    } else if(d.horas&&d.horas>0){
+      horasAlocar=d.horas;
+    }
+    return {...d, horasAlocar, horasRestantes:horasAlocar};
   }).sort((a,b)=>(prioOrd[a.prioridade]||1)-(prioOrd[b.prioridade]||1));
 
+  // DISTRIBUIÇÃO ALTERNADA — round-robin entre disciplinas
+  // Calcula slot tamanho por disciplina proporcional ao dia
   const slots=[];
-  let slotIdx=0;
+  const totalHorasTodas=planejamento.reduce((s,d)=>s+d.horasAlocar,0);
+
   for(const dtStr of diasEstudoLista){
-    let horasRestantes=HORAS_DIA;
-    while(horasRestantes>0.1 && slotIdx<planejamento.length){
-      const disc=planejamento[slotIdx];
-      const h=Math.min(horasRestantes, disc.horasAlocar, 1.5);
+    // Quais disciplinas ainda têm horas a alocar?
+    const disponiveis=planejamento.filter(d=>d.horasRestantes>0.1);
+    if(!disponiveis.length) break;
+
+    let horasRestantesDia=HORAS_DIA;
+    // Distribuir o dia proporcionalmente entre disciplinas disponíveis
+    // mas garantir alternância: no máximo 2 disciplinas por dia
+    const maxDisciDia=Math.min(2, disponiveis.length);
+    const escolhidas=disponiveis.slice(0,maxDisciDia);
+
+    const horasPorDisci=horasRestantesDia/escolhidas.length;
+    for(const disc of escolhidas){
+      const h=Math.min(horasPorDisci, disc.horasRestantes, 2);
       const hRound=Math.round(h*2)/2;
-      if(hRound<=0){slotIdx++;continue;}
-      disc.horasAlocar=Math.max(0,disc.horasAlocar-hRound);
+      if(hRound<0.5){ continue; }
+      disc.horasRestantes=Math.max(0,disc.horasRestantes-hRound);
       slots.push({id:uid(),data:dtStr,disciplina:disc.nome,disciplinaId:disc.id,horas:hRound,tipo:'estudo',concursoId,concluido:false});
-      horasRestantes-=hRound;
-      if(disc.horasAlocar<=0.1) slotIdx++;
+      horasRestantesDia-=hRound;
+    }
+
+    // Rotacionar para garantir alternância no próximo dia
+    if(disponiveis.length>1){
+      const primeiro=planejamento.shift();
+      planejamento.push(primeiro);
     }
   }
 
-  // Fase revisão — últimos diasRevisaoEfetivo dias
+  // Fase revisão alternada — últimos dias
+  const revisar=discs.filter(x=>x.prioridade==='alta').length?discs.filter(x=>x.prioridade==='alta'):discs;
+  let rIdx=0;
   for(let d=0;d<diasRevisaoEfetivo;d++){
     const dt=new Date(hoje); dt.setDate(hoje.getDate()+diasEstudoTot+d);
     if(diasDescanso.has(dt.getDay())) continue;
     const dtStr=dt.toISOString().slice(0,10);
-    const altas=discs.filter(x=>x.prioridade==='alta');
-    const revDiscs=(altas.length?altas:discs).slice(0,Math.max(2,Math.round(HORAS_DIA/1.5)));
+    // Alternar entre as disciplinas de revisão
+    const revDiscs=[];
+    const maxRev=Math.min(2, revisar.length);
+    for(let i=0;i<maxRev;i++){
+      revDiscs.push(revisar[(rIdx+i)%revisar.length]);
+    }
+    rIdx=(rIdx+maxRev)%revisar.length;
     revDiscs.forEach(disc=>{
       slots.push({id:uid(),data:dtStr,disciplina:disc.nome,disciplinaId:disc.id,horas:Math.round((HORAS_DIA/revDiscs.length)*2)/2,tipo:'revisao',concursoId,concluido:false});
     });
@@ -1307,7 +1585,6 @@ async function renderCronogramaConcurso(){
     el.innerHTML=`<div class="empty-state"><div class="ei">📅</div><p>Nenhum cronograma gerado ainda.<br>Clique em <strong>📅 Gerar Cronograma</strong> no topo da página.</p></div>`;
     return;
   }
-  // Agrupar por data
   const byDate={};
   slots.forEach(s=>{if(!byDate[s.data])byDate[s.data]=[];byDate[s.data].push(s);});
   const hoje=new Date().toISOString().slice(0,10);
@@ -1324,19 +1601,20 @@ async function renderCronogramaConcurso(){
   </div>`;
 
   const entries=Object.entries(byDate);
-  const show=entries.slice(0,30); // mostrar 30 dias
+  const show=entries.slice(0,30);
   show.forEach(([data,ss])=>{
     const isHoje=data===hoje;
     const past=data<hoje;
     const dtObj=new Date(data+'T00:00:00');
     const diasSemana=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
     const dsm=diasSemana[dtObj.getDay()];
-    html+=`<div class="crono-day" style="${isHoje?'border-color:var(--accent);background:rgba(108,99,255,0.04)':''}${past&&!isHoje?'opacity:.55':''}">
+    const discColors={'estudo':'rgba(79,126,255,0.06)','revisao':'rgba(246,166,35,0.06)'};
+    html+=`<div class="crono-day" style="${isHoje?'border-color:var(--accent);background:rgba(79,126,255,0.04)':''}${past&&!isHoje?'opacity:.55':''}">
       <div class="crono-day-header">
         <span class="crono-day-title">${isHoje?'📍 Hoje — ':dsm+', '}${formatDate(data)}</span>
         <span class="crono-day-date">${ss.reduce((t,x)=>t+x.horas,0).toFixed(1)}h</span>
       </div>
-      ${ss.map(s=>`<div class="crono-slot ${s.concluido?'crono-done':''}" style="background:${s.tipo==='revisao'?'rgba(251,191,36,0.06)':'rgba(108,99,255,0.04)'}">
+      ${ss.map(s=>`<div class="crono-slot ${s.concluido?'crono-done':''}" style="background:${discColors[s.tipo]||discColors.estudo}">
         <div class="crono-check ${s.concluido?'checked':''}" onclick="toggleCronoSlot('${s.id}')">${s.concluido?'✓':''}</div>
         <span style="font-size:.78rem;flex:1">${s.disciplina}</span>
         <span class="badge ${s.tipo==='revisao'?'badge-amber':'badge-purple'}" style="font-size:.62rem">${s.tipo==='revisao'?'Revisão':'Estudo'}</span>
@@ -1388,7 +1666,7 @@ async function renderCalendario(){
   const tituloEl=document.getElementById('cal-titulo');
   if(!headerEl) return;
   const dias=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  headerEl.innerHTML=dias.map(d=>`<div style="text-align:center;font-size:.65rem;font-weight:600;color:var(--text3);padding:3px">${d}</div>`).join('');
+  headerEl.innerHTML=dias.map(d=>`<div style="text-align:center;font-size:.63rem;font-weight:700;color:var(--text3);padding:3px">${d}</div>`).join('');
   tituloEl.textContent=calDate.toLocaleString('pt-BR',{month:'long',year:'numeric'});
   const ano=calDate.getFullYear(),mes=calDate.getMonth();
   const primDia=new Date(ano,mes,1).getDay();
@@ -1396,16 +1674,12 @@ async function renderCalendario(){
   const totalAnt=new Date(ano,mes,0).getDate();
   const hoje=new Date(); hoje.setHours(0,0,0,0);
   const hojeStr=hoje.toISOString().slice(0,10);
-
-  // Carregar concursos e cronogramas
   const concursos=await dbAll('concursos');
   const crono=await dbAll('cronogramas');
   const eventos=await dbAll('eventos');
-
   const provasDates=new Set(concursos.map(c=>c.dataProva));
   const cronoDates=new Set(crono.map(s=>s.data));
   const eventoDates=new Set(eventos.map(e=>e.data));
-
   let html='';
   for(let i=0;i<primDia;i++) html+=`<div class="cal-day other-month">${totalAnt-primDia+i+1}</div>`;
   for(let d=1;d<=totalDias;d++){
@@ -1429,14 +1703,14 @@ async function calDayClick(data){
     el.innerHTML=`<div style="color:var(--text3);font-size:.85rem">Sem atividades em <strong>${formatDate(data)}</strong>.</div>`;
     return;
   }
-  let html=`<h4 style="font-size:.88rem;font-weight:600;margin-bottom:.75rem">📅 ${formatDate(data)}</h4>`;
+  let html=`<h4 style="font-size:.88rem;font-weight:700;margin-bottom:.75rem">📅 ${formatDate(data)}</h4>`;
   if(provas.length){
     html+=`<div style="margin-bottom:.6rem">`;
-    provas.forEach(p=>html+=`<div style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:.5rem .8rem;font-size:.82rem;color:var(--red);font-weight:500">🚨 PROVA: ${p.orgao}</div>`);
+    provas.forEach(p=>html+=`<div style="background:rgba(245,101,101,.1);border:1px solid rgba(245,101,101,.25);border-radius:7px;padding:.5rem .8rem;font-size:.82rem;color:var(--red);font-weight:600">🚨 PROVA: ${p.orgao}</div>`);
     html+=`</div>`;
   }
   if(crono.length){
-    html+=`<div style="font-size:.72rem;color:var(--text3);margin-bottom:.4rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Sessões planejadas</div>`;
+    html+=`<div style="font-size:.7rem;color:var(--text3);margin-bottom:.4rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px">Sessões planejadas</div>`;
     crono.forEach(s=>html+=`<div class="crono-slot ${s.concluido?'crono-done':''}">
       <div class="crono-check ${s.concluido?'checked':''}" onclick="toggleCronoSlot('${s.id}');calDayClick('${data}')">${s.concluido?'✓':''}</div>
       <span style="font-size:.8rem;flex:1">${s.disciplina}</span>
@@ -1445,8 +1719,8 @@ async function calDayClick(data){
     </div>`);
   }
   if(eventos.length){
-    html+=`<div style="font-size:.72rem;color:var(--text3);margin:.6rem 0 .4rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Eventos</div>`;
-    eventos.forEach(e=>html+=`<div style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:6px;background:var(--bg3);margin-bottom:.3rem;font-size:.8rem"><span>📌</span><span style="flex:1">${e.titulo}</span><button class="btn btn-danger btn-sm" onclick="dbDel('eventos','${e.id}').then(()=>calDayClick('${data}'))">🗑</button></div>`);
+    html+=`<div style="font-size:.7rem;color:var(--text3);margin:.6rem 0 .4rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px">Eventos</div>`;
+    eventos.forEach(e=>html+=`<div style="display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;border-radius:7px;background:var(--bg3);margin-bottom:.3rem;font-size:.8rem"><span>📌</span><span style="flex:1">${e.titulo}</span><button class="btn btn-danger btn-sm" onclick="dbDel('eventos','${e.id}').then(()=>calDayClick('${data}'))">🗑</button></div>`);
   }
   el.innerHTML=html;
 }
@@ -1459,9 +1733,9 @@ async function renderProximasProvas(){
   el.innerHTML=cs.map(c=>{
     const dias=diasParaProva(c.dataProva);
     const cls=dias<30?'dias-urgente':dias<90?'dias-proximo':'dias-ok';
-    return `<div style="display:flex;align-items:center;gap:.7rem;padding:.6rem;border-radius:var(--radius2);cursor:pointer;transition:.1s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''" onclick="abrirConcurso('${c.id}')">
+    return `<div style="display:flex;align-items:center;gap:.7rem;padding:.6rem;border-radius:var(--radius2);cursor:pointer;transition:.12s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''" onclick="abrirConcurso('${c.id}')">
       <span style="font-size:1.4rem">${c.emoji||'🏛'}</span>
-      <div style="flex:1;min-width:0"><div style="font-size:.83rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.orgao}</div><div style="font-size:.72rem;color:var(--text3)">${formatDate(c.dataProva)}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-size:.83rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.orgao}</div><div style="font-size:.72rem;color:var(--text3)">${formatDate(c.dataProva)}</div></div>
       <span class="dias-badge ${cls}">${dias>0?dias+'d':'HOJE'}</span>
     </div>`;
   }).join('');
@@ -1475,9 +1749,7 @@ async function salvarEvento(){
   const data=document.getElementById('mev-data').value;
   if(!titulo||!data){toast('Informe título e data','error');return;}
   await dbPut('eventos',{id:uid(),titulo,data,hora:document.getElementById('mev-hora').value,materia:document.getElementById('mev-materia').value,duracao:document.getElementById('mev-dur').value,criadoEm:Date.now()});
-  closeModal();
-  toast('Evento salvo!');
-  renderCronogramaGlobal();
+  closeModal();toast('Evento salvo!');renderCronogramaGlobal();
 }
 
 // ════════════════════════════════════════
@@ -1504,28 +1776,35 @@ async function renderCanais(){
   const q=document.getElementById('search-canais')?.value.toLowerCase()||'';
   const filt=document.getElementById('filter-canais')?.value||'';
   let canais=await dbAll('canais');
-  if(!canais.length&&!q&&!filt){
-    // popular com padrões na 1ª vez
-    for(const c of CANAIS_PADRAO) await dbPut('canais',c);
-    canais=CANAIS_PADRAO;
-  }
+  if(!canais.length&&!q&&!filt){for(const c of CANAIS_PADRAO)await dbPut('canais',c);canais=CANAIS_PADRAO;}
   if(q) canais=canais.filter(c=>c.nome.toLowerCase().includes(q)||(c.materias||'').toLowerCase().includes(q));
   if(filt) canais=canais.filter(c=>(c.materias||'').includes(filt));
   if(!canais.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="ei">▶</div><p>Nenhum canal encontrado.</p></div>';return;}
-  el.innerHTML=canais.map(c=>`
-    <div class="link-card">
-      <div class="link-icon link-yt">${c.emoji||'▶'}</div>
-      <div style="flex:1;min-width:0">
-        <div class="lc-name">${c.nome}</div>
-        <div style="font-size:.72rem;color:var(--accent3);margin-bottom:.25rem;font-family:var(--mono)">${c.materias||''}</div>
+  el.innerHTML=canais.map(c=>{
+    const materiasList=(c.materias||'').split(',').map(m=>m.trim()).filter(Boolean);
+    return `<div class="link-card">
+      <div class="link-card-header">
+        <div class="link-icon link-yt">${c.emoji||'▶'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="lc-name">${c.nome}</div>
+          <div class="lc-url">${c.url}</div>
+        </div>
+      </div>
+      <div class="link-card-body">
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.45rem">
+          ${materiasList.slice(0,3).map(m=>`<span class="badge badge-blue" style="font-size:.62rem">${m}</span>`).join('')}
+        </div>
         ${c.desc?`<div class="lc-desc">${c.desc}</div>`:''}
-        <a href="${c.url}" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:.5rem;font-size:.73rem">▶ Abrir Canal</a>
       </div>
-      <div class="link-actions">
-        <button class="btn btn-ghost btn-icon btn-sm" onclick="editarCanal('${c.id}')">✏️</button>
-        <button class="btn btn-danger btn-icon btn-sm" onclick="excluirCanal('${c.id}')">🗑</button>
+      <div class="link-card-footer">
+        <a href="${c.url}" target="_blank" class="btn btn-primary btn-sm">▶ Abrir Canal</a>
+        <div style="display:flex;gap:.3rem">
+          <button class="btn btn-ghost btn-icon btn-sm" onclick="editarCanal('${c.id}')">✏️</button>
+          <button class="btn btn-danger btn-icon btn-sm" onclick="excluirCanal('${c.id}')">🗑</button>
+        </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 async function salvarCanal(){
@@ -1534,9 +1813,7 @@ async function salvarCanal(){
   if(!nome||!url){toast('Nome e URL são obrigatórios','error');return;}
   const id=document.getElementById('canal-id').value||uid();
   await dbPut('canais',{id,nome,url,materias:document.getElementById('canal-materias').value,desc:document.getElementById('canal-desc').value,emoji:document.getElementById('canal-emoji').value||'▶',criadoEm:Date.now()});
-  closeModal();
-  toast('Canal salvo!');
-  renderCanais();
+  closeModal();toast('Canal salvo!');renderCanais();
 }
 
 async function editarCanal(id){
@@ -1563,12 +1840,12 @@ const PORTAIS_PADRAO=[
   {id:'p-4',nome:'Diário Oficial da União (DOU)',url:'https://www.in.gov.br',desc:'Publicações oficiais do governo federal: editais, resultados, portarias e nomeações.',emoji:'🏛'},
   {id:'p-5',nome:'PCI Concursos',url:'https://www.pciconcursos.com.br',desc:'Calendário completo de concursos públicos abertos, previstos e com inscrições abertas.',emoji:'📆'},
   {id:'p-6',nome:'Folha Dirigida',url:'https://www.folhadirigida.com.br',desc:'Jornal especializado em concursos públicos há mais de 40 anos. Referência na área.',emoji:'📄'},
-  {id:'p-7',nome:'Estratégia Concursos — Notícias',url:'https://www.estrategiaconcursos.com.br/blog',desc:'Blog com análises de editais, dicas e notícias sobre concursos. Muito conteúdo gratuito.',emoji:'📝'},
-  {id:'p-8',nome:'Legislação Federal (Planalto)',url:'https://www.planalto.gov.br',desc:'Leis, decretos, medidas provisórias e Constituição Federal. Fonte oficial para estudo de legislação.',emoji:'⚖️'},
+  {id:'p-7',nome:'Estratégia — Blog',url:'https://www.estrategiaconcursos.com.br/blog',desc:'Análises de editais, dicas e notícias sobre concursos. Muito conteúdo gratuito.',emoji:'📝'},
+  {id:'p-8',nome:'Legislação Federal (Planalto)',url:'https://www.planalto.gov.br',desc:'Leis, decretos, medidas provisórias e Constituição Federal. Fonte oficial para estudo.',emoji:'⚖️'},
   {id:'p-9',nome:'Portal TCU',url:'https://portal.tcu.gov.br',desc:'Tribunal de Contas da União. Jurisprudências, acórdãos e publicações sobre controle público.',emoji:'🔍'},
   {id:'p-10',nome:'Portal STF',url:'https://portal.stf.jus.br',desc:'Supremo Tribunal Federal. Decisões, súmulas e informativos essenciais para Direito Constitucional.',emoji:'🏛'},
   {id:'p-11',nome:'Receita Federal — Concursos',url:'https://www.gov.br/concursos',desc:'Portal oficial do governo federal para concursos. Editais de órgãos públicos federais.',emoji:'🇧🇷'},
-  {id:'p-12',nome:'Gran Online — Blog',url:'https://blog.grancursosonline.com.br',desc:'Dicas de estudo, análises de editais e notícias sobre os principais concursos do momento.',emoji:'💡'},
+  {id:'p-12',nome:'Gran Online — Blog',url:'https://blog.grancursosonline.com.br',desc:'Dicas de estudo, análises de editais e notícias sobre os principais concursos.',emoji:'💡'},
 ];
 
 async function renderPortais(){
@@ -1578,16 +1855,22 @@ async function renderPortais(){
   if(!portais.length){for(const p of PORTAIS_PADRAO)await dbPut('portais',p);portais=PORTAIS_PADRAO;}
   el.innerHTML=portais.map(p=>`
     <div class="link-card">
-      <div class="link-icon link-portal">${p.emoji||'🌐'}</div>
-      <div style="flex:1;min-width:0">
-        <div class="lc-name">${p.nome}</div>
-        <a class="lc-url" href="${p.url}" target="_blank">${p.url}</a>
-        ${p.desc?`<div class="lc-desc">${p.desc}</div>`:''}
-        <a href="${p.url}" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:.5rem;font-size:.73rem">🔗 Acessar</a>
+      <div class="link-card-header">
+        <div class="link-icon link-portal">${p.emoji||'🌐'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="lc-name">${p.nome}</div>
+          <div class="lc-url">${p.url}</div>
+        </div>
       </div>
-      <div class="link-actions">
-        <button class="btn btn-ghost btn-icon btn-sm" onclick="editarPortal('${p.id}')">✏️</button>
-        <button class="btn btn-danger btn-icon btn-sm" onclick="excluirPortal('${p.id}')">🗑</button>
+      <div class="link-card-body">
+        ${p.desc?`<div class="lc-desc">${p.desc}</div>`:''}
+      </div>
+      <div class="link-card-footer">
+        <a href="${p.url}" target="_blank" class="btn btn-primary btn-sm">🔗 Acessar</a>
+        <div style="display:flex;gap:.3rem">
+          <button class="btn btn-ghost btn-icon btn-sm" onclick="editarPortal('${p.id}')">✏️</button>
+          <button class="btn btn-danger btn-icon btn-sm" onclick="excluirPortal('${p.id}')">🗑</button>
+        </div>
       </div>
     </div>`).join('');
 }
@@ -1617,18 +1900,16 @@ async function excluirPortal(id){await dbDel('portais',id);toast('Portal removid
 //  BANCAS
 // ════════════════════════════════════════
 const BANCAS_PADRAO=[
-  {id:'b-1',nome:'Cesgranrio',url:'https://www.cesgranrio.org.br',sigla:'CESGRANRIO',desc:'Fundação especializada em concursos para Petrobras, Banco do Brasil, BNDES, CEF e outros grandes concursos. Provas bem elaboradas com foco técnico.',emoji:'🏛'},
-  {id:'b-2',nome:'Cebraspe (CESPE/UnB)',url:'https://www.cebraspe.org.br',sigla:'CEBRASPE',desc:'Antiga CESPE/UnB. Realiza concursos federais de alto nível: STF, PF, PRF, TCU, Receita Federal. Provas com questões C/E (certo ou errado).',emoji:'⚖️'},
-  {id:'b-3',nome:'Fundação Getúlio Vargas',url:'https://www.fgv.br/fgv-concursos',sigla:'FGV',desc:'Banca conhecida por provas elaboradas e diversificadas. Realiza concursos para prefeituras, TCEs e órgãos estaduais.',emoji:'🎓'},
-  {id:'b-4',nome:'Fundação Carlos Chagas',url:'https://www.concursosfcc.com.br',sigla:'FCC',desc:'Uma das maiores bancas do país. Foco em Língua Portuguesa e questões objetivas tradicionais. Realiza concursos para TJs, MPEs e TST.',emoji:'📝'},
-  {id:'b-5',nome:'Instituto AOCP',url:'https://www.institutoaocp.org.br',sigla:'AOCP',desc:'Banca que realiza concursos em todo o território nacional para prefeituras, universidades federais e órgãos estaduais.',emoji:'🏢'},
-  {id:'b-6',nome:'VUNESP',url:'https://www.vunesp.com.br',sigla:'VUNESP',desc:'Vinculada à UNESP, realiza concursos estaduais de São Paulo: TJ-SP, SABESP, DETRAN-SP e outros.',emoji:'🔬'},
-  {id:'b-7',nome:'Instituto IBFC',url:'https://www.ibfc.org.br',sigla:'IBFC',desc:'Banca federal com foco em saúde pública, autarquias e órgãos do poder executivo federal.',emoji:'🏥'},
-  {id:'b-8',nome:'IADES',url:'https://www.iades.com.br',sigla:'IADES',desc:'Instituto focado em concursos do Distrito Federal, CFM, CRF e área federal. Questões analíticas.',emoji:'📊'},
-  {id:'b-9',nome:'CONSULPLAN',url:'https://www.consulplan.com.br',sigla:'CONSULPLAN',desc:'Realiza concursos para TRFs, TRTs, MPUs e municípios. Provas objetivas e discursivas.',emoji:'📋'},
-  {id:'b-10',nome:'Fundação GETEP',url:'https://www.pciconcursos.com.br',sigla:'GETEP',desc:'Banca com foco em concursos municipais e estaduais da região Nordeste.',emoji:'🌟'},
-  {id:'b-11',nome:'OBJETIVA',url:'https://www.objetiva.srv.br',sigla:'OBJETIVA',desc:'Banca gaúcha que realiza concursos para municípios do Sul do Brasil.',emoji:'🔵'},
-  {id:'b-12',nome:'Instituto Quadrix',url:'https://www.quadrix.org.br',sigla:'QUADRIX',desc:'Realiza concursos para conselhos federais (CFM, CREA, CRO) e órgãos públicos. Questões de alto nível.',emoji:'🔷'},
+  {id:'b-1',nome:'Cesgranrio',url:'https://www.cesgranrio.org.br',sigla:'CESGRANRIO',desc:'Especializada em concursos para Petrobras, Banco do Brasil, BNDES, CEF. Provas com foco técnico.',emoji:'🏛'},
+  {id:'b-2',nome:'Cebraspe (CESPE/UnB)',url:'https://www.cebraspe.org.br',sigla:'CEBRASPE',desc:'Antiga CESPE/UnB. STF, PF, PRF, TCU, Receita Federal. Questões Certo/Errado.',emoji:'⚖️'},
+  {id:'b-3',nome:'Fundação Getúlio Vargas',url:'https://www.fgv.br/fgv-concursos',sigla:'FGV',desc:'Banca conhecida por provas diversificadas. Prefeituras, TCEs e órgãos estaduais.',emoji:'🎓'},
+  {id:'b-4',nome:'Fundação Carlos Chagas',url:'https://www.concursosfcc.com.br',sigla:'FCC',desc:'Uma das maiores bancas do país. Foco em Língua Portuguesa e questões objetivas tradicionais.',emoji:'📝'},
+  {id:'b-5',nome:'Instituto AOCP',url:'https://www.institutoaocp.org.br',sigla:'AOCP',desc:'Concursos em todo o território nacional para prefeituras, universidades federais.',emoji:'🏢'},
+  {id:'b-6',nome:'VUNESP',url:'https://www.vunesp.com.br',sigla:'VUNESP',desc:'Vinculada à UNESP. TJ-SP, SABESP, DETRAN-SP e outros órgãos estaduais de São Paulo.',emoji:'🔬'},
+  {id:'b-7',nome:'Instituto IBFC',url:'https://www.ibfc.org.br',sigla:'IBFC',desc:'Foco em saúde pública, autarquias e órgãos do poder executivo federal.',emoji:'🏥'},
+  {id:'b-8',nome:'IADES',url:'https://www.iades.com.br',sigla:'IADES',desc:'Foco em concursos do Distrito Federal, CFM, CRF e área federal. Questões analíticas.',emoji:'📊'},
+  {id:'b-9',nome:'CONSULPLAN',url:'https://www.consulplan.com.br',sigla:'CONSULPLAN',desc:'TRFs, TRTs, MPUs e municípios. Provas objetivas e discursivas.',emoji:'📋'},
+  {id:'b-10',nome:'Instituto Quadrix',url:'https://www.quadrix.org.br',sigla:'QUADRIX',desc:'Conselhos federais (CFM, CREA, CRO) e órgãos públicos. Questões de alto nível.',emoji:'🔷'},
 ];
 
 async function renderBancas(){
@@ -1638,17 +1919,23 @@ async function renderBancas(){
   if(!bancas.length){for(const b of BANCAS_PADRAO)await dbPut('bancas',b);bancas=BANCAS_PADRAO;}
   el.innerHTML=bancas.map(b=>`
     <div class="link-card">
-      <div class="link-icon link-banca">${b.emoji||'🏢'}</div>
-      <div style="flex:1;min-width:0">
-        <div class="lc-name">${b.nome}</div>
-        ${b.sigla?`<div style="font-size:.7rem;font-weight:700;color:var(--amber);margin-bottom:.2rem">${b.sigla}</div>`:''}
-        <a class="lc-url" href="${b.url}" target="_blank">${b.url}</a>
-        ${b.desc?`<div class="lc-desc">${b.desc}</div>`:''}
-        <a href="${b.url}" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:.5rem;font-size:.73rem">🔗 Site Oficial</a>
+      <div class="link-card-header">
+        <div class="link-icon link-banca">${b.emoji||'🏢'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="lc-name">${b.nome}</div>
+          ${b.sigla?`<span class="badge badge-amber" style="font-size:.63rem;margin-bottom:.2rem">${b.sigla}</span>`:''}
+          <div class="lc-url">${b.url}</div>
+        </div>
       </div>
-      <div class="link-actions">
-        <button class="btn btn-ghost btn-icon btn-sm" onclick="editarBanca('${b.id}')">✏️</button>
-        <button class="btn btn-danger btn-icon btn-sm" onclick="excluirBanca('${b.id}')">🗑</button>
+      <div class="link-card-body">
+        ${b.desc?`<div class="lc-desc">${b.desc}</div>`:''}
+      </div>
+      <div class="link-card-footer">
+        <a href="${b.url}" target="_blank" class="btn btn-primary btn-sm">🔗 Site Oficial</a>
+        <div style="display:flex;gap:.3rem">
+          <button class="btn btn-ghost btn-icon btn-sm" onclick="editarBanca('${b.id}')">✏️</button>
+          <button class="btn btn-danger btn-icon btn-sm" onclick="excluirBanca('${b.id}')">🗑</button>
+        </div>
       </div>
     </div>`).join('');
 }
@@ -1697,9 +1984,9 @@ async function renderCursos(){
     return `<div class="card card-hover" onclick="abrirCurso('${c.id}')">
       <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
         <span style="font-size:1.8rem">${c.emoji||'📚'}</span>
-        <div><div style="font-size:.9rem;font-weight:600">${c.nome}</div><span class="badge badge-purple" style="font-size:.65rem">${c.categoria||'Geral'}</span></div>
+        <div><div style="font-size:.9rem;font-weight:700">${c.nome}</div><span class="badge badge-purple" style="font-size:.65rem">${c.categoria||'Geral'}</span></div>
       </div>
-      ${c.desc?`<p style="font-size:.78rem;color:var(--text3);line-height:1.4;margin-bottom:.65rem">${c.desc.slice(0,80)}...</p>`:''}
+      ${c.desc?`<p style="font-size:.78rem;color:var(--text3);line-height:1.4;margin-bottom:.65rem">${c.desc.slice(0,80)}${c.desc.length>80?'...':''}</p>`:''}
       <div style="font-size:.75rem;color:var(--text3);margin-bottom:.5rem">${as.length} aulas · ${done} concluídas</div>
       <div class="progress"><div class="progress-bar ${pct===100?'green':''}" style="width:${pct}%"></div></div>
       <div style="font-size:.7rem;color:var(--text2);margin-top:.25rem;text-align:right">${pct}%</div>
@@ -1734,8 +2021,8 @@ async function renderAulasD(){
   if(!total){el.innerHTML='<div class="empty-state"><div class="ei">🎬</div><p>Nenhuma aula. Clique em <strong>+ Aula</strong>.</p></div>';return;}
   el.innerHTML=aulas.map(a=>`
     <div class="lesson-item ${a.concluida?'completed':''}" onclick="selecionarAula('${a.id}')">
-      <div style="width:30px;height:30px;border-radius:50%;background:${a.concluida?'rgba(34,211,165,.15)':'var(--bg4)'};display:flex;align-items:center;justify-content:center;font-size:.8rem;color:${a.concluida?'var(--green)':'inherit'};flex-shrink:0">${a.concluida?'✓':getIconAula(a.tipo)}</div>
-      <div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.nome}</div><div style="font-size:.72rem;color:var(--text3)">${a.tipo||'video'} · ${a.duracao||0}min</div></div>
+      <div style="width:30px;height:30px;border-radius:50%;background:${a.concluida?'rgba(16,217,142,.15)':'var(--bg4)'};display:flex;align-items:center;justify-content:center;font-size:.8rem;color:${a.concluida?'var(--green)':'inherit'};flex-shrink:0">${a.concluida?'✓':getIconAula(a.tipo)}</div>
+      <div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.nome}</div><div style="font-size:.72rem;color:var(--text3)">${a.tipo||'video'} · ${a.duracao||0}min</div></div>
       ${a.concluida?'<span style="color:var(--green);font-size:.85rem">✓</span>':''}
     </div>`).join('');
 }
@@ -1831,7 +2118,6 @@ async function editarAula(id){
   document.getElementById('maula-h').textContent='Editar Aula';
   showModal('modal-aula');
 }
-
 async function excluirAula(id){if(!confirm('Excluir aula?'))return;await dbDel('aulas',id);toast('Aula excluída');await renderAulasD();}
 
 // ════════════════════════════════════════
@@ -1842,16 +2128,7 @@ function qTab(t){
   document.querySelectorAll('#page-quizzes .tab-panel').forEach(x=>x.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('tab-q-'+t).classList.add('active');
-}
-
-async function salvarQuiz(){
-  const q=document.getElementById('mq-q').value.trim();
-  const a=document.getElementById('mq-a').value.trim();
-  const b=document.getElementById('mq-b').value.trim();
-  if(!q||!a||!b){toast('Preencha o enunciado e as opções A e B','error');return;}
-  const id=document.getElementById('mq-id').value||uid();
-  await dbPut('quizzes',{id,enunciado:q,opcoes:{a,b,c:document.getElementById('mq-c').value,d:document.getElementById('mq-d').value,e:document.getElementById('mq-e').value},resposta:document.getElementById('mq-r').value,categoria:document.getElementById('mq-cat').value,dificuldade:document.getElementById('mq-dif').value,explicacao:document.getElementById('mq-exp').value,criadoEm:Date.now()});
-  closeModal();toast('Questão salva!');renderQuizzes();
+  if(t==='banco') renderQuizzes();
 }
 
 async function renderQuizzes(){
@@ -1869,6 +2146,16 @@ async function renderQuizzes(){
       <p style="font-size:.83rem;line-height:1.5;font-weight:500;margin-bottom:.5rem">${q.enunciado.slice(0,100)}...</p>
       <div style="font-size:.73rem;color:var(--text3)">${Object.entries(q.opcoes).filter(([,v])=>v).map(([k,v])=>`<div><strong style="color:${k===q.resposta?'var(--green)':'var(--text2)'}">${k.toUpperCase()})</strong> ${v.slice(0,40)}</div>`).join('')}</div>
     </div>`).join('');
+}
+
+async function salvarQuiz(){
+  const q=document.getElementById('mq-q').value.trim();
+  const a=document.getElementById('mq-a').value.trim();
+  const b=document.getElementById('mq-b').value.trim();
+  if(!q||!a||!b){toast('Preencha enunciado e pelo menos 2 opções','error');return;}
+  const id=document.getElementById('mq-id').value||uid();
+  await dbPut('quizzes',{id,enunciado:q,opcoes:{a,b,c:document.getElementById('mq-c').value,d:document.getElementById('mq-d').value,e:document.getElementById('mq-e').value},resposta:document.getElementById('mq-r').value,categoria:document.getElementById('mq-cat').value,dificuldade:document.getElementById('mq-dif').value,explicacao:document.getElementById('mq-exp').value,criadoEm:Date.now()});
+  closeModal();toast('Questão salva!');renderQuizzes();
 }
 
 let sim={qs:[],idx:0,acertos:0,inicio:null};
@@ -1915,7 +2202,7 @@ async function responderSim(l){
   document.querySelectorAll('.quiz-option').forEach(o=>{o.style.pointerEvents='none';});
   document.getElementById('qo-'+l).classList.add(certo?'correct':'wrong');
   document.getElementById('qo-'+q.resposta).classList.add('correct');
-  document.getElementById('q-exp-area').innerHTML=`<div style="margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--radius2);background:${certo?'rgba(34,211,165,.07)':'rgba(248,113,113,.07)'};border:1px solid ${certo?'rgba(34,211,165,.2)':'rgba(248,113,113,.2)'};font-size:.83rem;line-height:1.5">
+  document.getElementById('q-exp-area').innerHTML=`<div style="margin-top:1rem;padding:.9rem 1.1rem;border-radius:var(--radius2);background:${certo?'rgba(16,217,142,.07)':'rgba(245,101,101,.07)'};border:1px solid ${certo?'rgba(16,217,142,.2)':'rgba(245,101,101,.2)'};font-size:.83rem;line-height:1.5">
     ${certo?'✅ Correto!':'❌ Incorreto!'} ${q.explicacao?'<br>'+q.explicacao:''}
     <div style="margin-top:.65rem"><button class="btn btn-primary btn-sm" onclick="sim.idx++;renderPergunta()">Próxima →</button></div>
   </div>`;
@@ -2005,41 +2292,35 @@ async function initFlashStudy(){
 function renderFcStudy(){
   const el=document.getElementById('fc-study-area');
   if(!el) return;
-  const{cards,idx}=fcS;
-  if(!cards.length){el.innerHTML='<div class="empty-state"><div class="ei">🃏</div><p>Crie flashcards primeiro!</p></div>';return;}
-  const c=cards[idx];
-  el.innerHTML=`<div style="max-width:460px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:.75rem;font-size:.8rem;color:var(--text3)">${idx+1} / ${cards.length}</div>
-    <div class="progress" style="margin-bottom:1.25rem"><div class="progress-bar" style="width:${(idx/cards.length)*100}%"></div></div>
-    <div class="flashcard" id="fcs-card" onclick="flipFcStudy()">
-      <span class="badge badge-purple" style="position:absolute;top:.75rem;left:.75rem">${c.categoria||'Geral'}</span>
-      <p id="fcs-f" style="font-size:1rem;font-weight:500;line-height:1.6">${c.frente}</p>
-      <p id="fcs-v" style="display:none;font-size:.88rem;color:var(--accent2);line-height:1.6;margin-top:.5rem">${c.verso}</p>
-      <p id="fcs-hint" style="font-size:.72rem;color:var(--text3);margin-top:.65rem">Clique para virar</p>
+  if(!fcS.cards.length){el.innerHTML='<div class="empty-state"><div class="ei">🃏</div><p>Nenhum flashcard criado ainda.</p></div>';return;}
+  if(fcS.idx>=fcS.cards.length){el.innerHTML='<div class="card" style="text-align:center;max-width:400px;margin:0 auto"><div style="font-size:3rem;margin-bottom:.5rem">🎉</div><h3>Revisão concluída!</h3><p style="color:var(--text2);margin:1rem 0">${fcS.cards.length} cards revisados.</p><button class="btn btn-primary" onclick="fcS.idx=0;renderFcStudy()">Reiniciar</button></div>';return;}
+  const c=fcS.cards[fcS.idx];
+  let mostrandoVerso=false;
+  el.innerHTML=`<div style="max-width:500px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text3);margin-bottom:1rem">
+      <span>${fcS.idx+1}/${fcS.cards.length}</span><span class="badge badge-purple">${c.categoria||'Geral'}</span>
     </div>
-    <div id="fcs-btns" style="display:none;justify-content:center;gap:.75rem;margin-top:1rem">
-      <button class="btn btn-danger" onclick="avFc(0)">❌ Não soube</button>
-      <button class="btn btn-success" onclick="avFc(1)">✅ Soube!</button>
+    <div class="flashcard" id="fc-s-card" onclick="flipFcStudy()">
+      <p id="fc-s-f" style="font-size:1rem;line-height:1.5;font-weight:500">${c.frente}</p>
+      <p id="fc-s-v" style="display:none;font-size:.9rem;color:var(--accent2);line-height:1.5">${c.verso}</p>
+      <p id="fc-s-hint" style="font-size:.75rem;color:var(--text3);margin-top:.75rem">Clique para ver o verso</p>
+    </div>
+    <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1rem">
+      <button class="btn btn-ghost" onclick="fcS.idx++;renderFcStudy()">Pular →</button>
+      <button class="btn btn-primary" id="fc-s-prox" onclick="fcS.idx++;renderFcStudy()" style="display:none">Próximo →</button>
     </div>
   </div>`;
-}
 
-let fcsFlip=false;
-function flipFcStudy(){
-  fcsFlip=!fcsFlip;
-  document.getElementById('fcs-card').classList.toggle('flipped',fcsFlip);
-  document.getElementById('fcs-v').style.display=fcsFlip?'block':'none';
-  document.getElementById('fcs-hint').style.display=fcsFlip?'none':'block';
-  document.getElementById('fcs-btns').style.display=fcsFlip?'flex':'none';
+  document.getElementById('fc-s-card').onclick=()=>{
+    mostrandoVerso=!mostrandoVerso;
+    document.getElementById('fc-s-f').style.opacity=mostrandoVerso?'.4':'1';
+    document.getElementById('fc-s-v').style.display=mostrandoVerso?'block':'none';
+    document.getElementById('fc-s-hint').style.display=mostrandoVerso?'none':'block';
+    document.getElementById('fc-s-card').classList.toggle('flipped',mostrandoVerso);
+    if(mostrandoVerso) document.getElementById('fc-s-prox').style.display='inline-flex';
+  };
 }
-
-function avFc(ok){
-  fcsFlip=false;
-  fcS.idx++;
-  if(fcS.idx>=fcS.cards.length){
-    document.getElementById('fc-study-area').innerHTML=`<div class="card" style="text-align:center;max-width:360px;margin:2rem auto"><div style="font-size:3rem;margin-bottom:.5rem">🎉</div><h3 style="margin-bottom:.4rem">Revisão concluída!</h3><p style="color:var(--text2);font-size:.85rem;margin-bottom:1rem">${fcS.cards.length} cards revisados.</p><button class="btn btn-primary" onclick="initFlashStudy()">Reiniciar</button></div>`;
-  } else renderFcStudy();
-}
+function flipFcStudy(){ document.getElementById('fc-s-card')?.click(); }
 
 // ════════════════════════════════════════
 //  ANOTAÇÕES
@@ -2060,42 +2341,41 @@ async function renderNotas(){
   let notas=await dbAll('notas');
   if(q) notas=notas.filter(n=>n.titulo.toLowerCase().includes(q)||n.conteudo.toLowerCase().includes(q));
   notas.sort((a,b)=>b.criadoEm-a.criadoEm);
-  if(!notas.length){el.innerHTML='<div class="empty-state"><div class="ei">📝</div><p>Nenhuma anotação.</p></div>';return;}
-  el.innerHTML=notas.map(n=>`
-    <div class="note-card">
-      <div style="font-size:.7rem;color:var(--text3);margin-bottom:.3rem;font-family:var(--mono)">${new Date(n.criadoEm).toLocaleString('pt-BR')} ${n.materia?'· '+n.materia:''}</div>
-      <strong style="font-size:.9rem">${n.titulo}</strong>
-      <div style="font-size:.83rem;line-height:1.5;margin-top:.4rem;color:var(--text2)">${n.conteudo.replace(/\n/g,'<br>')}</div>
-      <div style="display:flex;gap:.35rem;margin-top:.6rem">
-        <button class="btn btn-ghost btn-sm" onclick="editNota('${n.id}')">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="if(confirm('Excluir?'))dbDel('notas','${n.id}').then(renderNotas)">🗑</button>
+  if(!notas.length){el.innerHTML='<div class="empty-state"><div class="ei">📝</div><p>Nenhuma anotação.<br>Clique em <strong>+ Nova Nota</strong>.</p></div>';return;}
+  el.innerHTML=notas.map(n=>`<div class="note-card">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.4rem">
+      <div><span style="font-size:.9rem;font-weight:700">${n.titulo}</span>${n.materia?`<span class="badge badge-purple" style="margin-left:.4rem;font-size:.62rem">${n.materia}</span>`:''}</div>
+      <div style="display:flex;gap:.2rem;flex-shrink:0">
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="editarNota('${n.id}')">✏️</button>
+        <button class="btn btn-danger btn-icon btn-sm" onclick="dbDel('notas','${n.id}').then(renderNotas)">🗑</button>
       </div>
-    </div>`).join('');
+    </div>
+    <p style="font-size:.82rem;color:var(--text2);line-height:1.55;white-space:pre-wrap">${n.conteudo.slice(0,300)}${n.conteudo.length>300?'...':''}</p>
+    <div style="font-size:.7rem;color:var(--text3);margin-top:.5rem">${new Date(n.criadoEm).toLocaleDateString('pt-BR')}</div>
+  </div>`).join('');
 }
 
-async function editNota(id){
+async function editarNota(id){
   const notas=await dbAll('notas');
   const n=notas.find(x=>x.id===id);
   if(!n) return;
   document.getElementById('mn-id').value=n.id;
-  document.getElementById('mn-titulo').value=n.titulo;
+  document.getElementById('mn-titulo').value=n.titulo||'';
   document.getElementById('mn-materia').value=n.materia||'';
-  document.getElementById('mn-conteudo').value=n.conteudo;
+  document.getElementById('mn-conteudo').value=n.conteudo||'';
   showModal('modal-nota');
 }
 
 // ════════════════════════════════════════
-//  MATERIAIS DO CONCURSO
+//  MATERIAIS
 // ════════════════════════════════════════
 async function renderMateriaisCd(){
   const el=document.getElementById('materiais-cd');
-  if(!el||!concursoAtualId) return;
-  const cs=await dbAll('concursos');
-  const c=cs.find(x=>x.id===concursoAtualId);
-  el.innerHTML=`<div style="margin-bottom:1rem">
-    ${c?.edital?`<a href="${c.edital}" target="_blank" class="btn btn-ghost btn-sm" style="margin-bottom:.5rem">🔗 Edital</a>`:''}
-    ${c?.obs?`<div class="note-card"><strong>Observações:</strong><br>${c.obs}</div>`:''}
-  </div>`;
+  if(!el) return;
+  el.innerHTML=`<div style="display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-nota')">+ Nota vinculada</button>
+  </div>
+  <p style="color:var(--text3);font-size:.83rem">Anotações gerais do concurso aparecerão aqui.</p>`;
 }
 
 // ════════════════════════════════════════
@@ -2105,48 +2385,43 @@ async function renderDashboard(){
   const cs=await dbAll('concursos');
   const discs=await dbAll('disciplinas');
   const crono=await dbAll('cronogramas');
-  const hist=await dbAll('historico');
-  const cursos=await dbAll('cursos');
-  const aulas=await dbAll('aulas');
-  const cfg=await dbAll('config');
-  const nome=cfg[0]?.nome||'Estudante';
-  const hoje=new Date(); const hojeStr=hoje.toISOString().slice(0,10);
+  const hoje=new Date().toISOString().slice(0,10);
+  const hojeSlots=crono.filter(s=>s.data===hoje);
+  const conclHoje=hojeSlots.filter(s=>s.concluido).length;
+  const statsEl=document.getElementById('dash-stats');
+  const hr=new Date().getHours();
+  const greeting=hr<12?'Bom dia':'hr<18'?'Boa tarde':'Boa noite';
+  document.getElementById('dash-greeting').textContent=`Bom${hr<12?'':hr<18?' tarde':' noite'}! Continue firme nos estudos. 💪`;
+  if(statsEl) statsEl.innerHTML=`
+    <div class="stat-card stat-accent"><div class="stat-label">Concursos</div><div class="stat-value">${cs.length}</div><div class="stat-sub">ativos</div></div>
+    <div class="stat-card stat-green"><div class="stat-label">Disciplinas</div><div class="stat-value">${discs.length}</div><div class="stat-sub">cadastradas</div></div>
+    <div class="stat-card stat-amber"><div class="stat-label">Hoje</div><div class="stat-value">${hojeSlots.length}</div><div class="stat-sub">sessões planejadas</div></div>
+    <div class="stat-card stat-pink"><div class="stat-label">Concluídas</div><div class="stat-value">${conclHoje}</div><div class="stat-sub">sessões hoje</div></div>`;
 
-  document.getElementById('dash-greeting').textContent=`Olá, ${nome}! 👋 Continue focado nos seus objetivos.`;
-
-  // Stats
-  const totalQ=hist.reduce((s,h)=>s+h.total,0);
-  const acertos=hist.reduce((s,h)=>s+h.acertos,0);
-  const aulasD=aulas.filter(a=>a.concluida).length;
-  const cronoHoje=crono.filter(s=>s.data===hojeStr);
-  const stats=document.getElementById('dash-stats');
-  if(stats) stats.innerHTML=`
-    <div class="stat-card stat-accent"><div class="stat-label">Concursos</div><div class="stat-value">${cs.length}</div><div class="stat-sub">inscritos</div></div>
-    <div class="stat-card stat-green"><div class="stat-label">Aulas</div><div class="stat-value">${aulasD}</div><div class="stat-sub">concluídas</div></div>
-    <div class="stat-card stat-amber"><div class="stat-label">Taxa acerto</div><div class="stat-value">${totalQ?Math.round(acertos/totalQ*100)+'%':'—'}</div><div class="stat-sub">${hist.length} simulados</div></div>
-    <div class="stat-card stat-pink"><div class="stat-label">Hoje</div><div class="stat-value">${cronoHoje.length}</div><div class="stat-sub">sessões planejadas</div></div>`;
-
-  // Concursos
-  const dcEl=document.getElementById('dash-concursos');
-  if(dcEl){
-    if(!cs.length){dcEl.innerHTML='<div class="empty-state"><div class="ei">🏛</div><p>Cadastre seus concursos!</p></div>';}
-    else{dcEl.innerHTML=cs.sort((a,b)=>a.dataProva?.localeCompare(b.dataProva)).slice(0,3).map(c=>{
-      const dias=diasParaProva(c.dataProva);
-      const cls=dias<30?'dias-urgente':dias<90?'dias-proximo':'dias-ok';
-      return `<div style="display:flex;align-items:center;gap:.7rem;padding:.55rem;border-radius:var(--radius2);cursor:pointer;transition:.1s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''" onclick="abrirConcurso('${c.id}')">
-        <span style="font-size:1.4rem">${c.emoji||'🏛'}</span>
-        <div style="flex:1;min-width:0"><div style="font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.orgao}</div><div style="font-size:.72rem;color:var(--text3)">${c.banca||''} · ${formatDate(c.dataProva)}</div></div>
-        <span class="dias-badge ${cls}">${dias>0?dias+'d':'HOJE'}</span>
-      </div>`;
-    }).join('');}
+  // Concursos próximos
+  const concEl=document.getElementById('dash-concursos');
+  if(concEl){
+    if(!cs.length){concEl.innerHTML='<p style="color:var(--text3);font-size:.83rem">Nenhum concurso. Clique em <strong>+ Concurso</strong>.</p>';}
+    else{
+      const sorted=cs.sort((a,b)=>diasParaProva(a.dataProva)-diasParaProva(b.dataProva)).slice(0,3);
+      concEl.innerHTML=sorted.map(c=>{
+        const dias=diasParaProva(c.dataProva);
+        const cls=dias<30?'dias-urgente':dias<90?'dias-proximo':'dias-ok';
+        return `<div style="display:flex;align-items:center;gap:.7rem;padding:.55rem;border-radius:var(--radius2);cursor:pointer;transition:.12s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background=''" onclick="abrirConcurso('${c.id}')">
+          <span style="font-size:1.3rem">${c.emoji||'🏛'}</span>
+          <div style="flex:1;min-width:0"><div style="font-size:.84rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.orgao}</div><div style="font-size:.73rem;color:var(--text3)">${formatDate(c.dataProva)}</div></div>
+          <span class="dias-badge ${cls}">${dias>0?dias+'d':'HOJE'}</span>
+        </div>`;
+      }).join('');
+    }
   }
 
   // Hoje
   const hojeEl=document.getElementById('dash-hoje');
   if(hojeEl){
-    if(!cronoHoje.length){hojeEl.innerHTML='<p style="color:var(--text3);font-size:.83rem">Sem sessões planejadas para hoje.<br><button class="btn btn-amber btn-sm" style="margin-top:.5rem" onclick="gerarCronogramaGeral()">⚡ Gerar Cronograma</button></p>';}
-    else{hojeEl.innerHTML=cronoHoje.map(s=>`<div class="crono-slot ${s.concluido?'crono-done':''}">
-      <div class="crono-check ${s.concluido?'checked':''}" onclick="toggleCronoSlot('${s.id}');renderDashboard()">${s.concluido?'✓':''}</div>
+    if(!hojeSlots.length){hojeEl.innerHTML='<p style="color:var(--text3);font-size:.83rem">Nenhuma sessão para hoje. Gere um cronograma!</p>';}
+    else{hojeEl.innerHTML=hojeSlots.map(s=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--border)">
+      <div class="crono-check ${s.concluido?'checked':''}" onclick="toggleCronoSlotDash('${s.id}')">${s.concluido?'✓':''}</div>
       <span style="font-size:.8rem;flex:1">${s.disciplina}</span>
       <span class="badge ${s.tipo==='revisao'?'badge-amber':'badge-purple'}" style="font-size:.62rem">${s.tipo}</span>
       <span style="font-size:.7rem;color:var(--text3)">${s.horas}h</span>
@@ -2164,8 +2439,9 @@ async function renderDashboard(){
         const sessDisc=crono.filter(s=>s.disciplinaId===d.id);
         const concl=sessDisc.filter(s=>s.concluido).length;
         const pct=sessDisc.length?Math.round(concl/sessDisc.length*100):0;
-        return `<div style="margin-bottom:.65rem"><div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.25rem"><span>${d.nome}</span><span style="color:var(--text3)">${pct}%</span></div><div class="progress"><div class="progress-bar ${pct>70?'green':pct>40?'':''}" style="width:${pct}%"></div></div></div>`;
-      }).join('');}
+        return `<div style="margin-bottom:.65rem"><div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.25rem"><span>${d.nome}</span><span style="color:var(--text3)">${pct}%</span></div><div class="progress"><div class="progress-bar ${pct>70?'green':''}" style="width:${pct}%"></div></div></div>`;
+      }).join('');
+    }
   }
 
   // Links rápidos
@@ -2177,11 +2453,20 @@ async function renderDashboard(){
     if(!all.length){linkEl.innerHTML='<p style="font-size:.8rem;color:var(--text3)">Nenhum recurso cadastrado ainda.</p>';}
     else{linkEl.innerHTML=all.map(r=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--border)">
       <span>${r.emoji||'🔗'}</span>
-      <div style="flex:1;min-width:0"><div style="font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.nome}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.nome}</div></div>
       <a href="${r.url}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:.7rem">→</a>
     </div>`).join('');}
   }
   updateBadges();
+}
+
+async function toggleCronoSlotDash(id){
+  const all=await dbAll('cronogramas');
+  const s=all.find(x=>x.id===id);
+  if(!s) return;
+  s.concluido=!s.concluido;
+  await dbPut('cronogramas',s);
+  renderDashboard();
 }
 
 // ════════════════════════════════════════
@@ -2238,7 +2523,7 @@ async function updateBadges(){
 //  BACKUP
 // ════════════════════════════════════════
 async function exportBackup(){
-  const data={_v:2,_date:new Date().toISOString()};
+  const data={_v:4,_date:new Date().toISOString()};
   for(const s of STORES) data[s]=await dbAll(s);
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
